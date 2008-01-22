@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/base'
 
 describe Rush::File do
+	it "is a child of Rush::Entry" do
+	end
+
 	it "is not a directory" do
 	end
 
