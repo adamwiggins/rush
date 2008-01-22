@@ -53,7 +53,7 @@ describe Rush::Entry do
 		lambda { @entry.rename(new_file) }.should raise_error(Rush::Entry::NameAlreadyExists)
 	end
 
-	xit "can move itself to another dir" do
+	it "can move itself to another dir" do
 		newdir = "#{@sandbox_dir}/newdir"
 		system "mkdir -p #{newdir}"
 
