@@ -1,6 +1,18 @@
-Rush::File
-- is not a directory
-- knows its size in bytes
-- can read its contents
-- can gsub_contents! to do find-in-file replace
-- can destroy itself
+require File.dirname(__FILE__) + '/base'
+
+describe Rush::File do
+	it "is not a directory" do
+	end
+
+	it "knows its size in bytes" do
+	end
+
+	it "can read its contents" do
+	end
+
+	it "can gsub_contents! to do find-in-file replace" do
+	end
+
+	it "can destroy itself" do
+	end
+end

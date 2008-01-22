@@ -1,11 +1,27 @@
-require 'base'
+require File.dirname(__FILE__) + '/base'
 
-Rush::Dir
-- lists its contents (files and dirs)
-- lists just files
-- lists just dirs
-- can create a new file
-- can create a new subdir
-- knows its size in bytes, which includes its contents recursively
-- can destroy itself when empty
-- can destroy itself when not empty
+describe Rush::Dir do
+	it "lists its contents (files and dirs)" do
+	end
+
+	it "lists just files" do
+	end
+
+	it "lists just dirs" do
+	end
+
+	it "can create a new file" do
+	end
+
+	it "can create a new subdir" do
+	end
+
+	it "knows its size in bytes, which includes its contents recursively" do
+	end
+
+	it "can destroy itself when empty" do
+	end
+
+	it "can destroy itself when not empty" do
+	end
+end
