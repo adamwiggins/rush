@@ -2,13 +2,13 @@ require File.dirname(__FILE__) + '/base'
 
 describe Rush::Entry do
 	before(:each) do
-		@sandbox_dir = "/tmp/rush_spec"
+		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
-		@file = "#{@sandbox_dir}/test_file"
-		system "touch #{@file}"
+		@filename = "#{@sandbox_dir}/test_file"
+		system "touch #{@filename}"
 
-		@entry = Rush::Entry.new(@file)
+		@entry = Rush::Entry.new(@filename)
 	end
 
 	after(:each) do
@@ -16,7 +16,7 @@ describe Rush::Entry do
 	end
 
 	it "knows its name" do
-		@entry.name.should eql(File.basename(@file))
+		@entry.name.should eql(File.basename(@filename))
 	end
 
 	it "knows its parent directory" do
@@ -26,15 +26,15 @@ describe Rush::Entry do
 	end
 
 	it "knows its created_at time" do
-		@entry.created_at.should eql(File.stat(@file).ctime)
+		@entry.created_at.should eql(File.stat(@filename).ctime)
 	end
 
 	it "knows its last_modified time" do
-		@entry.last_modified.should eql(File.stat(@file).mtime)
+		@entry.last_modified.should eql(File.stat(@filename).mtime)
 	end
 
 	it "knows its last_accessed time" do
-		@entry.last_accessed.should eql(File.stat(@file).atime)
+		@entry.last_accessed.should eql(File.stat(@filename).atime)
 	end
 
 	it "can rename itself" do
@@ -42,7 +42,7 @@ describe Rush::Entry do
 
 		@entry.rename(new_file)
 
-		File.exists?(@file).should be_false
+		File.exists?(@filename).should be_false
 		File.exists?("#{@sandbox_dir}/#{new_file}").should be_true
 	end
 
@@ -60,7 +60,7 @@ describe Rush::Entry do
 		dst = Rush::Dir.new(newdir)
 		@entry.move_to(dst)
 
-		File.exists?(@file).should be_false
+		File.exists?(@filename).should be_false
 		File.exists?("#{newdir}/#{@entry.name}").should be_true
 	end
 end
