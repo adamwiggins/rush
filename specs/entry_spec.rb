@@ -2,51 +2,58 @@ require File.dirname(__FILE__) + '/base'
 
 describe Rush::Entry do
 	before(:each) do
-		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
-		system "mkdir -p #{@sandbox_dir}"
+		@sandbox_dir = "/tmp/rush_spec"
+		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
-		@file = "/#{@sandbox_dir}/rush_spec.#{@id}"
+		@file = "#{@sandbox_dir}/test_file"
 		system "touch #{@file}"
 
 		@entry = Rush::Entry.new(@file)
 	end
 
 	after(:each) do
-		system "rm -f #{@file}"
+		system "rm -rf #{@sandbox_dir}"
 	end
 
 	it "knows its name" do
-		@entry.name.should equal(File.basename(@file))
+		@entry.name.should eql(File.basename(@file))
 	end
 
 	it "knows its parent directory" do
 		@entry.parent.should be_kind_of(Rush::Dir)
-		@entry.parent.name.should equal(File.basename(@sandbox_dir))
-		@entry.parent.full_path.should equal(@sandbox_dir)
+		@entry.parent.name.should eql(File.basename(@sandbox_dir))
+		@entry.parent.full_path.should eql(@sandbox_dir)
 	end
 
 	it "knows its created_at time" do
-		@entry.created_at.should equal(File.stat(@file).ctime)
+		@entry.created_at.should eql(File.stat(@file).ctime)
 	end
 
 	it "knows its last_modified time" do
-		@entry.last_modified.should equal(File.stat(@file).mtime)
+		@entry.last_modified.should eql(File.stat(@file).mtime)
 	end
 
 	it "knows its last_accessed time" do
-		@entry.last_accessed.should equal(File.stat(@file).atime)
+		@entry.last_accessed.should eql(File.stat(@file).atime)
 	end
 
 	it "can rename itself" do
-		new_file = "rush_spec_2.#{@id}"
+		new_file = "test2"
 
 		@entry.rename(new_file)
 
 		File.exists?(@file).should be_false
-		File.exists?(new_file).should be_true
+		File.exists?("#{@sandbox_dir}/#{new_file}").should be_true
 	end
 
-	it "can move itself to another dir" do
+	it "can't rename itself if another file already exists with that name" do
+		new_file = "test3"
+		system "touch #{@sandbox_dir}/#{new_file}"
+
+		lambda { @entry.rename(new_file) }.should raise_error(Rush::Entry::NameAlreadyExists)
+	end
+
+	xit "can move itself to another dir" do
 		newdir = "#{@sandbox_dir}/newdir"
 		system "mkdir -p #{newdir}"
 
