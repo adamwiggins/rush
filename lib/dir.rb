@@ -3,8 +3,9 @@ module Rush
 		def files
 			list = []
 			::Dir.open(full_path).each do |fname|
-				next if ::File.directory? fname
-				list << Rush::File.new("#{full_path}/#{fname}")
+				full_fname = "#{full_path}/#{fname}"
+				next if ::File.directory? full_fname
+				list << Rush::File.new(full_fname)
 			end
 			list
 		end
@@ -12,10 +13,46 @@ module Rush
 		def dirs
 			list = []
 			::Dir.open(full_path).each do |fname|
-				next unless ::File.directory? fname
-				list << Rush::Dir.new("#{full_path}/#{fname}")
+				next if fname == '.' or fname == '..'
+				full_fname = "#{full_path}/#{fname}"
+				next unless ::File.directory? full_fname
+				list << Rush::Dir.new(full_fname)
 			end
 			list
+		end
+
+		def contents
+			dirs + files
+		end
+
+		def [](key)
+			if key.kind_of? Regexp
+				find_by_regexp(key)
+			elsif key.match(/\*/)
+				find_by_glob(key)
+			else
+				find_by_name(key)
+			end
+		end
+
+		def find_by_name(name)
+			contents.detect do |entry|
+				entry.name == name
+			end
+		end
+
+		def find_by_glob(glob)
+			find_by_regexp(self.class.glob_to_regexp(glob))
+		end
+
+		def find_by_regexp(pattern)
+			contents.select do |entry|
+				entry.name.match(pattern)
+			end
+		end
+
+		def self.glob_to_regexp(glob)
+			Regexp.new("^" + glob.gsub(/\./, '\\.').gsub(/\*/, '.*') + "$")
 		end
 
 		def create_file(name)
