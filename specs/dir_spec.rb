@@ -119,6 +119,8 @@ describe Rush::Dir do
 	end
 
 	it "knows its size in bytes, which includes its contents recursively" do
+		@dir.create_file('a').write('1234')
+		@dir.size.should be(4096 + 4)
 	end
 
 	it "can destroy itself when empty" do

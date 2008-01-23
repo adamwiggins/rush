@@ -98,6 +98,10 @@ module Rush
 			newdir
 		end
 
+		def size
+			`du -sb #{full_path}`.match(/(\d+)/)[1].to_i
+		end
+
 		def destroy
 			system "rm -rf #{full_path}"
 		end
