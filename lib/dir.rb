@@ -57,10 +57,6 @@ module Rush
 			end
 		end
 
-		def find_by_doubleglob(glob)
-			raise "not yet"
-		end
-
 		def find_subitem(name)
 			Rush::Entry.factory("#{full_path}/#{name}")
 		end
@@ -72,6 +68,21 @@ module Rush
 		def files_flattened
 			dirs.inject(files) do |all, subdir|
 				all += subdir.files_flattened
+			end
+		end
+
+		def dirs_flattened
+			dirs.inject(dirs) do |all, subdir|
+				all += subdir.dirs_flattened
+			end
+		end
+
+		def find_by_doubleglob(doubleglob)
+			glob = doubleglob.gsub(/^\*\*\//, '')
+
+			find_by_glob(glob) +
+			dirs_flattened.inject([]) do |all, subdir|
+				all += subdir.find_by_glob(glob)
 			end
 		end
 

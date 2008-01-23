@@ -98,14 +98,19 @@ describe Rush::Dir do
 		@dir['a/b/c']
 	end
 
-	it "lists flattened files (in all nested subdirectories)" do
+	it "lists flattened files from all nested subdirectories" do
 		@dir.create_file('1')
 		@dir.create_dir('2/3').create_file('4')
 		@dir.create_dir('a/b/c').create_file('d')
 		@dir.files_flattened.should == [ @dir['1'], @dir['2/3/4'], @dir['a/b/c/d'] ]
 	end
 
-	xit "can glob **/ to get all nested contents" do
+	it "lists flattened dirs from all nested subdirectories" do
+		@dir.create_dir('1/2')
+		@dir.dirs_flattened.should == [ @dir['1'], @dir['1/2'] ]
+	end
+
+	it "glob **/ as a shortcut to flattened_files + regular globbing" do
 		@dir.create_file('1.rb')
 		@dir.create_file('ignore.txt')
 		@dir.create_dir('2').create_file('3.rb')
