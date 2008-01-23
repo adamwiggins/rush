@@ -18,10 +18,10 @@ Rush::Service::PostgreSQL.make_promisucious(:confirm => 'yes')
 dump = Rush::Service::PostgreSQL.pg_dump("widgets", :tables => %w(widgets gadgets))
 Rush::Service::SSH.install_authkey(id_rsa_pub)
 
-Rush::Firewall.load(firewall_hash)
-Rush::Firewall.flush
+Rush::Net::Firewall.load(firewall_hash)
+Rush::Net::Firewall.flush
 
-Rush::Network.local_ip
+Rush::Net::Config.ip
 
 nonroot_daemons = Rush::Process.listening_ports.select { |port| port.process.uid != 0 }
 

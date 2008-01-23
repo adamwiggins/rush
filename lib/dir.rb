@@ -1,7 +1,7 @@
 module Rush
 	class Dir < Entry
 		def files
-			list = []
+			list = Rush::EntryArray.new
 			::Dir.open(full_path).each do |fname|
 				full_fname = "#{full_path}/#{fname}"
 				next if ::File.directory? full_fname
@@ -11,7 +11,7 @@ module Rush
 		end
 
 		def dirs
-			list = []
+			list = Rush::EntryArray.new
 			::Dir.open(full_path).each do |fname|
 				next if fname == '.' or fname == '..'
 				full_fname = "#{full_path}/#{fname}"
@@ -92,6 +92,10 @@ module Rush
 			filenames.map do |fname|
 				Rush::Entry.factory("#{full_path}/#{fname}")
 			end
+		end
+
+		def grep(pattern)
+			files.grep(pattern)
 		end
 
 		def create_file(name)
