@@ -116,7 +116,11 @@ describe Rush::Dir do
 		@dir.dirs_flattened.should == @dir.make_entries(%w(1 1/2))
 	end
 
-	it "glob **/ as a shortcut to flattened_files + regular globbing" do
+	it "** as a shortcut to flattened_files" do
+		@dir['**'].should == @dir.files_flattened
+	end
+
+	it "**/ as a shortcut to flattened_files + regular globbing" do
 		@dir.create_file('1.rb')
 		@dir.create_file('ignore.txt')
 		@dir.create_dir('2').create_file('3.rb')

@@ -28,6 +28,8 @@ module Rush
 		def [](key)
 			if key.kind_of? Regexp
 				find_by_regexp(key)
+			elsif key == '**'
+				files_flattened
 			elsif key.slice(0, 3) == '**/'
 				find_by_doubleglob(key)
 			elsif key.match(/\*/)
