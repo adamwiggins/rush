@@ -45,8 +45,11 @@ describe Rush::Dir do
 	end
 
 	it "can destroy itself when empty" do
+		@dir.destroy
 	end
 
 	it "can destroy itself when not empty" do
+		@dir.create_dir('a').create_file('b').write('c')
+		@dir.destroy
 	end
 end

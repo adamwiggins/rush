@@ -29,5 +29,9 @@ module Rush
 			system "mkdir -p #{newdir.full_path}"
 			newdir
 		end
+
+		def destroy
+			system "rm -rf #{full_path}"
+		end
 	end
 end
