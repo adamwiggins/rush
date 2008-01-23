@@ -12,11 +12,14 @@ module Rush
 			::File.read(full_path)
 		end
 
-		def gsub_contents!(pattern, replace_with)
-			new_contents = contents.gsub(pattern, replace_with)
+		def write(new_contents)
 			::File.open(full_path, 'w') do |f|
 				f.write new_contents
 			end
+		end
+
+		def gsub_contents!(pattern, replace_with)
+			write contents.gsub(pattern, replace_with)
 		end
 
 		def destroy

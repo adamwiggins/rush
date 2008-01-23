@@ -42,6 +42,10 @@ module Rush
 			@parent = dir
 		end
 
+		def ==(other)
+			full_path == other.full_path
+		end
+
 	private
 
 		def stat

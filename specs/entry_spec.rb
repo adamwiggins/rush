@@ -16,25 +16,30 @@ describe Rush::Entry do
 	end
 
 	it "knows its name" do
-		@entry.name.should eql(File.basename(@filename))
+		@entry.name.should == File.basename(@filename)
 	end
 
 	it "knows its parent directory" do
 		@entry.parent.should be_kind_of(Rush::Dir)
-		@entry.parent.name.should eql(File.basename(@sandbox_dir))
-		@entry.parent.full_path.should eql(@sandbox_dir)
+		@entry.parent.name.should == File.basename(@sandbox_dir)
+		@entry.parent.full_path.should == @sandbox_dir
 	end
 
 	it "knows its created_at time" do
-		@entry.created_at.should eql(File.stat(@filename).ctime)
+		@entry.created_at.should == File.stat(@filename).ctime
 	end
 
 	it "knows its last_modified time" do
-		@entry.last_modified.should eql(File.stat(@filename).mtime)
+		@entry.last_modified.should == File.stat(@filename).mtime
 	end
 
 	it "knows its last_accessed time" do
-		@entry.last_accessed.should eql(File.stat(@filename).atime)
+		@entry.last_accessed.should == File.stat(@filename).atime
+	end
+
+	it "considers itself equal to other instances with the same full path" do
+		Rush::Entry.new('/not/the/same').should_not == @entry
+		Rush::Entry.new(@entry.full_path).should == @entry
 	end
 
 	it "can rename itself" do
