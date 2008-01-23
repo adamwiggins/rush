@@ -86,6 +86,12 @@ module Rush
 			end
 		end
 
+		def make_entries(filenames)
+			filenames.map do |fname|
+				Rush::Entry.factory("#{full_path}/#{fname}")
+			end
+		end
+
 		def create_file(name)
 			file = Rush::File.new("#{full_path}/#{name}")
 			file.write('')

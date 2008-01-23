@@ -98,16 +98,22 @@ describe Rush::Dir do
 		@dir['a/b/c']
 	end
 
+	it "makes a list of entries from an array of filenames" do
+		@dir.create_dir('a')
+		@dir.create_dir('b/c')
+		@dir.make_entries(%w(a b/c)).should == [ @dir['a'], @dir['b/c'] ]
+	end
+
 	it "lists flattened files from all nested subdirectories" do
 		@dir.create_file('1')
 		@dir.create_dir('2/3').create_file('4')
 		@dir.create_dir('a/b/c').create_file('d')
-		@dir.files_flattened.should == [ @dir['1'], @dir['2/3/4'], @dir['a/b/c/d'] ]
+		@dir.files_flattened.should == @dir.make_entries(%w(1 2/3/4 a/b/c/d))
 	end
 
 	it "lists flattened dirs from all nested subdirectories" do
 		@dir.create_dir('1/2')
-		@dir.dirs_flattened.should == [ @dir['1'], @dir['1/2'] ]
+		@dir.dirs_flattened.should == @dir.make_entries(%w(1 1/2))
 	end
 
 	it "glob **/ as a shortcut to flattened_files + regular globbing" do
@@ -115,7 +121,7 @@ describe Rush::Dir do
 		@dir.create_file('ignore.txt')
 		@dir.create_dir('2').create_file('3.rb')
 		@dir.create_dir('a/b').create_file('c.rb')
-		@dir['**/*.rb'].should == [ @dir['1.rb'], @dir['2/3.rb'], @dir['a/b/c.rb' ] ]
+		@dir['**/*.rb'].should == @dir.make_entries(%w(1.rb 2/3.rb a/b/c.rb))
 	end
 
 	it "knows its size in bytes, which includes its contents recursively" do
