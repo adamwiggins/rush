@@ -2,21 +2,24 @@ require File.dirname(__FILE__) + '/base'
 
 describe Rush::Process do
 	before(:each) do
-		@process = Rush::Process.list.detect { |p| p.pid == Process.pid }
+		@pid = fork do
+			sleep 999
+		end
+		@process = Rush::Process.list.detect { |p| p.pid == @pid }
 	end
 
 	after(:each) do
+		system "kill -9 #{@pid}"
 	end
 
 	it "gets the list of all processes" do
 		list = Rush::Process.list
-		list.size.should > 0
+		list.size.should > 5
 		list.first.should be_kind_of(Rush::Process)
-		list.first.pid.should > 0
 	end
 
 	it "knows the pid" do
-		@process.pid.should == Process.pid
+		@process.pid.should == @pid
 	end
 
 	it "knows the uid" do
@@ -24,6 +27,7 @@ describe Rush::Process do
 	end
 
 	it "knows the executed binary" do
+		@process.command.should == "(ruby)"
 	end
 
 	it "knows the command line" do
