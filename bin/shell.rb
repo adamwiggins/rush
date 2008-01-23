@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../lib/rush'
+require 'readline'
 
 def print_result(res)
 	if res.kind_of? String
@@ -17,13 +18,16 @@ home = Rush::Dir.new(ENV['HOME'])
 pwd = Rush::Dir.new(ENV['PWD'])
 
 loop do
-	print "rush> "
-	cmd = gets
+	cmd = Readline.readline('rush> ')
 
 	if cmd.nil?
 		puts
 		exit
 	end
+
+	next if cmd == ""
+
+	Readline::HISTORY.push(cmd)
 
 	begin
 		print_result eval(cmd)
