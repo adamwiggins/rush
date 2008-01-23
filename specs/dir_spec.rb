@@ -98,10 +98,19 @@ describe Rush::Dir do
 		@dir['a/b/c']
 	end
 
-	it "can fetch flattened contents (all recursive subdirectories)" do
+	it "lists flattened files (in all nested subdirectories)" do
+		@dir.create_file('1')
+		@dir.create_dir('2/3').create_file('4')
+		@dir.create_dir('a/b/c').create_file('d')
+		@dir.files_flattened.should == [ @dir['1'], @dir['2/3/4'], @dir['a/b/c/d'] ]
 	end
 
-	it "can glob **/ to get all nested contents" do
+	xit "can glob **/ to get all nested contents" do
+		@dir.create_file('1.rb')
+		@dir.create_file('ignore.txt')
+		@dir.create_dir('2').create_file('3.rb')
+		@dir.create_dir('a/b').create_file('c.rb')
+		@dir['**/*.rb'].should == [ @dir['1.rb'], @dir['2/3.rb'], @dir['a/b/c.rb' ] ]
 	end
 
 	it "knows its size in bytes, which includes its contents recursively" do

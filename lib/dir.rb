@@ -28,6 +28,8 @@ module Rush
 		def [](key)
 			if key.kind_of? Regexp
 				find_by_regexp(key)
+			elsif key.slice(0, 3) == '**/'
+				find_by_doubleglob(key)
 			elsif key.match(/\*/)
 				find_by_glob(key)
 			else
@@ -55,12 +57,22 @@ module Rush
 			end
 		end
 
+		def find_by_doubleglob(glob)
+			raise "not yet"
+		end
+
 		def find_subitem(name)
 			Rush::Entry.factory("#{full_path}/#{name}")
 		end
 
 		def self.glob_to_regexp(glob)
 			Regexp.new("^" + glob.gsub(/\./, '\\.').gsub(/\*/, '.*') + "$")
+		end
+
+		def files_flattened
+			dirs.inject(files) do |all, subdir|
+				all += subdir.files_flattened
+			end
 		end
 
 		def create_file(name)
