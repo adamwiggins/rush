@@ -99,7 +99,7 @@ describe Rush::Dir do
 	end
 
 	it "makes a list of entries from an array of filenames" do
-		@dir.create_dir('a')
+		@dir.create_file('a')
 		@dir.create_dir('b/c')
 		@dir.make_entries(%w(a b/c)).should == [ @dir['a'], @dir['b/c'] ]
 	end
