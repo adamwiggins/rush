@@ -1,0 +1,37 @@
+cpu_hog = Rush::Process.all.map { |p| p.cpu_usage }.sort.first
+
+Rush::Package.find("nginx").installed?
+Rush::Package.find("nginx").exists?
+Rush::Package.find("nginx").install
+Rush::Package.search("nginx").size
+
+Rush::Service.find("nginx").reload
+Rush::Service.find("nginx").running?
+
+Rush::Service::Tar.extract(File.open("archive.tar.gz"), "/tmp")
+Rush::Service::Tar.extract_partial(File.open("archive.tar.gz"), "/tmp") do |fname|
+	fname.match(/^app/)
+end
+Rush::Service::PostgreSQL.create_user("widgets", "abc123")
+Rush::Service::PostgreSQL.create_database("widgets", :user => "widgets")
+Rush::Service::PostgreSQL.make_promisucious(:confirm => 'yes')
+dump = Rush::Service::PostgreSQL.pg_dump("widgets", :tables => %w(widgets gadgets))
+Rush::Service::SSH.install_authkey(id_rsa_pub)
+
+Rush::Firewall.load(firewall_hash)
+Rush::Firewall.flush
+
+Rush::Network.local_ip
+
+nonroot_daemons = Rush::Process.listening_ports.select { |port| port.process.uid != 0 }
+
+Rush::File.gsub_contents(File.open("~/.my.cnf"), /user/, 'username')
+Rush::File.open('/etc/something.conf', :user => 'root', :group => 'root', :permissions => 0600)
+
+Rush::Resources.disk_usage("/tmp/some_dir")
+Rush::Resources.memory_usage == 1024.mb
+Rush::Resources.total_memory == 2048.mb
+Rush::Resources.memory_usage_percent == 0.5
+
+rnix 'Rush::Process.search("mongrel_rails").each { |p| p.kill }'
+
