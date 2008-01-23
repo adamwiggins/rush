@@ -11,6 +11,14 @@ module Rush
 			@cpu = params[:time]
 		end
 
+		def to_s
+			inspect
+		end
+
+		def inspect
+			"Process #{@pid}: #{@cmdline}"
+		end
+
 		def self.read_stat_file(file)
 			data = ::File.read(file).split(" ")
 			uid = ::File.stat(file).uid
