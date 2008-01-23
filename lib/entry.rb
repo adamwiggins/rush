@@ -7,6 +7,14 @@ module Rush
 			@name = ::File.basename(full_path)
 		end
 
+		def to_s
+			full_path
+		end
+
+		def inspect
+			full_path
+		end
+
 		def parent
 			@parent ||= Rush::Dir.new(@path)
 		end
