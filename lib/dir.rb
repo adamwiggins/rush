@@ -36,8 +36,12 @@ module Rush
 		end
 
 		def find_by_name(name)
-			contents.detect do |entry|
-				entry.name == name
+			if name.match(/\//)
+				find_subitem(name)
+			else
+				contents.detect do |entry|
+					entry.name == name
+				end
 			end
 		end
 
@@ -49,6 +53,10 @@ module Rush
 			contents.select do |entry|
 				entry.name.match(pattern)
 			end
+		end
+
+		def find_subitem(name)
+			Rush::Entry.factory("#{full_path}/#{name}")
 		end
 
 		def self.glob_to_regexp(glob)

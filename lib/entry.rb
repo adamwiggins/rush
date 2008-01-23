@@ -7,6 +7,14 @@ module Rush
 			@name = ::File.basename(full_path)
 		end
 
+		def self.factory(full_path)
+			if ::File.directory? full_path
+				Rush::Dir.new(full_path)
+			else
+				Rush::File.new(full_path)
+			end
+		end
+
 		def to_s
 			full_path
 		end
