@@ -1,5 +1,4 @@
 #!/bin/sh
 
-cd `dirname $0`
-ruby shell.rb
+ruby `dirname $0`/shell.rb
 
