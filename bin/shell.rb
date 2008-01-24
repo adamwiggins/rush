@@ -17,6 +17,8 @@ root = Rush::Dir.new('/')
 home = Rush::Dir.new(ENV['HOME'])
 pwd = Rush::Dir.new(ENV['PWD'])
 
+pure_binding = Proc.new { }
+
 loop do
 	cmd = Readline.readline('rush> ')
 
@@ -30,7 +32,7 @@ loop do
 	Readline::HISTORY.push(cmd)
 
 	begin
-		print_result eval(cmd)
+		print_result eval(cmd, pure_binding)
 	rescue Exception => e
 		puts e
 	end
