@@ -1,7 +1,7 @@
 module Rush
 	class Dir < Entry
 		def files
-			list = Rush::EntryArray.new
+			list = []
 			::Dir.open(full_path).each do |fname|
 				full_fname = "#{full_path}/#{fname}"
 				next if ::File.directory? full_fname
@@ -11,7 +11,7 @@ module Rush
 		end
 
 		def dirs
-			list = Rush::EntryArray.new
+			list = []
 			::Dir.open(full_path).each do |fname|
 				next if fname == '.' or fname == '..'
 				full_fname = "#{full_path}/#{fname}"
@@ -28,14 +28,17 @@ module Rush
 		def [](key)
 			if key.kind_of? Regexp
 				find_by_regexp(key)
-			elsif key == '**'
-				files_flattened
-			elsif key.slice(0, 3) == '**/'
-				find_by_doubleglob(key)
-			elsif key.match(/\*/)
-				find_by_glob(key)
 			else
-				find_by_name(key)
+				key = key.to_s
+				if key == '**'
+					files_flattened
+				elsif key.slice(0, 3) == '**/'
+					find_by_doubleglob(key)
+				elsif key.match(/\*/)
+					find_by_glob(key)
+				else
+					find_by_name(key)
+				end
 			end
 		end
 
@@ -83,7 +86,7 @@ module Rush
 			glob = doubleglob.gsub(/^\*\*\//, '')
 
 			find_by_glob(glob) +
-			dirs_flattened.inject(Rush::EntryArray.new) do |all, subdir|
+			dirs_flattened.inject([]) do |all, subdir|
 				all += subdir.find_by_glob(glob)
 			end
 		end

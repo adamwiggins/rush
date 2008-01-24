@@ -66,6 +66,12 @@ module Rush
 			full_path == other.full_path
 		end
 
+		def self.grep(list, pattern)
+			list.select do |file|
+				!file.directory? and file.contents.match(pattern)
+			end
+		end
+
 	private
 
 		def stat

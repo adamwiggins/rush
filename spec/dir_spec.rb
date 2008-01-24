@@ -98,6 +98,12 @@ describe Rush::Dir do
 		@dir['a/b/c']
 	end
 
+	it "can use symbols or strings for [] access" do
+		@dir.stub!(:find_by_name)
+		@dir.should_receive(:find_by_name).once.with('subdir')
+		@dir[:subdir]
+	end
+
 	it "makes a list of entries from an array of filenames" do
 		@dir.create_file('a')
 		@dir.create_dir('b/c')
