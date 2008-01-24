@@ -21,7 +21,12 @@ describe Rush::EntryArray do
 		@dir.files.grep(/thing_to_find/).should == @dir.make_entries(@filename)
 	end
 
-	it "greps a dir directly" do
+	it "greps a dir" do
 		@dir.grep(/thing_to_find/).should == @dir.make_entries(@filename)
+	end
+
+	xit "greps a dir's nested files" do
+		@dir.create_dir('sub').create_file('file').write('nested')
+		@dir['**'].grep(/nested/).should == @dir.make_entries('sub/file')
 	end
 end

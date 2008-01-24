@@ -128,6 +128,18 @@ describe Rush::Dir do
 		@dir['**/*.rb'].should == @dir.make_entries(%w(1.rb 2/3.rb a/b/c.rb))
 	end
 
+	it "lists nonhidden files" do
+		@dir.create_file('show')
+		@dir.create_file('.dont_show')
+		@dir.nonhidden_files.should == @dir.make_entries(%(show))
+	end
+
+	it "lists nonhidden dirs" do
+		@dir.create_dir('show')
+		@dir.create_dir('.dont_show')
+		@dir.nonhidden_dirs.should == @dir.make_entries(%(show))
+	end
+
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
 		it "knows its size in bytes, which includes its contents recursively" do
 			@dir.create_file('a').write('1234')

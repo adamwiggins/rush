@@ -83,7 +83,7 @@ module Rush
 			glob = doubleglob.gsub(/^\*\*\//, '')
 
 			find_by_glob(glob) +
-			dirs_flattened.inject([]) do |all, subdir|
+			dirs_flattened.inject(Rush::EntryArray.new) do |all, subdir|
 				all += subdir.find_by_glob(glob)
 			end
 		end
@@ -116,6 +116,29 @@ module Rush
 
 		def destroy
 			system "rm -rf #{full_path}"
+		end
+
+		def nonhidden_dirs
+			dirs.select do |dir|
+				!dir.hidden?
+			end
+		end
+
+		def nonhidden_files
+			files.select do |file|
+				!file.hidden?
+			end
+		end
+
+		def ls
+			out = [ "#{self}" ]
+			nonhidden_dirs.each do |dir|
+				out << "  #{dir.name}+"
+			end
+			nonhidden_files.each do |file|
+				out << "  #{file.name}"
+			end
+			out.join("\n")
 		end
 	end
 end

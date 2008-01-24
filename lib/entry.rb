@@ -58,6 +58,10 @@ module Rush
 			@parent = dir
 		end
 
+		def hidden?
+			name.slice(0, 1) == '.'
+		end
+
 		def ==(other)
 			full_path == other.full_path
 		end

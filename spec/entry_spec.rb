@@ -68,4 +68,9 @@ describe Rush::Entry do
 		File.exists?(@filename).should be_false
 		File.exists?("#{newdir}/#{@entry.name}").should be_true
 	end
+
+	it "considers dotfiles to be hidden" do
+		Rush::Entry.new("#{@sandbox_dir}/show").should_not be_hidden
+		Rush::Entry.new("#{@sandbox_dir}/.dont_show").should be_hidden
+	end
 end
