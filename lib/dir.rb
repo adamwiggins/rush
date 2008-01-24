@@ -1,5 +1,9 @@
 module Rush
 	class Dir < Entry
+		def directory?
+			true
+		end
+
 		def files
 			list = []
 			::Dir.open(full_path).each do |fname|
@@ -97,10 +101,6 @@ module Rush
 			end
 		end
 
-		def grep(pattern)
-			files.grep(pattern)
-		end
-
 		def create_file(name)
 			file = Rush::File.new("#{full_path}/#{name}")
 			file.write('')
@@ -142,6 +142,20 @@ module Rush
 				out << "  #{file.name}"
 			end
 			out.join("\n")
+		end
+
+		def rake(*args)
+			system "cd #{full_path}; rake #{args.join(' ')}"
+		end
+
+		def git(*args)
+			system "cd #{full_path}; git #{args.join(' ')}"
+		end
+
+		include Rush::Commands
+
+		def entries
+			contents
 		end
 	end
 end

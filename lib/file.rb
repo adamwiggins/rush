@@ -18,12 +18,18 @@ module Rush
 			end
 		end
 
-		def gsub_contents!(pattern, replace_with)
+		def replace_contents!(pattern, replace_with)
 			write contents.gsub(pattern, replace_with)
 		end
 
 		def destroy
 			::File.delete(full_path)
+		end
+
+		include Rush::Commands
+
+		def entries
+			[ self ]
 		end
 	end
 end

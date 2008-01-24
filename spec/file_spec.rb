@@ -37,8 +37,8 @@ describe Rush::File do
 		@file.contents.should eql('write test')
 	end
 
-	it "can gsub_contents! to do find-in-file replace" do
-		@file.gsub_contents!(/\d/, 'x')
+	it "find-in-file replace" do
+		@file.replace_contents!(/\d/, 'x')
 		@file.contents.should eql('xxxx')
 	end
 

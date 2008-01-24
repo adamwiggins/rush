@@ -17,6 +17,18 @@ root = Rush::Dir.new('/')
 home = Rush::Dir.new(ENV['HOME'])
 pwd = Rush::Dir.new(ENV['PWD'])
 
+def mate(*args)
+	system "mate #{args.join(' ' )}"
+end
+
+def vi(*args)
+	system "vi #{args.join(' ')}"
+end
+
+def rake(*args)
+	system "rake #{args.join(' ')}"
+end
+
 pure_binding = Proc.new { }
 $last_res = nil
 
