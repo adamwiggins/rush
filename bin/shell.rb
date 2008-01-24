@@ -18,6 +18,7 @@ home = Rush::Dir.new(ENV['HOME'])
 pwd = Rush::Dir.new(ENV['PWD'])
 
 pure_binding = Proc.new { }
+$last_res = nil
 
 loop do
 	cmd = Readline.readline('rush> ')
@@ -32,7 +33,10 @@ loop do
 	Readline::HISTORY.push(cmd)
 
 	begin
-		print_result eval(cmd, pure_binding)
+		res = eval(cmd, pure_binding)
+		$last_res = res
+		eval("_ = $last_res", pure_binding)
+		print_result res
 	rescue Exception => e
 		puts e
 	end
