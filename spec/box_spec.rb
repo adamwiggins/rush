@@ -5,7 +5,7 @@ describe Rush::Box do
 		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
-		@box = Rush::Box.factory('localhost')
+		@box = Rush::Box.new('localhost')
 	end
 
 	after(:each) do

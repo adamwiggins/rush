@@ -10,9 +10,13 @@ module Rush
 		end
 
 		def search(pattern)
-			entries.select do |entry|
-				!entry.directory? and entry.contents.match(pattern)
+			results = {}
+			entries.each do |entry|
+				if !entry.directory? and m = entry.contents.match(pattern)
+					results[entry] = m
+				end
 			end
+			results
 		end
 
 		def replace!(pattern, with_text)

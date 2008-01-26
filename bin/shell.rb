@@ -8,6 +8,15 @@ def print_result(res)
 		res.each do |item|
 			puts item
 		end
+	elsif res.kind_of? Hash
+		widest = res.keys.map { |k| k.name.length }.max
+		res.each do |key, value|
+			print key.name
+			print ' ' * (widest - key.name.length + 2)
+			print "=> "
+			print value.inspect
+			print "\n"
+		end
 	else
 		puts "=> #{res.inspect}"
 	end
