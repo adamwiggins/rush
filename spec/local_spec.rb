@@ -24,6 +24,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'file_contents', :full_path => 'file')
 	end
 
+	it "receive -> destroy(file or dir)" do
+		@con.stub!(:destroy)
+		@con.should_receive(:destroy).with('file')
+		@con.receive(:action => 'destroy', :full_path => 'file')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -39,5 +45,12 @@ describe Rush::Connection::Local do
 		fname = "#{@sandbox_dir}/a_file"
 		system "echo -n stuff > #{fname}"
 		@con.file_contents(fname).should == "stuff"
+	end
+
+	it "destroy to destroy a file or dir" do
+		fname = "#{@sandbox_dir}/delete_me"
+		system "touch #{fname}"
+		@con.destroy(fname)
+		File.exists?(fname).should be_false
 	end
 end

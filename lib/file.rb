@@ -1,5 +1,9 @@
 module Rush
 	class File < Entry
+		def connection
+			box ? box.connection : Rush::Connection::Local.new
+		end
+
 		def dir?
 			false
 		end
@@ -14,21 +18,11 @@ module Rush
 		end
 
 		def contents
-			if box
-				box.connection.file_contents(full_path)
-			else
-				::File.read(full_path)
-			end
+			connection.file_contents(full_path)
 		end
 
 		def write(new_contents)
-			if box
-				box.connection.write_file(full_path, new_contents)
-			else
-				::File.open(full_path, 'w') do |f|
-					f.write new_contents
-				end
-			end
+			connection.write_file(full_path, new_contents)
 		end
 
 		def replace_contents!(pattern, replace_with)
@@ -36,7 +30,7 @@ module Rush
 		end
 
 		def destroy
-			::File.delete(full_path)
+			connection.destroy(full_path)
 		end
 
 		include Rush::Commands

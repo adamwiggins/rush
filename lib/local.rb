@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Rush
 	module Connection
 		class Local
@@ -12,13 +14,18 @@ module Rush
 				::File.read(full_path)
 			end
 
+			def destroy(full_path)
+				raise "No." if full_path == '/'
+				FileUtils.rm_rf(full_path)
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
-				if params[:action] == 'write_file'
-					write_file(params[:full_path], params[:payload])
-				elsif params[:action] == 'file_contents'
-					file_contents(params[:full_path])
+				case params[:action]
+					when 'write_file'     then write_file(params[:full_path], params[:payload])
+					when 'file_contents'  then file_contents(params[:full_path])
+					when 'destroy'        then destroy(params[:full_path])
 				else
 					raise UnknownAction
 				end
