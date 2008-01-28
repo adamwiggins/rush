@@ -41,6 +41,12 @@ end
 pure_binding = Proc.new { }
 $last_res = nil
 
+config = Rush::Config.new
+
+config.load_history.each do |item|
+	Readline::HISTORY.push(item)
+end
+
 loop do
 	cmd = Readline.readline('rush> ')
 
@@ -52,6 +58,7 @@ loop do
 	next if cmd == ""
 
 	Readline::HISTORY.push(cmd)
+	config.save_history(Readline::HISTORY.to_a)
 
 	begin
 		res = eval(cmd, pure_binding)

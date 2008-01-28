@@ -23,6 +23,10 @@ module Rush
 			full_path
 		end
 
+		def exists?
+			::File.exists? full_path
+		end
+
 		def parent
 			@parent ||= Rush::Dir.new(@path)
 		end

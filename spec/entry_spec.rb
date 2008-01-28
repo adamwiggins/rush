@@ -25,6 +25,10 @@ describe Rush::Entry do
 		@entry.parent.full_path.should == @sandbox_dir
 	end
 
+	it "knows if it exists" do
+		@entry.should be_exists
+	end
+
 	it "knows its created_at time" do
 		@entry.created_at.should == File.stat(@filename).ctime
 	end
