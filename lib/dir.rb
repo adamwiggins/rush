@@ -9,7 +9,7 @@ module Rush
 			::Dir.open(full_path).each do |fname|
 				full_fname = "#{full_path}/#{fname}"
 				next if ::File.directory? full_fname
-				list << Rush::File.new(full_fname)
+				list << Rush::File.new(full_fname, box)
 			end
 			list
 		end
@@ -20,7 +20,7 @@ module Rush
 				next if fname == '.' or fname == '..'
 				full_fname = "#{full_path}/#{fname}"
 				next unless ::File.directory? full_fname
-				list << Rush::Dir.new(full_fname)
+				list << Rush::Dir.new(full_fname, box)
 			end
 			list
 		end
@@ -100,13 +100,13 @@ module Rush
 		end
 
 		def create_file(name)
-			file = Rush::File.new("#{full_path}/#{name}")
+			file = Rush::File.new("#{full_path}/#{name}", box)
 			file.write('')
 			file
 		end
 
 		def create_dir(name)
-			newdir = Rush::Dir.new("#{full_path}/#{name}")
+			newdir = Rush::Dir.new("#{full_path}/#{name}", box)
 			system "mkdir -p #{newdir.full_path}"
 			newdir
 		end

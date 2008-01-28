@@ -7,7 +7,7 @@ module Rush
 		end
 
 		def filesystem
-			Rush::Entry.factory('/')
+			Rush::Entry.factory('/', self)
 		end
 
 		def [](key)

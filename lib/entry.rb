@@ -8,11 +8,11 @@ module Rush
 			@box = box
 		end
 
-		def self.factory(full_path)
+		def self.factory(full_path, box=nil)
 			if ::File.directory? full_path
-				Rush::Dir.new(full_path)
+				Rush::Dir.new(full_path, box)
 			else
-				Rush::File.new(full_path)
+				Rush::File.new(full_path, box)
 			end
 		end
 
