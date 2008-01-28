@@ -60,11 +60,11 @@ describe Rush::Entry do
 		new_file = "test3"
 		system "touch #{@sandbox_dir}/#{new_file}"
 
-		lambda { @entry.rename(new_file) }.should raise_error(Rush::Entry::NameAlreadyExists)
+		lambda { @entry.rename(new_file) }.should raise_error(Rush::Connection::Local::NameAlreadyExists)
 	end
 
 	it "can't rename itself to something with a slash in it" do
-		lambda { @entry.rename('has/slash') }.should raise_error(Rush::Entry::NameCannotContainSlash)
+		lambda { @entry.rename('has/slash') }.should raise_error(Rush::Connection::Local::NameCannotContainSlash)
 	end
 
 	it "can duplicate itself within the directory" do

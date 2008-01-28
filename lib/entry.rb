@@ -54,9 +54,7 @@ module Rush
 		class NotADir < Exception; end
 
 		def rename(new_name)
-			raise NameCannotContainSlash if new_name.match(/\//)
-			raise NameAlreadyExists if ::File.exists?("#{@path}/#{new_name}")
-			system "cd #{@path}; mv #{name} #{new_name}"
+			connection.rename(@path, @name, new_name)
 			@name = new_name
 		end
 

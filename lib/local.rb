@@ -23,6 +23,17 @@ module Rush
 				FileUtils.mkdir_p(full_path)
 			end
 
+			class NameAlreadyExists < Exception; end
+			class NameCannotContainSlash < Exception; end
+
+			def rename(path, name, new_name)
+				raise NameCannotContainSlash if new_name.match(/\//)
+				old_full_path = "#{path}/#{name}"
+				new_full_path = "#{path}/#{new_name}"
+				raise NameAlreadyExists if ::File.exists?(new_full_path)
+				FileUtils.mv(old_full_path, new_full_path)
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
