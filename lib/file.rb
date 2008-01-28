@@ -18,8 +18,12 @@ module Rush
 		end
 
 		def write(new_contents)
-			::File.open(full_path, 'w') do |f|
-				f.write new_contents
+			if box
+				box.write_file(full_path, new_contents)
+			else
+				::File.open(full_path, 'w') do |f|
+					f.write new_contents
+				end
 			end
 		end
 

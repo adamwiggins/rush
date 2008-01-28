@@ -18,7 +18,7 @@ describe Rush::Box do
 
 	it "executes a file write action" do
 		fname = "#{@sandbox_dir}/test"
-		@box.execute(:action => 'write', :full_path => fname, :payload => 'something')
+		@box.write_file(fname, 'something')
 		File.read(fname).should == 'something'
 	end
 end

@@ -15,7 +15,7 @@ class RushHandler < Mongrel::HttpHandler
 
 		puts params.inspect
 
-		box = Rush::Box.new('localhost').execute(params)
+		Rush::Box.new('localhost').connection.receive(params)
 
 		response.start(200) do |head, out|
 			out.write ""

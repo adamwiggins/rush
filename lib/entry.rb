@@ -1,10 +1,11 @@
 module Rush
 	class Entry
-		attr_reader :name
+		attr_reader :box, :name
 
-		def initialize(full_path)
+		def initialize(full_path, box=nil)
 			@path = ::File.dirname(full_path)
 			@name = ::File.basename(full_path)
+			@box = box
 		end
 
 		def self.factory(full_path)
