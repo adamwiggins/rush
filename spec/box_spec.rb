@@ -15,10 +15,4 @@ describe Rush::Box do
 	it "looks up entries with [] syntax" do
 		@box['/'].should == Rush::Dir.new('/')
 	end
-
-	it "executes a file write action" do
-		fname = "#{@sandbox_dir}/test"
-		@box.write_file(fname, 'something')
-		File.read(fname).should == 'something'
-	end
 end

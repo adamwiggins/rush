@@ -25,9 +25,5 @@ module Rush
 		def make_connection
 			host == 'localhost' ? Rush::Connection::Local.new : Rush::Connection::Remote.new(host)
 		end
-
-		def write_file(full_path, contents)
-			connection.write_file(full_path, contents)
-		end
 	end
 end

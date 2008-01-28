@@ -14,12 +14,16 @@ module Rush
 		end
 
 		def contents
-			::File.read(full_path)
+			if box
+				box.connection.file_contents(full_path)
+			else
+				::File.read(full_path)
+			end
 		end
 
 		def write(new_contents)
 			if box
-				box.write_file(full_path, new_contents)
+				box.connection.write_file(full_path, new_contents)
 			else
 				::File.open(full_path, 'w') do |f|
 					f.write new_contents
