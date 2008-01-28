@@ -30,10 +30,6 @@ describe Rush::Entry do
 		Rush::Entry.new('/1/2/../3').full_path.should == '/1/3'
 	end
 
-	it "knows if it exists" do
-		@entry.should be_exists
-	end
-
 	it "knows its created_at time" do
 		@entry.created_at.should == File.stat(@filename).ctime
 	end

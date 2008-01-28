@@ -51,6 +51,7 @@ loop do
 	cmd = Readline.readline('rush> ')
 
 	if cmd.nil?
+		config.save_history(Readline::HISTORY.to_a)
 		puts
 		exit
 	end
@@ -58,7 +59,6 @@ loop do
 	next if cmd == ""
 
 	Readline::HISTORY.push(cmd)
-	config.save_history(Readline::HISTORY.to_a)
 
 	begin
 		res = eval(cmd, pure_binding)

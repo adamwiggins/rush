@@ -52,4 +52,8 @@ describe Rush::File do
 		@file.destroy
 		::File.exists?(@filename).should be_false
 	end
+
+	it "can fetch contents or blank if doesn't exist" do
+		Rush::File.new('/does/not/exist').contents_or_blank.should == ""
+	end
 end

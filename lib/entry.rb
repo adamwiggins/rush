@@ -29,10 +29,6 @@ module Rush
 			box ? box.connection : Rush::Connection::Local.new
 		end
 
-		def exists?
-			::File.exists? full_path
-		end
-
 		def parent
 			@parent ||= Rush::Dir.new(@path)
 		end

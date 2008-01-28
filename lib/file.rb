@@ -25,6 +25,10 @@ module Rush
 			write contents.gsub(pattern, replace_with)
 		end
 
+		def contents_or_blank
+			contents rescue ""
+		end
+
 		include Rush::Commands
 
 		def entries

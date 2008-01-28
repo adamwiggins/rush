@@ -1,5 +1,3 @@
-require 'yaml'
-
 module Rush
 	class Config
 		attr_reader :dir
@@ -10,15 +8,15 @@ module Rush
 		end
 
 		def history_file
-			dir['history.yml']
+			dir['history']
 		end
 
-		def save_history(data)
-			history_file.write YAML.dump(data)
+		def save_history(array)
+			history_file.write(array.join("\n") + "\n")
 		end
 
 		def load_history
-			history_file.exists? ? YAML.load(history_file.contents) : []
+			history_file.contents_or_blank.split("\n")
 		end
 	end
 end
