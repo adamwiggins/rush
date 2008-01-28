@@ -67,10 +67,8 @@ module Rush
 
 		def copy_to(dir)
 			raise NotADir unless dir.class == Rush::Dir
-			raise NameAlreadyExists if ::File.exists?("#{dir.full_path}/#{name}")
-			system "cp -r #{full_path} #{dir.full_path}"
-			@path = dir.full_path
-			@parent = dir
+			connection.copy(full_path, dir.full_path)
+			self.class.new "#{dir.full_path}#{name}"
 		end
 
 		def move_to(dir)

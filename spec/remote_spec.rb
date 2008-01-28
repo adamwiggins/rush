@@ -41,4 +41,10 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'rename', :path => 'path', :name => 'name', :new_name => 'new_name')
 		@con.rename('path', 'name', 'new_name')
 	end
+
+	it "transmits copy" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'copy', :src => 'src', :dst => 'dst')
+		@con.copy('src', 'dst')
+	end
 end

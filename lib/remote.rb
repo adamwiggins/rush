@@ -27,6 +27,10 @@ module Rush
 				transmit(:action => 'rename', :path => path, :name => name, :new_name => 'new_name')
 			end
 
+			def copy(src, dst)
+				transmit(:action => 'copy', :src => src, :dst => dst)
+			end
+
 			def transmit(params)
 				require 'net/http'
 				Net::HTTP.start(host, 9000) do |http|

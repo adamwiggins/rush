@@ -17,14 +17,17 @@ module Rush
 			def destroy(full_path)
 				raise "No." if full_path == '/'
 				FileUtils.rm_rf(full_path)
+				true
 			end
 
 			def create_dir(full_path)
 				FileUtils.mkdir_p(full_path)
+				true
 			end
 
 			class NameAlreadyExists < Exception; end
 			class NameCannotContainSlash < Exception; end
+			class NotADir < Exception; end
 
 			def rename(path, name, new_name)
 				raise NameCannotContainSlash if new_name.match(/\//)
@@ -32,6 +35,14 @@ module Rush
 				new_full_path = "#{path}/#{new_name}"
 				raise NameAlreadyExists if ::File.exists?(new_full_path)
 				FileUtils.mv(old_full_path, new_full_path)
+				true
+			end
+
+			def copy(src, dst)
+				raise NotADir unless ::File.directory?(dst)
+				raise NameAlreadyExists if ::File.exists?("#{dst}/#{::File.basename(dst)}")
+				FileUtils.cp_r(src, dst)
+				true
 			end
 
 			class UnknownAction < Exception; end
@@ -43,6 +54,7 @@ module Rush
 					when 'destroy'        then destroy(params[:full_path])
 					when 'create_dir'     then create_dir(params[:full_path])
 					when 'rename'         then rename(params[:path], params[:name], params[:new_name])
+					when 'copy'           then copy(params[:src], params[:dst])
 				else
 					raise UnknownAction
 				end

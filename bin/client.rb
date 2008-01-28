@@ -11,6 +11,10 @@ renamed = dir['new_name']
 
 puts "Wrote and read back: #{renamed.contents}"
 
-file.destroy
+subdir = dir['subdir/'].create
+copied = renamed.copy_to subdir
+
+puts "Copied to #{copied}"
+
 dir.destroy
 

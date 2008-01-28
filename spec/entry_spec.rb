@@ -87,10 +87,12 @@ describe Rush::Entry do
 		system "mkdir -p #{newdir}"
 
 		dst = Rush::Dir.new(newdir)
-		@entry.copy_to(dst)
+		@copied_dir = @entry.copy_to(dst)
 
 		File.exists?(@filename).should be_true
 		File.exists?("#{newdir}/#{@entry.name}").should be_true
+
+		@copied_dir.full_path.should == "#{@sandbox_dir}newdir/#{@entry.name}"
 	end
 
 	it "considers dotfiles to be hidden" do
