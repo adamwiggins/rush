@@ -4,6 +4,10 @@ module Rush
 			true
 		end
 
+		def full_path
+			"#{super}/"
+		end
+
 		def files
 			list = []
 			::Dir.open(full_path).each do |fname|
@@ -104,16 +108,12 @@ module Rush
 		end
 
 		def create
-			system "mkdir -p #{full_path}"
+			connection.create_dir(full_path)
 			self
 		end
 
 		def size
 			`du -sb #{full_path}`.match(/(\d+)/)[1].to_i
-		end
-
-		def destroy
-			system "rm -rf #{full_path}"
 		end
 
 		def nonhidden_dirs

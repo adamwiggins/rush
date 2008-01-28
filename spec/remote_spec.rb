@@ -29,4 +29,10 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'destroy', :full_path => 'file')
 		@con.destroy('file')
 	end
+
+	it "transmits create_dir" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'create_dir', :full_path => 'file')
+		@con.create_dir('file')
+	end
 end

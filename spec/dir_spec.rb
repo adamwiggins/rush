@@ -5,7 +5,7 @@ describe Rush::Dir do
 		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
-		@dirname = "#{@sandbox_dir}/test_dir"
+		@dirname = "#{@sandbox_dir}/test_dir/"
 		system "mkdir -p #{@dirname}"
 
 		@dir = Rush::Dir.new(@dirname)
@@ -118,7 +118,7 @@ describe Rush::Dir do
 
 	it "lists flattened dirs from all nested subdirectories" do
 		@dir.create_dir('1/2')
-		@dir.dirs_flattened.should == @dir.make_entries(%w(1 1/2))
+		@dir.dirs_flattened.should == @dir.make_entries(%w(1/ 1/2/))
 	end
 
 	it "** as a shortcut to flattened_files" do
@@ -142,7 +142,7 @@ describe Rush::Dir do
 	it "lists nonhidden dirs" do
 		@dir.create_dir('show')
 		@dir.create_dir('.dont_show')
-		@dir.nonhidden_dirs.should == @dir.make_entries(%(show))
+		@dir.nonhidden_dirs.should == @dir.make_entries(%(show/))
 	end
 
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different

@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/base'
 
 describe Rush::Entry do
 	before(:each) do
-		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
+		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}/"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
 		@filename = "#{@sandbox_dir}/test_file"
@@ -23,6 +23,11 @@ describe Rush::Entry do
 		@entry.parent.should be_kind_of(Rush::Dir)
 		@entry.parent.name.should == File.basename(@sandbox_dir)
 		@entry.parent.full_path.should == @sandbox_dir
+	end
+
+	it "cleans its pathname" do
+		Rush::Entry.new('/a//b//c').full_path.should == '/a/b/c'
+		Rush::Entry.new('/1/2/../3').full_path.should == '/1/3'
 	end
 
 	it "knows if it exists" do

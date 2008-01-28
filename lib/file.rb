@@ -1,9 +1,5 @@
 module Rush
 	class File < Entry
-		def connection
-			box ? box.connection : Rush::Connection::Local.new
-		end
-
 		def dir?
 			false
 		end
@@ -27,10 +23,6 @@ module Rush
 
 		def replace_contents!(pattern, replace_with)
 			write contents.gsub(pattern, replace_with)
-		end
-
-		def destroy
-			connection.destroy(full_path)
 		end
 
 		include Rush::Commands

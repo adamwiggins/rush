@@ -19,6 +19,10 @@ module Rush
 				FileUtils.rm_rf(full_path)
 			end
 
+			def create_dir(full_path)
+				FileUtils.mkdir_p(full_path)
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
@@ -26,6 +30,7 @@ module Rush
 					when 'write_file'     then write_file(params[:full_path], params[:payload])
 					when 'file_contents'  then file_contents(params[:full_path])
 					when 'destroy'        then destroy(params[:full_path])
+					when 'create_dir'     then create_dir(params[:full_path])
 				else
 					raise UnknownAction
 				end

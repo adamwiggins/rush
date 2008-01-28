@@ -30,6 +30,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'destroy', :full_path => 'file')
 	end
 
+	it "receive -> create_dir(path)" do
+		@con.stub!(:create_dir)
+		@con.should_receive(:create_dir).with('dir')
+		@con.receive(:action => 'create_dir', :full_path => 'dir')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -52,5 +58,11 @@ describe Rush::Connection::Local do
 		system "touch #{fname}"
 		@con.destroy(fname)
 		File.exists?(fname).should be_false
+	end
+
+	it "create_dir creates a directory" do
+		fname = "#{@sandbox_dir}/a/b/c/"
+		@con.create_dir(fname)
+		File.directory?(fname).should be_true
 	end
 end

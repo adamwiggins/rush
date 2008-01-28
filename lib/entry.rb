@@ -3,13 +3,14 @@ module Rush
 		attr_reader :box, :name
 
 		def initialize(full_path, box=nil)
+			full_path = ::File.expand_path(full_path, '/')
 			@path = ::File.dirname(full_path)
 			@name = ::File.basename(full_path)
 			@box = box
 		end
 
 		def self.factory(full_path, box=nil)
-			if ::File.directory? full_path
+			if full_path.tail(1) == '/'
 				Rush::Dir.new(full_path, box)
 			else
 				Rush::File.new(full_path, box)
@@ -22,6 +23,10 @@ module Rush
 
 		def inspect
 			full_path
+		end
+
+		def connection
+			box ? box.connection : Rush::Connection::Local.new
 		end
 
 		def exists?
@@ -84,6 +89,10 @@ module Rush
 
 		def hidden?
 			name.slice(0, 1) == '.'
+		end
+
+		def destroy
+			connection.destroy(full_path)
 		end
 
 		def ==(other)
