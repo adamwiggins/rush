@@ -59,11 +59,19 @@ module Rush
 			@name = new_name
 		end
 
-		def copy_to(new_name)
+		def duplicate(new_name)
 			raise NameCannotContainSlash if new_name.match(/\//)
 			raise NameAlreadyExists if ::File.exists?("#{@path}/#{new_name}")
 			system "cd #{@path}; cp -r #{name} #{new_name}"
 			self.class.new "#{@path}/#{new_name}"
+		end
+
+		def copy_to(dir)
+			raise NotADir unless dir.class == Rush::Dir
+			raise NameAlreadyExists if ::File.exists?("#{dir.full_path}/#{name}")
+			system "cp -r #{full_path} #{dir.full_path}"
+			@path = dir.full_path
+			@parent = dir
 		end
 
 		def move_to(dir)

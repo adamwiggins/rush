@@ -66,6 +66,10 @@ describe Rush::Entry do
 		lambda { @entry.rename('has/slash') }.should raise_error(Rush::Entry::NameCannotContainSlash)
 	end
 
+	it "can duplicate itself within the directory" do
+		@entry.duplicate('newfile').should == Rush::File.new("#{@sandbox_dir}/newfile")
+	end
+
 	it "can move itself to another dir" do
 		newdir = "#{@sandbox_dir}/newdir"
 		system "mkdir -p #{newdir}"
@@ -77,8 +81,15 @@ describe Rush::Entry do
 		File.exists?("#{newdir}/#{@entry.name}").should be_true
 	end
 
-	it "can copy itself within the directory" do
-		@entry.copy_to('newfile').should == Rush::File.new("#{@sandbox_dir}/newfile")
+	it "can copy itself to another directory" do
+		newdir = "#{@sandbox_dir}/newdir"
+		system "mkdir -p #{newdir}"
+
+		dst = Rush::Dir.new(newdir)
+		@entry.copy_to(dst)
+
+		File.exists?(@filename).should be_true
+		File.exists?("#{newdir}/#{@entry.name}").should be_true
 	end
 
 	it "considers dotfiles to be hidden" do
