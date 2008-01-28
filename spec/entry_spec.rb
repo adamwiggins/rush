@@ -62,6 +62,10 @@ describe Rush::Entry do
 		lambda { @entry.rename(new_file) }.should raise_error(Rush::Entry::NameAlreadyExists)
 	end
 
+	it "can't rename itself to something with a slash in it" do
+		lambda { @entry.rename('has/slash') }.should raise_error(Rush::Entry::NameCannotContainSlash)
+	end
+
 	it "can move itself to another dir" do
 		newdir = "#{@sandbox_dir}/newdir"
 		system "mkdir -p #{newdir}"
