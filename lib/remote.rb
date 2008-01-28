@@ -23,6 +23,10 @@ module Rush
 				transmit(:action => 'create_dir', :full_path => full_path)
 			end
 
+			def rename(path, name, new_name)
+				transmit(:action => 'rename', :path => path, :name => name, :new_name => 'new_name')
+			end
+
 			def transmit(params)
 				require 'net/http'
 				Net::HTTP.start(host, 9000) do |http|

@@ -42,6 +42,7 @@ module Rush
 					when 'file_contents'  then file_contents(params[:full_path])
 					when 'destroy'        then destroy(params[:full_path])
 					when 'create_dir'     then create_dir(params[:full_path])
+					when 'rename'         then rename(params[:path], params[:name], params[:new_name])
 				else
 					raise UnknownAction
 				end

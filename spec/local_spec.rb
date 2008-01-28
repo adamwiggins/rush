@@ -36,6 +36,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'create_dir', :full_path => 'dir')
 	end
 
+	it "receive -> rename(path, name, new_name)" do
+		@con.stub!(:rename)
+		@con.should_receive(:rename).with('path', 'name', 'new_name')
+		@con.receive(:action => 'rename', :path => 'path', :name => 'name', :new_name => 'new_name')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -64,5 +70,12 @@ describe Rush::Connection::Local do
 		fname = "#{@sandbox_dir}/a/b/c/"
 		@con.create_dir(fname)
 		File.directory?(fname).should be_true
+	end
+
+	it "rename to rename entries within a dir" do
+		system "touch #{@sandbox_dir}/a"
+		@con.rename(@sandbox_dir, 'a', 'b')
+		File.exists?("#{@sandbox_dir}/a").should be_false
+		File.exists?("#{@sandbox_dir}/b").should be_true
 	end
 end
