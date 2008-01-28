@@ -75,11 +75,6 @@ describe Rush::Dir do
 		@dir.find_by_regexp(/\d$/).should == [ file2 ]
 	end
 
-	it "find_subitem finds entries in a subdir" do
-		file = @dir.create_dir('a/b').create_file('c')
-		@dir.find_subitem('a/b/c').should == file
-	end
-
 	it "maps [] to find_by_name" do
 		@dir.stub!(:find_by_name)
 		@dir.should_receive(:find_by_name).once
@@ -96,12 +91,6 @@ describe Rush::Dir do
 		@dir.stub!(:find_by_regexp)
 		@dir.should_receive(:find_by_regexp).once
 		@dir[/pat/]
-	end
-
-	it "maps [] to find_subitem when it references subdirs" do
-		@dir.stub!(:find_subitem)
-		@dir.should_receive(:find_subitem).once
-		@dir['a/b/c']
 	end
 
 	it "can use symbols or strings for [] access" do

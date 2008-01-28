@@ -6,6 +6,10 @@ module Rush
 			@host = host
 		end
 
+		def to_s
+			host
+		end
+
 		def filesystem
 			Rush::Entry.factory('/', self)
 		end

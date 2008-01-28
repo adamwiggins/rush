@@ -47,11 +47,7 @@ module Rush
 		end
 
 		def find_by_name(name)
-			if name.match(/\//)
-				find_subitem(name)
-			else
-				Rush::Entry.factory("#{full_path}/#{name}")
-			end
+			Rush::Entry.factory("#{full_path}/#{name}", box)
 		end
 
 		def find_by_glob(glob)
@@ -62,10 +58,6 @@ module Rush
 			contents.select do |entry|
 				entry.name.match(pattern)
 			end
-		end
-
-		def find_subitem(name)
-			Rush::Entry.factory("#{full_path}/#{name}")
 		end
 
 		def self.glob_to_regexp(glob)
