@@ -32,7 +32,7 @@ describe Rush::Dir do
 	end
 
 	it "can create a new subdir" do
-		newfile = @dir.create_dir('two')
+		newfile = @dir['two/'].create
 		newfile.name.should == 'two'
 		newfile.parent.should == @dir
 	end
@@ -48,8 +48,8 @@ describe Rush::Dir do
 	end
 
 	it "lists combined files and dirs" do
-		@dir.create_file('c')
-		@dir.create_dir('d')
+		@dir['c'].create
+		@dir['d/'].create
 		@dir.contents.size.should == 2
 	end
 
@@ -104,15 +104,15 @@ describe Rush::Dir do
 	end
 
 	it "makes a list of entries from an array of filenames" do
-		@dir.create_file('a')
-		@dir.create_dir('b/c')
+		@dir['a'].create
+		@dir['b/c/'].create
 		@dir.make_entries(%w(a b/c)).should == [ @dir['a'], @dir['b/c'] ]
 	end
 
 	it "lists flattened files from all nested subdirectories" do
-		@dir.create_file('1')
-		@dir.create_dir('2/3').create_file('4')
-		@dir.create_dir('a/b/c').create_file('d')
+		@dir['1'].create
+		@dir['2/3/'].create['4'].create
+		@dir['a/b/c/'].create['d'].create
 		@dir.files_flattened.should == @dir.make_entries(%w(1 2/3/4 a/b/c/d))
 	end
 

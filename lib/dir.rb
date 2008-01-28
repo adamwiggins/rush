@@ -96,15 +96,14 @@ module Rush
 		end
 
 		def create_file(name)
-			file = Rush::File.new("#{full_path}/#{name}", box)
+			file = self[name].create
 			file.write('')
 			file
 		end
 
 		def create_dir(name)
-			newdir = Rush::Dir.new("#{full_path}/#{name}", box)
-			system "mkdir -p #{newdir.full_path}"
-			newdir
+			name += '/' unless name.tail(1) == '/'
+			self[name].create
 		end
 
 		def create
