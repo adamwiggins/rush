@@ -4,6 +4,11 @@ module Rush
 			false
 		end
 
+		def create
+			write('')
+			self
+		end
+
 		def size
 			stat.size
 		end

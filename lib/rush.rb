@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'config'
 require 'commands'
 require 'entry'
 require 'file'

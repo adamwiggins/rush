@@ -24,6 +24,12 @@ describe Rush::File do
 		@file.should_not be_dir
 	end
 
+	it "can create itself as a blank file, and return itself" do
+		create_me = Rush::File.new("#{@sandbox_dir}/create_me")
+		create_me.create.should == create_me
+		File.exists?("#{@sandbox_dir}/create_me").should == true
+	end
+
 	it "knows its size in bytes" do
 		@file.size.should eql(@contents.length)
 	end

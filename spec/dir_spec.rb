@@ -19,6 +19,12 @@ describe Rush::Dir do
 		@dir.should be_kind_of(Rush::Entry)
 	end
 
+	it "can create itself, returning itself" do
+		system "rm -rf #{@sandbox_dir}"
+		@dir.create.should == @dir
+		File.directory?(@dir.full_path).should be_true
+	end
+
 	it "can create a new file" do
 		newfile = @dir.create_file('one.txt')
 		newfile.name.should == 'one.txt'
@@ -102,6 +108,10 @@ describe Rush::Dir do
 		@dir.stub!(:find_by_name)
 		@dir.should_receive(:find_by_name).once.with('subdir')
 		@dir[:subdir]
+	end
+
+	it "[] can return a file that has yet to be created" do
+		@dir['not_yet'].class.should == Rush::File
 	end
 
 	it "makes a list of entries from an array of filenames" do

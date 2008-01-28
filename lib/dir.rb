@@ -50,9 +50,7 @@ module Rush
 			if name.match(/\//)
 				find_subitem(name)
 			else
-				contents.detect do |entry|
-					entry.name == name
-				end
+				Rush::Entry.factory("#{full_path}/#{name}")
 			end
 		end
 
@@ -111,6 +109,11 @@ module Rush
 			newdir = Rush::Dir.new("#{full_path}/#{name}")
 			system "mkdir -p #{newdir.full_path}"
 			newdir
+		end
+
+		def create
+			system "mkdir -p #{full_path}"
+			self
 		end
 
 		def size
