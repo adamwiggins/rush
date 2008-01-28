@@ -20,8 +20,8 @@ describe Rush::File do
 		@file.should be_kind_of(Rush::Entry)
 	end
 
-	it "is not a directory" do
-		@file.should_not be_directory
+	it "is not a dir" do
+		@file.should_not be_dir
 	end
 
 	it "knows its size in bytes" do

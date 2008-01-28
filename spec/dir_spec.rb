@@ -69,7 +69,7 @@ describe Rush::Dir do
 		@dir.find_by_regexp(/\d$/).should == [ file2 ]
 	end
 
-	it "find_subitem finds entries in a subdirectory" do
+	it "find_subitem finds entries in a subdir" do
 		file = @dir.create_dir('a/b').create_file('c')
 		@dir.find_subitem('a/b/c').should == file
 	end

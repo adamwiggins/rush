@@ -12,7 +12,7 @@ module Rush
 		def search(pattern)
 			results = {}
 			entries.each do |entry|
-				if !entry.directory? and m = entry.contents.match(pattern)
+				if !entry.dir? and m = entry.contents.match(pattern)
 					results[entry] = m
 				end
 			end
@@ -21,7 +21,7 @@ module Rush
 
 		def replace!(pattern, with_text)
 			entries.each do |entry|
-				entry.replace!(pattern, with_text) unless entry.directory?
+				entry.replace!(pattern, with_text) unless entry.dir?
 			end
 		end
 	end

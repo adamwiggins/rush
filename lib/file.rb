@@ -1,6 +1,6 @@
 module Rush
 	class File < Entry
-		def directory?
+		def dir?
 			false
 		end
 

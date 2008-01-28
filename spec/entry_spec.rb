@@ -19,7 +19,7 @@ describe Rush::Entry do
 		@entry.name.should == File.basename(@filename)
 	end
 
-	it "knows its parent directory" do
+	it "knows its parent dir" do
 		@entry.parent.should be_kind_of(Rush::Dir)
 		@entry.parent.name.should == File.basename(@sandbox_dir)
 		@entry.parent.full_path.should == @sandbox_dir
