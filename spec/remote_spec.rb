@@ -23,4 +23,10 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'file_contents', :full_path => 'file')
 		@con.file_contents('file')
 	end
+
+	it "transmits destroy" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'destroy', :full_path => 'file')
+		@con.destroy('file')
+	end
 end

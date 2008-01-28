@@ -15,6 +15,10 @@ module Rush
 				transmit(:action => 'file_contents', :full_path => full_path)
 			end
 
+			def destroy(full_path)
+				transmit(:action => 'destroy', :full_path => full_path)
+			end
+
 			def transmit(params)
 				require 'net/http'
 				Net::HTTP.start(host, 9000) do |http|
