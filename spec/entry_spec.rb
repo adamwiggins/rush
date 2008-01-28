@@ -77,6 +77,10 @@ describe Rush::Entry do
 		File.exists?("#{newdir}/#{@entry.name}").should be_true
 	end
 
+	it "can copy itself within the directory" do
+		@entry.copy_to('newfile').should == Rush::File.new("#{@sandbox_dir}/newfile")
+	end
+
 	it "considers dotfiles to be hidden" do
 		Rush::Entry.new("#{@sandbox_dir}/show").should_not be_hidden
 		Rush::Entry.new("#{@sandbox_dir}/.dont_show").should be_hidden
