@@ -49,6 +49,7 @@ module Rush
 
 		class NameAlreadyExists < Exception; end
 		class NameCannotContainSlash < Exception; end
+		class NotADir < Exception; end
 
 		def rename(new_name)
 			raise NameCannotContainSlash if new_name.match(/\//)
@@ -65,6 +66,7 @@ module Rush
 		end
 
 		def move_to(dir)
+			raise NotADir unless dir.class == Rush::Dir
 			raise NameAlreadyExists if ::File.exists?("#{dir.full_path}/#{name}")
 			system "mv #{full_path} #{dir.full_path}"
 			@path = dir.full_path
