@@ -60,6 +60,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
 	end
 
+	it "receive -> index(full_path)" do
+		@con.stub!(:index)
+		@con.should_receive(:index).with('full_path')
+		@con.receive(:action => 'index', :full_path => 'full_path')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -116,5 +122,10 @@ describe Rush::Connection::Local do
 		@con.write_archive(archive, "#{@sandbox_dir}/dst")
 		File.directory?("#{@sandbox_dir}/dst/a").should be_true
 		File.exists?("#{@sandbox_dir}/dst/a/b").should be_true
+	end
+
+	it "index gives a list of files and dirs in a dir" do
+		system "cd #{@sandbox_dir}; mkdir dir; touch file"
+		@con.index(@sandbox_dir).should == [ 'dir/', 'file' ]
 	end
 end

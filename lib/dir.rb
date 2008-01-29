@@ -8,29 +8,18 @@ module Rush
 			"#{super}/"
 		end
 
-		def files
-			list = []
-			::Dir.open(full_path).each do |fname|
-				full_fname = "#{full_path}/#{fname}"
-				next if ::File.directory? full_fname
-				list << Rush::File.new(full_fname, box)
+		def contents
+			connection.index(full_path).map do |fname|
+				Rush::Entry.factory("#{full_path}#{fname}", box)
 			end
-			list
+		end
+
+		def files
+			contents.select { |entry| !entry.dir? }
 		end
 
 		def dirs
-			list = []
-			::Dir.open(full_path).each do |fname|
-				next if fname == '.' or fname == '..'
-				full_fname = "#{full_path}/#{fname}"
-				next unless ::File.directory? full_fname
-				list << Rush::Dir.new(full_fname, box)
-			end
-			list
-		end
-
-		def contents
-			dirs + files
+			contents.select { |entry| entry.dir? }
 		end
 
 		def [](key)

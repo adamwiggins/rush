@@ -56,6 +56,21 @@ module Rush
 				end
 			end
 
+			def index(full_path)
+				dirs = []
+				files = []
+				::Dir.open(full_path).each do |fname|
+					next if fname == '.' or fname == '..'
+					full_fname = "#{full_path}/#{fname}"
+					if ::File.directory? full_fname
+						dirs << fname + "/"
+					else
+						files << fname
+					end
+				end
+				dirs + files
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
@@ -68,6 +83,7 @@ module Rush
 					when 'copy'           then copy(params[:src], params[:dst])
 					when 'read_archive'   then read_archive(params[:full_path])
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
+					when 'index'          then index(params[:full_path])
 				else
 					raise UnknownAction
 				end

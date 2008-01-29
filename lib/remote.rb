@@ -39,6 +39,10 @@ module Rush
 				transmit(:action => 'write_archive', :dir => dir, :payload => archive)
 			end
 
+			def index(full_path)
+				transmit(:action => 'index', :full_path => 'full_path')
+			end
+
 			def transmit(params)
 				require 'net/http'
 				Net::HTTP.start(host, 9000) do |http|

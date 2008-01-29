@@ -59,4 +59,10 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
 		@con.write_archive('archive', 'dir')
 	end
+
+	it "transmits index" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'index', :full_path => 'full_path')
+		@con.index('full_path')
+	end
 end
