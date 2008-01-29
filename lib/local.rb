@@ -83,7 +83,7 @@ module Rush
 					when 'copy'           then copy(params[:src], params[:dst])
 					when 'read_archive'   then read_archive(params[:full_path])
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
-					when 'index'          then index(params[:full_path])
+					when 'index'          then index(params[:full_path]).join("\n") + "\n"
 				else
 					raise UnknownAction
 				end

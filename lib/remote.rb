@@ -40,7 +40,8 @@ module Rush
 			end
 
 			def index(full_path)
-				transmit(:action => 'index', :full_path => full_path)
+				result = transmit(:action => 'index', :full_path => full_path)
+				result.split("\n")
 			end
 
 			def transmit(params)

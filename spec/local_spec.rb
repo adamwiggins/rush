@@ -62,7 +62,7 @@ describe Rush::Connection::Local do
 
 	it "receive -> index(full_path)" do
 		@con.stub!(:index)
-		@con.should_receive(:index).with('full_path')
+		@con.should_receive(:index).with('full_path').and_return([])
 		@con.receive(:action => 'index', :full_path => 'full_path')
 	end
 
