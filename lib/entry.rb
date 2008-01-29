@@ -18,11 +18,15 @@ module Rush
 		end
 
 		def to_s
-			full_path
+			if box.host == 'localhost'
+				"#{full_path}"
+			else
+				inspect
+			end
 		end
 
 		def inspect
-			full_path
+			"#{box}:#{full_path}"
 		end
 
 		def connection
