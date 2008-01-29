@@ -72,11 +72,11 @@ module Rush
 				connection.copy(full_path, dir.full_path)
 			else
 				archive = connection.read_archive(full_path)
-				box.connection.write_archive(archive, dir.full_path)
+				dir.box.connection.write_archive(archive, dir.full_path)
 			end
 
 			new_full_path = "#{dir.full_path}#{name}"
-			self.class.new(new_full_path, box)
+			self.class.new(new_full_path, dir.box)
 		end
 
 		def move_to(dir)
