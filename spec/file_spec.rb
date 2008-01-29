@@ -31,21 +31,26 @@ describe Rush::File do
 	end
 
 	it "knows its size in bytes" do
-		@file.size.should eql(@contents.length)
+		@file.size.should == @contents.length
 	end
 
 	it "can read its contents" do
-		@file.contents.should eql(@contents)
+		@file.contents.should == @contents
 	end
 
 	it "can write new contents" do
 		@file.write('write test')
-		@file.contents.should eql('write test')
+		@file.contents.should == 'write test'
+	end
+
+	it "can count the number of lines it contains" do
+		@file.write("1\n2\n3\n")
+		@file.line_count.should == 3
 	end
 
 	it "find-in-file replace" do
 		@file.replace_contents!(/\d/, 'x')
-		@file.contents.should eql('xxxx')
+		@file.contents.should == 'xxxx'
 	end
 
 	it "can destroy itself" do

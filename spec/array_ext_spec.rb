@@ -31,4 +31,8 @@ describe Array do
 		@dir.create_dir('sub').create_file('file').write('nested')
 		@dir['**'].search(/nested/).keys.first.should == @dir['sub/file']
 	end
+
+	it "counts lines of the contained files" do
+		@dir.files.line_count.should == 2
+	end
 end

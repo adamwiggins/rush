@@ -29,6 +29,10 @@ module Rush
 			contents rescue ""
 		end
 
+		def line_count
+			contents.split("\n").size
+		end
+
 		include Rush::Commands
 
 		def entries

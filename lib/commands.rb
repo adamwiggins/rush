@@ -24,5 +24,11 @@ module Rush
 				entry.replace!(pattern, with_text) unless entry.dir?
 			end
 		end
+
+		def line_count
+			entries.inject(0) do |count, entry|
+				count += entry.contents.split("\n").size
+			end
+		end
 	end
 end
