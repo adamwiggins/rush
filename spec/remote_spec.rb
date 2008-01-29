@@ -65,4 +65,10 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'index', :full_path => 'full_path').and_return("")
 		@con.index('full_path')
 	end
+
+	it "transmits stat" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'stat', :full_path => 'full_path').and_return("")
+		@con.stat('full_path')
+	end
 end

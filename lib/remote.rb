@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Rush
 	module Connection
 		class Remote
@@ -40,8 +42,11 @@ module Rush
 			end
 
 			def index(full_path)
-				result = transmit(:action => 'index', :full_path => full_path)
-				result.split("\n")
+				transmit(:action => 'index', :full_path => full_path).split("\n")
+			end
+
+			def stat(full_path)
+				YAML.load(transmit(:action => 'stat', :full_path => full_path))
 			end
 
 			def transmit(params)

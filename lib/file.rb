@@ -10,7 +10,7 @@ module Rush
 		end
 
 		def size
-			stat.size
+			stat[:size]
 		end
 
 		def contents

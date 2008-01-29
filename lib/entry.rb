@@ -42,15 +42,15 @@ module Rush
 		end
 
 		def created_at
-			stat.ctime
+			stat[:ctime]
 		end
 
 		def last_modified
-			stat.mtime
+			stat[:mtime]
 		end
 
 		def last_accessed
-			stat.atime
+			stat[:atime]
 		end
 
 		class NameAlreadyExists < Exception; end
@@ -106,7 +106,7 @@ module Rush
 	private
 
 		def stat
-			::File.stat(full_path)
+			connection.stat(full_path)
 		end
 	end
 end

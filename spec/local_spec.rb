@@ -66,6 +66,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'index', :full_path => 'full_path')
 	end
 
+	it "receive -> stat(full_path)" do
+		@con.stub!(:stat)
+		@con.should_receive(:stat).with('full_path').and_return({})
+		@con.receive(:action => 'stat', :full_path => 'full_path')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -127,5 +133,10 @@ describe Rush::Connection::Local do
 	it "index gives a list of files and dirs in a dir" do
 		system "cd #{@sandbox_dir}; mkdir dir; touch file"
 		@con.index(@sandbox_dir).should == [ 'dir/', 'file' ]
+	end
+
+	it "stat gives file stats like size and timestamps" do
+		@con.stat(@sandbox_dir).should have_key(:ctime)
+		@con.stat(@sandbox_dir).should have_key(:size)
 	end
 end

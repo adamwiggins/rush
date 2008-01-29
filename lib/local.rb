@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'yaml'
 
 module Rush
 	module Connection
@@ -71,6 +72,16 @@ module Rush
 				dirs + files
 			end
 
+			def stat(full_path)
+				s = ::File.stat(full_path)
+				{
+					:size => s.size,
+					:ctime => s.ctime,
+					:atime => s.atime,
+					:mtime => s.mtime,
+				}
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
@@ -84,6 +95,7 @@ module Rush
 					when 'read_archive'   then read_archive(params[:full_path])
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
 					when 'index'          then index(params[:full_path]).join("\n") + "\n"
+					when 'stat'           then YAML.dump(stat(params[:full_path]))
 				else
 					raise UnknownAction
 				end
