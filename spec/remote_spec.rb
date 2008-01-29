@@ -47,4 +47,16 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'copy', :src => 'src', :dst => 'dst')
 		@con.copy('src', 'dst')
 	end
+
+	it "transmits read_archive" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'read_archive', :full_path => 'full_path')
+		@con.read_archive('full_path')
+	end
+
+	it "transmits write_archive" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
+		@con.write_archive('archive', 'dir')
+	end
 end

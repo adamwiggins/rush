@@ -48,6 +48,18 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'copy', :src => 'src', :dst => 'dst')
 	end
 
+	it "receive -> read_archive(full_path)" do
+		@con.stub!(:read_archive)
+		@con.should_receive(:read_archive).with('full_path')
+		@con.receive(:action => 'read_archive', :full_path => 'full_path')
+	end
+
+	it "receive -> write_archive(archive, dir)" do
+		@con.stub!(:write_archive)
+		@con.should_receive(:write_archive).with('archive', 'dir')
+		@con.receive(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -85,11 +97,24 @@ describe Rush::Connection::Local do
 		File.exists?("#{@sandbox_dir}/b").should be_true
 	end
 
-	it "copy to copy an entry to another dir" do
+	it "copy to copy an entry to another dir on the same box" do
 		system "mkdir #{@sandbox_dir}/subdir"
 		system "touch #{@sandbox_dir}/a"
 		@con.copy("#{@sandbox_dir}/a", "#{@sandbox_dir}/subdir")
 		File.exists?("#{@sandbox_dir}/a").should be_true
 		File.exists?("#{@sandbox_dir}/subdir/a").should be_true
+	end
+
+	it "read_archive to pull an archive of a dir into a byte stream" do
+		system "touch #{@sandbox_dir}/a"
+		@con.read_archive(@sandbox_dir).size.should > 50
+	end
+
+	it "write_archive to turn a byte stream into a dir" do
+		system "cd #{@sandbox_dir}; mkdir -p a; touch a/b; tar cf xfer.tar a; mkdir dst"
+		archive = File.read("#{@sandbox_dir}/xfer.tar")
+		@con.write_archive(archive, "#{@sandbox_dir}/dst")
+		File.directory?("#{@sandbox_dir}/dst/a").should be_true
+		File.exists?("#{@sandbox_dir}/dst/a/b").should be_true
 	end
 end

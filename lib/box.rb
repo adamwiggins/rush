@@ -2,7 +2,7 @@ module Rush
 	class Box
 		attr_reader :host
 
-		def initialize(host)
+		def initialize(host='localhost')
 			@host = host
 		end
 

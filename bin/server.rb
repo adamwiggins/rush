@@ -11,10 +11,16 @@ class RushHandler < Mongrel::HttpHandler
 			params[key.to_sym] = value
 		end
 
-		params[:payload] = request.body.read
+		payload = request.body.read
 
-		puts params.inspect
+		without_action = params
+		without_action.delete(params[:action])
+		printf "%-20s", params[:action]
+		print without_action.inspect
+		print " + #{payload.size} bytes of payload" if payload.size > 0
+		puts
 
+		params[:payload] = payload
 		result = Rush::Box.new('localhost').connection.receive(params)
 
 		response.start(200) do |head, out|

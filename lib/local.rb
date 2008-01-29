@@ -45,6 +45,17 @@ module Rush
 				true
 			end
 
+			# archive ops have the dir name implicit in the archive
+			def read_archive(full_path)
+				`cd #{::File.dirname(full_path)}; tar c #{::File.basename(full_path)}`
+			end
+
+			def write_archive(archive, dir)
+				IO.popen("cd #{dir}; tar x", "w") do |p|
+					p.write archive
+				end
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
@@ -55,6 +66,8 @@ module Rush
 					when 'create_dir'     then create_dir(params[:full_path])
 					when 'rename'         then rename(params[:path], params[:name], params[:new_name])
 					when 'copy'           then copy(params[:src], params[:dst])
+					when 'read_archive'   then read_archive(params[:full_path])
+					when 'write_archive'  then write_archive(params[:payload], params[:dir])
 				else
 					raise UnknownAction
 				end

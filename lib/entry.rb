@@ -62,13 +62,21 @@ module Rush
 			raise NameCannotContainSlash if new_name.match(/\//)
 			raise NameAlreadyExists if ::File.exists?("#{@path}/#{new_name}")
 			system "cd #{@path}; cp -r #{name} #{new_name}"
-			self.class.new "#{@path}/#{new_name}"
+			self.class.new("#{@path}/#{new_name}", box)
 		end
 
 		def copy_to(dir)
 			raise NotADir unless dir.class == Rush::Dir
-			connection.copy(full_path, dir.full_path)
-			self.class.new "#{dir.full_path}#{name}"
+
+			if box == dir.box
+				connection.copy(full_path, dir.full_path)
+			else
+				archive = connection.read_archive(full_path)
+				box.connection.write_archive(archive, dir.full_path)
+			end
+
+			new_full_path = "#{dir.full_path}#{name}"
+			self.class.new(new_full_path, box)
 		end
 
 		def move_to(dir)
