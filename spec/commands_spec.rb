@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/base'
 
-describe Array do
+describe Rush::Commands do
 	before(:each) do
 		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
