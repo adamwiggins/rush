@@ -18,5 +18,13 @@ module Rush
 		def load_history
 			history_file.contents_or_blank.split("\n")
 		end
+
+		def env_file
+			dir['env.rb']
+		end
+
+		def load_env
+			env_file.contents_or_blank
+		end
 	end
 end

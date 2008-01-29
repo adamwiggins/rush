@@ -32,4 +32,13 @@ describe Rush::Config do
 	it "loads a blank history if no history file" do
 		@config.load_history.should == []
 	end
+
+	it "loads the env file" do
+		@config.env_file.write('abc')
+		@config.load_env.should == 'abc'
+	end
+
+	it "loads nothing if env file does not exist" do
+		@config.load_env.should == ""
+	end
 end

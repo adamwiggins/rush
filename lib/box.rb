@@ -10,6 +10,10 @@ module Rush
 			host
 		end
 
+		def inspect
+			host
+		end
+
 		def filesystem
 			Rush::Entry.factory('/', self)
 		end

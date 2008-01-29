@@ -47,6 +47,8 @@ config.load_history.each do |item|
 	Readline::HISTORY.push(item)
 end
 
+eval config.load_env, pure_binding
+
 loop do
 	cmd = Readline.readline('rush> ')
 
