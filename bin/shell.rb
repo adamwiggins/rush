@@ -18,6 +18,10 @@ module Rush
 			end
 
 			eval @config.load_env, @pure_binding
+
+			commands = @config.load_commands
+			Rush::Dir.class_eval commands
+			Array.class_eval commands
 		end
 
 		def run

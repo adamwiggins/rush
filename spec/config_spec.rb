@@ -41,4 +41,13 @@ describe Rush::Config do
 	it "loads nothing if env file does not exist" do
 		@config.load_env.should == ""
 	end
+
+	it "loads the commands file" do
+		@config.commands_file.write('abc')
+		@config.load_commands.should == 'abc'
+	end
+
+	it "loads nothing if commands file does not exist" do
+		@config.load_commands.should == ""
+	end
 end

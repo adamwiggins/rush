@@ -26,5 +26,13 @@ module Rush
 		def load_env
 			env_file.contents_or_blank
 		end
+
+		def commands_file
+			dir['commands.rb']
+		end
+
+		def load_commands
+			commands_file.contents_or_blank
+		end
 	end
 end
