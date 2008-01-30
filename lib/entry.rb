@@ -1,6 +1,6 @@
 module Rush
 	class Entry
-		attr_reader :box, :name
+		attr_reader :box, :name, :path
 
 		def initialize(full_path, box=nil)
 			full_path = ::File.expand_path(full_path, '/')
@@ -84,11 +84,15 @@ module Rush
 		end
 
 		def move_to(dir)
-			raise NotADir unless dir.class == Rush::Dir
-			raise NameAlreadyExists if ::File.exists?("#{dir.full_path}/#{name}")
-			system "mv #{full_path} #{dir.full_path}"
-			@path = dir.full_path
-			@parent = dir
+			moved = copy_to(dir)
+			destroy
+			mimic(moved)
+		end
+
+		def mimic(from)
+			@box = from.box
+			@path = from.path
+			@name = from.name
 		end
 
 		def hidden?
@@ -100,7 +104,7 @@ module Rush
 		end
 
 		def ==(other)
-			full_path == other.full_path
+			full_path == other.full_path and box == other.box
 		end
 
 	private

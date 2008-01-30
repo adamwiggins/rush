@@ -13,6 +13,6 @@ describe Rush::Box do
 	end
 
 	it "looks up entries with [] syntax" do
-		@box['/'].should == Rush::Dir.new('/')
+		@box['/'].should == Rush::Dir.new('/', @box)
 	end
 end

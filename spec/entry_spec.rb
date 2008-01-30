@@ -99,4 +99,20 @@ describe Rush::Entry do
 		Rush::Entry.new("#{@sandbox_dir}/show").should_not be_hidden
 		Rush::Entry.new("#{@sandbox_dir}/.dont_show").should be_hidden
 	end
+
+	it "is considered equal to entries with the same full path and on the same box" do
+		same = Rush::Entry.new(@entry.full_path, @entry.box)
+		@entry.should == same
+	end
+
+	it "is considered not equal to entries with the same full path on a different box" do
+		same = Rush::Entry.new(@entry.full_path, :dummy)
+		@entry.should_not == same
+	end
+
+	it "can mimic another entry" do
+		copy = Rush::Entry.new('abc', :dummy)
+		copy.mimic(@entry)
+		copy.path.should == @entry.path
+	end
 end
