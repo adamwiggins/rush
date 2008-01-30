@@ -29,5 +29,9 @@ module Rush
 		def make_connection
 			host == 'localhost' ? Rush::Connection::Local.new : Rush::Connection::Remote.new(host)
 		end
+
+		def ==(other)
+			host == other.host
+		end
 	end
 end

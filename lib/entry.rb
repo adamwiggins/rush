@@ -6,7 +6,7 @@ module Rush
 			full_path = ::File.expand_path(full_path, '/')
 			@path = ::File.dirname(full_path)
 			@name = ::File.basename(full_path)
-			@box = box
+			@box = box || Rush::Box.new('localhost')
 		end
 
 		def self.factory(full_path, box=nil)

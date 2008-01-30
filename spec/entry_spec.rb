@@ -106,7 +106,7 @@ describe Rush::Entry do
 	end
 
 	it "is considered not equal to entries with the same full path on a different box" do
-		same = Rush::Entry.new(@entry.full_path, :dummy)
+		same = Rush::Entry.new(@entry.full_path, Rush::Box.new('dummy'))
 		@entry.should_not == same
 	end
 
