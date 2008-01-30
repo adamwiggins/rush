@@ -40,8 +40,6 @@ module Rush
 			end
 
 			def copy(src, dst)
-				raise NotADir unless ::File.directory?(dst)
-				raise NameAlreadyExists if ::File.exists?("#{dst}/#{::File.basename(dst)}")
 				FileUtils.cp_r(src, dst)
 				true
 			end
