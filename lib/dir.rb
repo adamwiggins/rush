@@ -101,7 +101,7 @@ module Rush
 		end
 
 		def size
-			`du -sb #{full_path}`.match(/(\d+)/)[1].to_i
+			conection.size(full_path)
 		end
 
 		def nonhidden_dirs

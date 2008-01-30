@@ -71,4 +71,10 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'stat', :full_path => 'full_path').and_return("")
 		@con.stat('full_path')
 	end
+
+	it "transmits size" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("")
+		@con.size('full_path')
+	end
 end

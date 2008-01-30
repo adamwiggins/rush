@@ -49,6 +49,10 @@ module Rush
 				YAML.load(transmit(:action => 'stat', :full_path => full_path))
 			end
 
+			def size(full_path)
+				transmit(:action => 'size', :full_path => full_path)
+			end
+
 			def transmit(params)
 				require 'net/http'
 				Net::HTTP.start(host, 9000) do |http|

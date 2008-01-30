@@ -80,6 +80,10 @@ module Rush
 				}
 			end
 
+			def size(full_path)
+				`du -sb #{full_path}`.match(/(\d+)/)[1].to_i
+			end
+
 			class UnknownAction < Exception; end
 
 			def receive(params)
@@ -94,6 +98,7 @@ module Rush
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
 					when 'index'          then index(params[:full_path]).join("\n") + "\n"
 					when 'stat'           then YAML.dump(stat(params[:full_path]))
+					when 'size'           then size(params[:full_path])
 				else
 					raise UnknownAction
 				end

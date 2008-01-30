@@ -72,6 +72,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'stat', :full_path => 'full_path')
 	end
 
+	it "receive -> size(full_path)" do
+		@con.stub!(:size)
+		@con.should_receive(:size).with('full_path')
+		@con.receive(:action => 'size', :full_path => 'full_path')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -138,5 +144,12 @@ describe Rush::Connection::Local do
 	it "stat gives file stats like size and timestamps" do
 		@con.stat(@sandbox_dir).should have_key(:ctime)
 		@con.stat(@sandbox_dir).should have_key(:size)
+	end
+
+	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
+		it "size gives size of a directory and all its contents recursively" do
+			system "mkdir -p #{@sandbox_dir}/a/b/; echo -n 1234 > #{@sandbox_dir}/a/b/c"
+			@con.size(@sandbox_dir).should == (4096 + 4)
+		end
 	end
 end
