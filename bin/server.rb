@@ -29,6 +29,11 @@ class RushHandler < Mongrel::HttpHandler
 	end
 end
 
-h = Mongrel::HttpServer.new("0.0.0.0", "9000")
+host = "127.0.0.1"
+port = "7770"
+
+puts "rushd listening on #{host}:#{port}"
+
+h = Mongrel::HttpServer.new(host, port)
 h.register("/", RushHandler.new)
 h.run.join

@@ -22,6 +22,7 @@ module Rush
 			commands = @config.load_commands
 			Rush::Dir.class_eval commands
 			Array.class_eval commands
+			Hash.class_eval commands
 		end
 
 		def run

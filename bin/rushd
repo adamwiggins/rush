@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ruby `dirname $0`/server.rb
+
