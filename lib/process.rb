@@ -19,11 +19,19 @@ module Rush
 			"Process #{@pid}: #{@cmdline}"
 		end
 
+		def alive?
+			::File.exists? "/proc/#{pid}"
+		end
+
+		def kill
+			::Process.kill('TERM', pid)
+		end
+
 		def self.read_stat_file(file)
 			data = ::File.read(file).split(" ")
 			uid = ::File.stat(file).uid
 			pid = data[0]
-			command = data[1]
+			command = data[1].match(/^\((.*)\)$/)[1]
 			cmdline = ::File.read("/proc/#{pid}/cmdline")
 			utime = data[13].to_i
 			ktime = data[14].to_i
@@ -41,7 +49,7 @@ module Rush
 			}
 		end
 
-		def self.list
+		def self.all
 			list = []
 			::Dir["/proc/*/stat"].select { |file| file =~ /\/proc\/\d+\// }.each do |file|
 				begin
