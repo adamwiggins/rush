@@ -9,6 +9,11 @@ module Rush
 			system "vim #{names} #{args.join(' ')}"
 		end
 
+		def mate(*args)
+			names = entries.map { |f| f.full_path }.join(' ')
+			system "mate #{names} #{args.join(' ')}"
+		end
+
 		def search(pattern)
 			results = {}
 			entries.each do |entry|
