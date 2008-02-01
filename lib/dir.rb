@@ -101,7 +101,7 @@ module Rush
 		end
 
 		def size
-			conection.size(full_path)
+			connection.size(full_path)
 		end
 
 		def nonhidden_dirs

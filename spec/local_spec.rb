@@ -149,7 +149,7 @@ describe Rush::Connection::Local do
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
 		it "size gives size of a directory and all its contents recursively" do
 			system "mkdir -p #{@sandbox_dir}/a/b/; echo 1234 > #{@sandbox_dir}/a/b/c"
-			@con.size(@sandbox_dir).should == (4096 + 5)
+			@con.size(@sandbox_dir).should == (4096*3 + 5)
 		end
 	end
 end
