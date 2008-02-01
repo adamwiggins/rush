@@ -53,15 +53,26 @@ module Rush
 				transmit(:action => 'size', :full_path => full_path)
 			end
 
+			class NotAuthorized < Exception; end
+			class FailedTransmit < Exception; end
+
 			def transmit(params)
 				require 'net/http'
+
+				payload = params.delete(:payload)
+
+				uri = "/?"
+				params.each do |key, value|
+					uri += "#{key}=#{value}&"
+				end
+
+				req = Net::HTTP::Post.new(uri)
+				req.basic_auth 'user', 'password'
+
 				Net::HTTP.start(host, RUSH_PORT) do |http|
-					payload = params.delete(:payload)
-					uri = "/?"
-					params.each do |key, value|
-						uri += "#{key}=#{value}&"
-					end
-					res = http.post(uri, payload)
+					res = http.request(req, payload)
+					raise NotAuthorized if res.code == "401"
+					raise FailedTransmit if res.code != "200"
 					res.body
 				end
 			end

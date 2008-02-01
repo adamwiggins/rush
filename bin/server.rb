@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'mongrel'
+require 'base64'
 
 require File.dirname(__FILE__) + '/../lib/rush'
 
@@ -11,21 +12,35 @@ class RushHandler < Mongrel::HttpHandler
 			params[key.to_sym] = value
 		end
 
-		payload = request.body.read
+		unless authorize(request.params['HTTP_AUTHORIZATION'])
+			response.start(401) do |head, out|
+			end
+		else
+			payload = request.body.read
 
-		without_action = params
-		without_action.delete(params[:action])
-		printf "%-20s", params[:action]
-		print without_action.inspect
-		print " + #{payload.size} bytes of payload" if payload.size > 0
-		puts
+			without_action = params
+			without_action.delete(params[:action])
+			printf "%-20s", params[:action]
+			print without_action.inspect
+			print " + #{payload.size} bytes of payload" if payload.size > 0
+			puts
 
-		params[:payload] = payload
-		result = Rush::Box.new('localhost').connection.receive(params)
+			params[:payload] = payload
+			result = Rush::Box.new('localhost').connection.receive(params)
 
-		response.start(200) do |head, out|
-			out.write result
+			response.start(200) do |head, out|
+				out.write result
+			end
 		end
+	end
+
+	def authorize(auth)
+		return false unless m = auth.match(/^Basic (.+)$/)
+		sent_token = m[1].strip
+		user = 'user'
+		password = 'password'
+		correct_token = Base64.encode64("#{user}:#{password}").strip
+		return sent_token == correct_token
 	end
 end
 
