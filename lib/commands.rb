@@ -24,9 +24,9 @@ module Rush
 			results
 		end
 
-		def replace!(pattern, with_text)
+		def replace_contents!(pattern, with_text)
 			entries.each do |entry|
-				entry.replace!(pattern, with_text) unless entry.dir?
+				entry.replace_contents!(pattern, with_text) unless entry.dir?
 			end
 		end
 

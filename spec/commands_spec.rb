@@ -32,6 +32,14 @@ describe Rush::Commands do
 		@dir['**'].search(/nested/).keys.first.should == @dir['sub/file']
 	end
 
+	it "find-in-file replace on all files in the glob" do
+		@dir['1'].create.write('xax')
+		@dir['2'].create.write('-a-')
+		@dir.replace_contents!(/a/, 'b')
+		@dir['1'].contents.should == "xbx"
+		@dir['2'].contents.should == "-b-"
+	end
+
 	it "counts lines of the contained files" do
 		@dir.files.line_count.should == 2
 	end
