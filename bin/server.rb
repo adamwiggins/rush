@@ -26,7 +26,7 @@ class RushHandler < Mongrel::HttpHandler
 			puts
 
 			params[:payload] = payload
-			result = Rush::Box.new('localhost').connection.receive(params)
+			result = box.connection.receive(params)
 
 			response.start(200) do |head, out|
 				out.write result
@@ -36,11 +36,18 @@ class RushHandler < Mongrel::HttpHandler
 
 	def authorize(auth)
 		return false unless m = auth.match(/^Basic (.+)$/)
-		sent_token = m[1].strip
-		user = 'user'
-		password = 'password'
-		correct_token = Base64.encode64("#{user}:#{password}").strip
-		return sent_token == correct_token
+		decoded = Base64.decode64(m[1])
+		user, password = decoded.split(':', 2)
+		return false if user.nil? or user.length == 0 or password.nil? or password.length == 0
+		return password == config.passwords[user]
+	end
+
+	def box
+		@box ||= Rush::Box.new('localhost')
+	end
+
+	def config
+		@config ||= Rush::Config.new
 	end
 end
 

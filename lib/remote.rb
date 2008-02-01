@@ -53,6 +53,10 @@ module Rush
 				transmit(:action => 'size', :full_path => full_path)
 			end
 
+			def config
+				@config ||= Rush::Config.new
+			end
+
 			class NotAuthorized < Exception; end
 			class FailedTransmit < Exception; end
 
@@ -67,7 +71,7 @@ module Rush
 				end
 
 				req = Net::HTTP::Post.new(uri)
-				req.basic_auth 'user', 'password'
+				req.basic_auth config.credentials_user, config.credentials_password
 
 				Net::HTTP.start(host, RUSH_PORT) do |http|
 					res = http.request(req, payload)

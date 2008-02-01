@@ -50,4 +50,20 @@ describe Rush::Config do
 	it "loads nothing if commands file does not exist" do
 		@config.load_commands.should == ""
 	end
+
+	it "loads usernames and password for rushd" do
+		system "echo 1:2 > #{@sandbox_dir}/passwords"
+		system "echo a:b >> #{@sandbox_dir}/passwords"
+		@config.passwords.should == { '1' => '2', 'a' => 'b' }
+	end
+
+	it "loads blank hash if no passwords file" do
+		@config.passwords.should == { }
+	end
+
+	it "loads credentials for client connecting to server" do
+		system "echo user:pass > #{@sandbox_dir}/credentials"
+		@config.credentials_user.should == 'user'
+		@config.credentials_password.should == 'pass'
+	end
 end
