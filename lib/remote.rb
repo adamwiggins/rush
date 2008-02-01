@@ -55,7 +55,7 @@ module Rush
 
 			def transmit(params)
 				require 'net/http'
-				Net::HTTP.start(host, 9000) do |http|
+				Net::HTTP.start(host, RUSH_PORT) do |http|
 					payload = params.delete(:payload)
 					uri = "/?"
 					params.each do |key, value|

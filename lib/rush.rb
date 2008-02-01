@@ -11,3 +11,5 @@ require 'process'
 require 'local'
 require 'remote'
 require 'box'
+
+RUSH_PORT = 7770
