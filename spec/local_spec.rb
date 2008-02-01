@@ -91,8 +91,8 @@ describe Rush::Connection::Local do
 
 	it "file_contents reads a file's contents" do
 		fname = "#{@sandbox_dir}/a_file"
-		system "echo -n stuff > #{fname}"
-		@con.file_contents(fname).should == "stuff"
+		system "echo stuff > #{fname}"
+		@con.file_contents(fname).should == "stuff\n"
 	end
 
 	it "destroy to destroy a file or dir" do
@@ -148,8 +148,8 @@ describe Rush::Connection::Local do
 
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
 		it "size gives size of a directory and all its contents recursively" do
-			system "mkdir -p #{@sandbox_dir}/a/b/; echo -n 1234 > #{@sandbox_dir}/a/b/c"
-			@con.size(@sandbox_dir).should == (4096 + 4)
+			system "mkdir -p #{@sandbox_dir}/a/b/; echo 1234 > #{@sandbox_dir}/a/b/c"
+			@con.size(@sandbox_dir).should == (4096 + 5)
 		end
 	end
 end

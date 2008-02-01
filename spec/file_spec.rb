@@ -7,7 +7,8 @@ describe Rush::File do
 
 		@filename = "#{@sandbox_dir}/test_file"
 		@contents = "1234"
-		system "echo -n '#{@contents}' > #{@filename}"
+		system "echo #{@contents} > #{@filename}"
+		@contents += "\n"
 
 		@file = Rush::File.new(@filename)
 	end
@@ -50,7 +51,7 @@ describe Rush::File do
 
 	it "find-in-file replace" do
 		@file.replace_contents!(/\d/, 'x')
-		@file.contents.should == 'xxxx'
+		@file.contents.should == "xxxx\n"
 	end
 
 	it "can destroy itself" do

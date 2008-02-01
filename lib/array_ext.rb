@@ -5,3 +5,11 @@ class Array
 		self
 	end
 end
+
+class Hash
+	include Rush::Commands
+
+	def entries
+		keys
+	end
+end
