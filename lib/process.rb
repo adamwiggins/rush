@@ -32,7 +32,7 @@ module Rush
 			uid = ::File.stat(file).uid
 			pid = data[0]
 			command = data[1].match(/^\((.*)\)$/)[1]
-			cmdline = ::File.read("/proc/#{pid}/cmdline")
+			cmdline = ::File.read("/proc/#{pid}/cmdline").gsub(/\0/, ' ')
 			utime = data[13].to_i
 			ktime = data[14].to_i
 			vss = data[22].to_i / 1024
