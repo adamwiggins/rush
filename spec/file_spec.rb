@@ -49,6 +49,16 @@ describe Rush::File do
 		@file.line_count.should == 3
 	end
 
+	it "searches its contents for matching lines" do
+		@file.write("a\n1\nb\n2\n")
+		@file.search(/\d/).should == %w(1 2)
+	end
+
+	it "search returns nil if no lines match" do
+		@file.write("a\nb\nc\n")
+		@file.search(/\d/).should be_nil
+	end
+
 	it "find-in-file replace" do
 		@file.replace_contents!(/\d/, 'x')
 		@file.contents.should == "xxxx\n"

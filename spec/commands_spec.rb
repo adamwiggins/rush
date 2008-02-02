@@ -18,21 +18,22 @@ describe Rush::Commands do
 	end
 
 	it "searches a list of files" do
-		@dir.files.search(/thing_to_find/).should be_kind_of(Hash)
-		@dir.files.search(/thing_to_find/).keys.first.should == @dir[@filename]
-		@dir.files.search(/thing_to_find/).values.first.to_a.should == [ "thing_to_find" ]
+		results = @dir.files.search(/thing_to_find/)
+		results.should be_kind_of(Rush::SearchResults)
+		results.entries.should == [ @dir[@filename] ]
+		results.lines.should == [ "thing_to_find" ]
 	end
 
 	it "searches a dir" do
-		@dir.search(/thing_to_find/).keys.first.should == @dir[@filename]
+		@dir.search(/thing_to_find/).entries.should == [ @dir[@filename] ]
 	end
 
 	it "searchs a dir's nested files" do
 		@dir.create_dir('sub').create_file('file').write('nested')
-		@dir['**'].search(/nested/).keys.first.should == @dir['sub/file']
+		@dir['**'].search(/nested/).entries.should == [ @dir['sub/file'] ]
 	end
 
-	it "find-in-file replace on all files in the glob" do
+	it "search and replace contents on all files in the glob" do
 		@dir['1'].create.write('xax')
 		@dir['2'].create.write('-a-')
 		@dir.replace_contents!(/a/, 'b')

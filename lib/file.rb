@@ -21,6 +21,15 @@ module Rush
 			connection.write_file(full_path, new_contents)
 		end
 
+		def lines
+			contents.split("\n")
+		end
+
+		def search(pattern)
+			matching_lines = lines.select { |line| line.match(pattern) }
+			matching_lines.size == 0 ? nil : matching_lines
+		end
+
 		def replace_contents!(pattern, replace_with)
 			write contents.gsub(pattern, replace_with)
 		end
@@ -30,7 +39,7 @@ module Rush
 		end
 
 		def line_count
-			contents.split("\n").size
+			lines.size
 		end
 
 		include Rush::Commands

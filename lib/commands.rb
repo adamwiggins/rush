@@ -15,10 +15,10 @@ module Rush
 		end
 
 		def search(pattern)
-			results = {}
+			results = Rush::SearchResults.new
 			entries.each do |entry|
-				if !entry.dir? and m = entry.contents.match(pattern)
-					results[entry] = m
+				if !entry.dir? and matches = entry.search(pattern)
+					results.add(entry, matches)
 				end
 			end
 			results
