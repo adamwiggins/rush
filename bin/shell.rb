@@ -17,12 +17,15 @@ module Rush
 				Readline::HISTORY.push(item)
 			end
 
+			Readline.basic_word_break_characters = ""
+			Readline.completion_append_character = nil
+			Readline.completion_proc = completion_proc
+
 			eval @config.load_env, @pure_binding
 
 			commands = @config.load_commands
 			Rush::Dir.class_eval commands
 			Array.class_eval commands
-			Hash.class_eval commands
 		end
 
 		def run
@@ -74,7 +77,28 @@ module Rush
 				puts "=> #{res.inspect}"
 			end
 		end
+
+		def path_parts(input)
+			input.match(/^(.+)\[(['"])([^\]]+)$/).to_a.slice(1, 3) rescue [ nil, nil, nil ]
+		end
+
+		def completion_proc
+			proc do |input|
+				possible_var, quote, partial_path = path_parts(input)
+				if possible_var and possible_var.match(/^[a-z0-9_]+$/)
+					full_path = eval("#{possible_var}.full_path", @pure_binding) rescue nil
+					box = eval("#{possible_var}.box", @pure_binding) rescue nil
+					if full_path and box
+						dir = Rush::Dir.new(full_path, box)
+						return dir.entries.select do |e|
+							e.name.match(/^#{partial_path}/)
+						end.map do |e|
+							possible_var + '[' + quote + e.name + (e.dir? ? "/" : "")
+						end
+					end
+				end
+				nil
+			end
+		end
 	end
 end
-
-Rush::Shell.new.run

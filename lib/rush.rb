@@ -5,6 +5,7 @@ require 'entry'
 require 'file'
 require 'dir'
 require 'search_results'
+require 'head_tail'
 require 'string_ext'
 require 'match_data_ext'
 require 'fixnum_ext'
@@ -13,5 +14,3 @@ require 'process'
 require 'local'
 require 'remote'
 require 'box'
-
-RUSH_PORT = 7770

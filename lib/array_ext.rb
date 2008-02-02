@@ -4,12 +4,6 @@ class Array
 	def entries
 		self
 	end
-end
 
-class Hash
-	include Rush::Commands
-
-	def entries
-		keys
-	end
+	include Rush::HeadTail
 end

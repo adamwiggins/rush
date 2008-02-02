@@ -5,7 +5,11 @@ describe Array do
 		[ 1,2,3 ].entries.should == [ 1, 2, 3 ]
 	end
 
-	it "mixes commands into hash with keys as the entries" do
-		{ 1 => 2, 3 => 4 }.entries.should == [ 1, 3 ]
+	it "can call head" do
+		[ 1,2,3 ].head(1).should == [ 1 ]
+	end
+
+	it "can call tail" do
+		[ 1,2,3 ].tail(1).should == [ 3 ]
 	end
 end

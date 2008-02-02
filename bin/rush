@@ -1,4 +1,4 @@
 #!/bin/sh
 
-ruby `dirname $0`/shell.rb
+ruby -r`dirname $0`/shell.rb -e "Rush::Shell.new.run"
 

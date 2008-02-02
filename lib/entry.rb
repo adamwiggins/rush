@@ -95,6 +95,9 @@ module Rush
 			@name = from.name
 		end
 
+		def relative_path(subentry)
+		end
+
 		def hidden?
 			name.slice(0, 1) == '.'
 		end
