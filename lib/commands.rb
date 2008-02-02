@@ -15,7 +15,7 @@ module Rush
 		end
 
 		def search(pattern)
-			results = Rush::SearchResults.new
+			results = Rush::SearchResults.new(pattern)
 			entries.each do |entry|
 				if !entry.dir? and matches = entry.search(pattern)
 					results.add(entry, matches)

@@ -1,10 +1,11 @@
 module Rush
 	class SearchResults
-		attr_reader :entries, :lines, :entries_with_lines
+		attr_reader :entries, :lines, :entries_with_lines, :pattern
 
-		def initialize
+		def initialize(pattern)
 			# Duplication of data, but this lets us return everything in the exact
 			# order it was received.
+			@pattern = pattern
 			@entries = []
 			@entries_with_lines = {}
 			@lines = []
@@ -24,5 +25,21 @@ module Rush
 		end
 
 		include Enumerable
+
+		def colorize(line)
+			lowlight + line.gsub(/(#{pattern.source})/, "#{hilight}\\1#{lowlight}") + normal
+		end
+
+		def hilight
+			"\e[34;1m"
+		end
+
+		def lowlight
+			"\e[37;2m"
+		end
+
+		def normal
+			"\e[0m"
+		end
 	end
 end

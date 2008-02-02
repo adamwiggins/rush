@@ -57,13 +57,17 @@ module Rush
 				res.each do |item|
 					puts item
 				end
-			elsif res.kind_of? Hash
-				widest = res.keys.map { |k| k.name.length }.max
-				res.each do |key, value|
-					print key.name
-					print ' ' * (widest - key.name.length + 2)
+			elsif res.kind_of? Rush::SearchResults
+				widest = res.entries.map { |k| k.full_path.length }.max
+				res.entries_with_lines.each do |entry, lines|
+					print entry.full_path
+					print ' ' * (widest - entry.full_path.length + 2)
 					print "=> "
-					print value.inspect
+					print res.colorize(lines.first.strip.head(30))
+					print "..." if lines.first.strip.length > 30
+					if lines.size > 1
+						print " (plus #{lines.size - 1} more matches)"
+					end
 					print "\n"
 				end
 			else
