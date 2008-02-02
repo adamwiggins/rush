@@ -106,7 +106,7 @@ module Rush
 
 			def establish_tunnel
 				puts "Establishing an ssh tunnel to #{host}..."
-				port = 7771
+				port = next_available_port
 				system "ssh -L #{port}:127.0.0.1:7770 #{host} 'sleep 9000' &"
 				tunnels = config.tunnels
 				tunnels[host] = port
@@ -114,6 +114,10 @@ module Rush
 				@real_host = 'localhost'
 				@real_port = port
 				sleep 0.5
+			end
+
+			def next_available_port
+				(config.tunnels.values.max || Rush::Config::DefaultPort) + 1
 			end
 		end
 	end

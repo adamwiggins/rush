@@ -96,4 +96,19 @@ describe Rush::Connection::Local do
 			@con.real_host
 		end
 	end
+
+	it "picks the first port number when there are no tunnels yet" do
+		mock_config do |config|
+			@con.stub!(:config).and_return(config)
+			@con.next_available_port.should == 7771
+		end
+	end
+
+	it "picks the next port number when there is already a tunnel" do
+		mock_config do |config|
+			@con.stub!(:config).and_return(config)
+			config.tunnels_file.write("#{@con.host}:7771")
+			@con.next_available_port.should == 7772
+		end
+	end
 end
