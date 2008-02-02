@@ -35,11 +35,25 @@ class RushHandler < Mongrel::HttpHandler
 	end
 
 	def authorize(auth)
-		return false unless m = auth.match(/^Basic (.+)$/)
+		unless m = auth.match(/^Basic (.+)$/)
+			puts "Request with no authorization data"
+			return false
+		end
+
 		decoded = Base64.decode64(m[1])
 		user, password = decoded.split(':', 2)
-		return false if user.nil? or user.length == 0 or password.nil? or password.length == 0
-		return password == config.passwords[user]
+
+		if user.nil? or user.length == 0 or password.nil? or password.length == 0
+			puts "Malformed user or password"
+			return false
+		end
+
+		if password == config.passwords[user]
+			return true
+		else
+			puts "Access denied to #{user}"
+			return false
+		end
 	end
 
 	def box
