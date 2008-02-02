@@ -7,6 +7,8 @@ module Rush
 
 			def initialize(host)
 				@host = host
+				@real_host = nil
+				@real_port = nil
 			end
 
 			def write_file(full_path, contents)
@@ -53,10 +55,6 @@ module Rush
 				transmit(:action => 'size', :full_path => full_path)
 			end
 
-			def config
-				@config ||= Rush::Config.new
-			end
-
 			class NotAuthorized < Exception; end
 			class FailedTransmit < Exception; end
 
@@ -73,12 +71,32 @@ module Rush
 				req = Net::HTTP::Post.new(uri)
 				req.basic_auth config.credentials_user, config.credentials_password
 
-				Net::HTTP.start(host, Rush::Config::DefaultPort) do |http|
+				Net::HTTP.start(real_host, real_port) do |http|
 					res = http.request(req, payload)
 					raise NotAuthorized if res.code == "401"
 					raise FailedTransmit if res.code != "200"
 					res.body
 				end
+			end
+
+			def config
+				@config ||= Rush::Config.new
+			end
+
+			def real_host
+				@real_host ||= get_real_host
+			end
+
+			def real_port
+				@real_port ||= get_real_port
+			end
+
+			def get_real_host
+				config.tunnels[host] ? 'localhost' : host
+			end
+
+			def get_real_port
+				config.tunnels[host] ? config.tunnels[host] : Rush::Config::DefaultPort
 			end
 		end
 	end

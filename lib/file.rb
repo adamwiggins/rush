@@ -42,6 +42,10 @@ module Rush
 			lines.size
 		end
 
+		def lines_or_empty
+			lines rescue []
+		end
+
 		include Rush::Commands
 
 		def entries

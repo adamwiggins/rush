@@ -5,7 +5,7 @@ describe Rush::Connection::Local do
 		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
-		@con = Rush::Connection::Remote.new('localhost')
+		@con = Rush::Connection::Remote.new('spec.example.com')
 	end
 
 	after(:each) do
@@ -76,5 +76,22 @@ describe Rush::Connection::Local do
 		@con.stub!(:transmit)
 		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("")
 		@con.size('full_path')
+	end
+
+	it "gets the real host and port from the tunnels list" do
+		mock_config do |config|
+			@con.stub!(:config).and_return(config)
+			config.tunnels_file.write("#{@con.host}:123")
+			@con.get_real_host.should == 'localhost'
+			@con.get_real_port.should == 123
+		end
+	end
+
+	it "returns the standard host and port when there is no tunnel" do
+		mock_config do |config|
+			@con.stub!(:config).and_return(config)
+			@con.get_real_host.should == @con.host
+			@con.get_real_port.should == Rush::Config::DefaultPort
+		end
 	end
 end

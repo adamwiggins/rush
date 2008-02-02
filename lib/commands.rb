@@ -32,7 +32,8 @@ module Rush
 
 		def line_count
 			entries.inject(0) do |count, entry|
-				count += entry.contents.split("\n").size
+				count += entry.lines.size if !entry.dir?
+				count
 			end
 		end
 	end

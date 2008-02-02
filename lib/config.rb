@@ -43,7 +43,7 @@ module Rush
 
 		def passwords
 			hash = {}
-			passwords_file.contents_or_blank.split("\n").each do |line|
+			passwords_file.lines_or_empty.each do |line|
 				user, password = line.split(":", 2)
 				hash[user] = password
 			end
@@ -55,7 +55,7 @@ module Rush
 		end
 
 		def credentials
-			credentials_file.contents.split("\n").first.split(":", 2)
+			credentials_file.lines.first.split(":", 2)
 		end
 
 		def credentials_user
@@ -64,6 +64,18 @@ module Rush
 
 		def credentials_password
 			credentials[1]
+		end
+
+		def tunnels_file
+			dir['tunnels']
+		end
+
+		def tunnels
+			tunnels_file.lines_or_empty.inject({}) do |hash, line|
+				host, port = line.split(':', 2)
+				hash[host] = port.to_i
+				hash
+			end
 		end
 	end
 end

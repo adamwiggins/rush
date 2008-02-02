@@ -66,4 +66,13 @@ describe Rush::Config do
 		@config.credentials_user.should == 'user'
 		@config.credentials_password.should == 'pass'
 	end
+
+	it "loads list of ssh tunnels" do
+		system "echo host.example.com:123 > #{@sandbox_dir}/tunnels"
+		@config.tunnels.should == { 'host.example.com' => 123 }
+	end
+
+	it "returns an empty hash if tunnels file is blank" do
+		@config.tunnels.should == { }
+	end
 end
