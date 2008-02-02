@@ -84,19 +84,36 @@ module Rush
 			end
 
 			def real_host
-				@real_host ||= get_real_host
+				check_tunnel
+				@real_host
 			end
 
 			def real_port
-				@real_port ||= get_real_port
+				check_tunnel
+				@real_port
 			end
 
-			def get_real_host
-				config.tunnels[host] ? 'localhost' : host
+			def check_tunnel
+				return if @real_host and @real_port
+
+				if config.tunnels[host]
+					@real_host = 'localhost'
+					@real_port = config.tunnels[host]
+				else
+					establish_tunnel
+				end
 			end
 
-			def get_real_port
-				config.tunnels[host] ? config.tunnels[host] : Rush::Config::DefaultPort
+			def establish_tunnel
+				puts "Establishing an ssh tunnel to #{host}..."
+				port = 7771
+				system "ssh -L #{port}:127.0.0.1:7770 #{host} 'sleep 9000' &"
+				tunnels = config.tunnels
+				tunnels[host] = port
+				config.save_tunnels tunnels
+				@real_host = 'localhost'
+				@real_port = port
+				sleep 0.5
 			end
 		end
 	end

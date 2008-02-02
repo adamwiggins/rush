@@ -81,17 +81,19 @@ describe Rush::Connection::Local do
 	it "gets the real host and port from the tunnels list" do
 		mock_config do |config|
 			@con.stub!(:config).and_return(config)
+			@con.stub!(:establish_tunnel)
 			config.tunnels_file.write("#{@con.host}:123")
-			@con.get_real_host.should == 'localhost'
-			@con.get_real_port.should == 123
+			@con.real_host.should == 'localhost'
+			@con.real_port.should == 123
 		end
 	end
 
-	it "returns the standard host and port when there is no tunnel" do
+	it "calls establish_tunnel when there is no tunnel" do
 		mock_config do |config|
 			@con.stub!(:config).and_return(config)
-			@con.get_real_host.should == @con.host
-			@con.get_real_port.should == Rush::Config::DefaultPort
+			@con.stub!(:establish_tunnel)
+			@con.should_receive(:establish_tunnel)
+			@con.real_host
 		end
 	end
 end

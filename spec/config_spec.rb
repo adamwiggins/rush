@@ -75,4 +75,9 @@ describe Rush::Config do
 	it "returns an empty hash if tunnels file is blank" do
 		@config.tunnels.should == { }
 	end
+
+	it "saves a list of ssh tunnels" do
+		@config.save_tunnels({ 'my.example.com' => 4000 })
+		@config.tunnels_file.contents.should == "my.example.com:4000\n"
+	end
 end

@@ -77,5 +77,13 @@ module Rush
 				hash
 			end
 		end
+
+		def save_tunnels(hash)
+			string = ""
+			hash.each do |host, port|
+				string += "#{host}:#{port}\n"
+			end
+			tunnels_file.write string
+		end
 	end
 end
