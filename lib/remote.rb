@@ -73,7 +73,7 @@ module Rush
 				req = Net::HTTP::Post.new(uri)
 				req.basic_auth config.credentials_user, config.credentials_password
 
-				Net::HTTP.start(host, RUSH_PORT) do |http|
+				Net::HTTP.start(host, Rush::Config::DefaultPort) do |http|
 					res = http.request(req, payload)
 					raise NotAuthorized if res.code == "401"
 					raise FailedTransmit if res.code != "200"

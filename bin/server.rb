@@ -52,7 +52,7 @@ class RushHandler < Mongrel::HttpHandler
 end
 
 host = "127.0.0.1"
-port = RUSH_PORT
+port = Rush::Config::DefaultPort
 
 puts "rushd listening on #{host}:#{port}"
 

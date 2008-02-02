@@ -1,5 +1,7 @@
 module Rush
 	class Config
+		DefaultPort = 7770
+
 		attr_reader :dir
 
 		def initialize(location=nil)
