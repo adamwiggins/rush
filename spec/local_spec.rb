@@ -60,10 +60,10 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
 	end
 
-	it "receive -> index(base_path, glob)" do
+	it "receive -> index(base_path, pattern)" do
 		@con.stub!(:index)
-		@con.should_receive(:index).with('base_path', '*').and_return([])
-		@con.receive(:action => 'index', :base_path => 'base_path', :glob => '*')
+		@con.should_receive(:index).with('base_path', 'pat').and_return([])
+		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat')
 	end
 
 	it "receive -> stat(full_path)" do
