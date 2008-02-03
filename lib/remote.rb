@@ -43,8 +43,8 @@ module Rush
 				transmit(:action => 'write_archive', :dir => dir, :payload => archive)
 			end
 
-			def index(full_path)
-				transmit(:action => 'index', :full_path => full_path).split("\n")
+			def index(base_path, glob)
+				transmit(:action => 'index', :base_path => base_path, :glob => glob).split("\n")
 			end
 
 			def stat(full_path)

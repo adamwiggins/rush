@@ -55,12 +55,12 @@ module Rush
 				end
 			end
 
-			def index(full_path)
+			def index(base_path, glob)
 				dirs = []
 				files = []
-				::Dir.open(full_path).each do |fname|
+				::Dir.open(base_path).each do |fname|
 					next if fname == '.' or fname == '..'
-					full_fname = "#{full_path}/#{fname}"
+					full_fname = "#{base_path}/#{fname}"
 					if ::File.directory? full_fname
 						dirs << fname + "/"
 					else
@@ -96,7 +96,7 @@ module Rush
 					when 'copy'           then copy(params[:src], params[:dst])
 					when 'read_archive'   then read_archive(params[:full_path])
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
-					when 'index'          then index(params[:full_path]).join("\n") + "\n"
+					when 'index'          then index(params[:base_path], params[:glob]).join("\n") + "\n"
 					when 'stat'           then YAML.dump(stat(params[:full_path]))
 					when 'size'           then size(params[:full_path])
 				else

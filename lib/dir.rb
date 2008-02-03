@@ -9,7 +9,7 @@ module Rush
 		end
 
 		def contents
-			connection.index(full_path).map do |fname|
+			connection.index(full_path, '*').map do |fname|
 				Rush::Entry.factory("#{full_path}#{fname}", box)
 			end
 		end

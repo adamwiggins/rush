@@ -113,7 +113,7 @@ describe Rush::Dir do
 		@dir['1'].create
 		@dir['2/3/'].create['4'].create
 		@dir['a/b/c/'].create['d'].create
-		@dir.files_flattened.should == @dir.make_entries(%w(1 2/3/4 a/b/c/d))
+		@dir.files_flattened.should == @dir.make_entries(%w(1 a/b/c/d 2/3/4))
 	end
 
 	it "lists flattened dirs from all nested subdirectories" do

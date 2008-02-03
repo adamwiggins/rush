@@ -60,10 +60,10 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
 	end
 
-	it "receive -> index(full_path)" do
+	it "receive -> index(base_path, glob)" do
 		@con.stub!(:index)
-		@con.should_receive(:index).with('full_path').and_return([])
-		@con.receive(:action => 'index', :full_path => 'full_path')
+		@con.should_receive(:index).with('base_path', '*').and_return([])
+		@con.receive(:action => 'index', :base_path => 'base_path', :glob => '*')
 	end
 
 	it "receive -> stat(full_path)" do
@@ -138,7 +138,7 @@ describe Rush::Connection::Local do
 
 	it "index gives a list of files and dirs in a dir" do
 		system "cd #{@sandbox_dir}; mkdir dir; touch file"
-		@con.index(@sandbox_dir).should == [ 'dir/', 'file' ]
+		@con.index(@sandbox_dir, '*').should == [ 'dir/', 'file' ]
 	end
 
 	it "stat gives file stats like size and timestamps" do
