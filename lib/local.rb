@@ -55,11 +55,16 @@ module Rush
 				end
 			end
 
-			def index(base_path, glob)
+			def index(base_path, pattern)
+				pattern = pattern.length == 0 ? nil : Regexp.new(pattern)
+
 				dirs = []
 				files = []
 				::Dir.open(base_path).each do |fname|
 					next if fname == '.' or fname == '..'
+
+					next unless pattern.nil? or fname.match(pattern)
+
 					full_fname = "#{base_path}/#{fname}"
 					if ::File.directory? full_fname
 						dirs << fname + "/"

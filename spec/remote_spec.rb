@@ -62,8 +62,8 @@ describe Rush::Connection::Local do
 
 	it "transmits index" do
 		@con.stub!(:transmit)
-		@con.should_receive(:transmit).with(:action => 'index', :base_path => 'base_path', :glob => '*').and_return("")
-		@con.index('base_path', '*')
+		@con.should_receive(:transmit).with(:action => 'index', :base_path => 'base_path', :pattern => '.*').and_return("")
+		@con.index('base_path', '.*')
 	end
 
 	it "transmits stat" do

@@ -9,9 +9,7 @@ module Rush
 		end
 
 		def contents
-			connection.index(full_path, '*').map do |fname|
-				Rush::Entry.factory("#{full_path}#{fname}", box)
-			end
+			find_by_regexp(//)
 		end
 
 		def files
@@ -48,8 +46,8 @@ module Rush
 		end
 
 		def find_by_regexp(pattern)
-			contents.select do |entry|
-				entry.name.match(pattern)
+			connection.index(full_path, pattern.source).map do |fname|
+				Rush::Entry.factory("#{full_path}#{fname}", box)
 			end
 		end
 

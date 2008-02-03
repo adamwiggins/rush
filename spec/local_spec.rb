@@ -136,9 +136,14 @@ describe Rush::Connection::Local do
 		File.exists?("#{@sandbox_dir}/dst/a/b").should be_true
 	end
 
-	it "index gives a list of files and dirs in a dir" do
+	it "index fetches list of all files and dirs in a dir when pattern is empty" do
 		system "cd #{@sandbox_dir}; mkdir dir; touch file"
-		@con.index(@sandbox_dir, '*').should == [ 'dir/', 'file' ]
+		@con.index(@sandbox_dir, '').should == [ 'dir/', 'file' ]
+	end
+
+	it "index fetches only files with a certain extension with a flat pattern, *.rb" do
+		system "cd #{@sandbox_dir}; mkdir dir; touch a.rb; touch b.txt"
+		@con.index(@sandbox_dir, "^.*\.rb$").should == [ 'a.rb' ]
 	end
 
 	it "stat gives file stats like size and timestamps" do
