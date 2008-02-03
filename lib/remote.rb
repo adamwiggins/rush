@@ -47,6 +47,10 @@ module Rush
 				transmit(:action => 'index', :base_path => base_path, :pattern => pattern).split("\n")
 			end
 
+			def index_tree(base_path)
+				transmit(:action => 'index_tree', :base_path => base_path)
+			end
+
 			def stat(full_path)
 				YAML.load(transmit(:action => 'stat', :full_path => full_path))
 			end

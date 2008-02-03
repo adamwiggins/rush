@@ -55,6 +55,12 @@ module Rush
 			Regexp.new("^" + glob.gsub(/\./, '\\.').gsub(/\*/, '.*') + "$")
 		end
 
+		def entries_tree
+			connection.index_tree(full_path).map do |fname|
+				Rush::Entry.factory("#{full_path}#{fname}", box)
+			end
+		end
+
 		def files_flattened
 			dirs.inject(files) do |all, subdir|
 				all += subdir.files_flattened

@@ -53,6 +53,11 @@ describe Rush::Dir do
 		@dir.contents.size.should == 2
 	end
 
+	it "fetches the entry_tree of all contents recursively" do
+		@dir['a/'].create['b/'].create['c'].create
+		@dir.entries_tree.should == @dir.make_entries(%w(a/ a/b/ a/b/c))
+	end
+
 	it "find_by_name finds a single entry in the contents" do
 		file = @dir.create_file('one.rb')
 		@dir.find_by_name('one.rb').should == file

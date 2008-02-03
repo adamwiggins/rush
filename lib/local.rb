@@ -75,6 +75,24 @@ module Rush
 				dirs + files
 			end
 
+			def index_tree(root, dir=nil)
+				full_dir = "#{root}/#{dir || ''}"
+
+				entries = []
+				::Dir.open(full_dir).each do |fname|
+					next if fname.slice(0, 1) == '.'
+
+					path = (dir ? "#{dir}/" : "") + fname
+					if ::File.directory? "#{root}/#{path}"
+						entries << path + "/"
+						entries += index_tree(root, path)
+					else
+						entries << path
+					end
+				end
+				entries
+			end
+
 			def stat(full_path)
 				s = ::File.stat(full_path)
 				{
@@ -102,6 +120,7 @@ module Rush
 					when 'read_archive'   then read_archive(params[:full_path])
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
 					when 'index'          then index(params[:base_path], params[:pattern]).join("\n") + "\n"
+					when 'index_tree'     then index_tree(params[:base_path]).join("\n") + "\n"
 					when 'stat'           then YAML.dump(stat(params[:full_path]))
 					when 'size'           then size(params[:full_path])
 				else

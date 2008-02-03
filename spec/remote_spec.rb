@@ -66,6 +66,12 @@ describe Rush::Connection::Local do
 		@con.index('base_path', '.*')
 	end
 
+	it "transmits index_tree" do
+		@con.stub!(:transmit)
+		@con.should_receive(:transmit).with(:action => 'index_tree', :base_path => 'base_path').and_return("")
+		@con.index_tree('base_path')
+	end
+
 	it "transmits stat" do
 		@con.stub!(:transmit)
 		@con.should_receive(:transmit).with(:action => 'stat', :full_path => 'full_path').and_return("")

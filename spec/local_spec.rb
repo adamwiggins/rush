@@ -66,6 +66,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat')
 	end
 
+	it "receive -> index_tree(base_path)" do
+		@con.stub!(:index_tree)
+		@con.should_receive(:index_tree).with('base_path').and_return([])
+		@con.receive(:action => 'index_tree', :base_path => 'base_path')
+	end
+
 	it "receive -> stat(full_path)" do
 		@con.stub!(:stat)
 		@con.should_receive(:stat).with('full_path').and_return({})
@@ -142,8 +148,13 @@ describe Rush::Connection::Local do
 	end
 
 	it "index fetches only files with a certain extension with a flat pattern, *.rb" do
-		system "cd #{@sandbox_dir}; mkdir dir; touch a.rb; touch b.txt"
-		@con.index(@sandbox_dir, "^.*\.rb$").should == [ 'a.rb' ]
+		system "cd #{@sandbox_dir}; touch a.rb; touch b.txt"
+		@con.index(@sandbox_dir, '^.*\.rb$').should == [ 'a.rb' ]
+	end
+
+	it "index_tree fetches entries recursively" do
+		system "cd #{@sandbox_dir}; mkdir -p a/b; touch a/b/c"
+		@con.index_tree(@sandbox_dir).should == [ 'a/', 'a/b/', 'a/b/c' ]
 	end
 
 	it "stat gives file stats like size and timestamps" do
