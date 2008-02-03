@@ -18,8 +18,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits file_contents" do
-		@con.should_receive(:transmit).with(:action => 'file_contents', :full_path => 'file')
-		@con.file_contents('file')
+		@con.should_receive(:transmit).with(:action => 'file_contents', :full_path => 'file').and_return('contents')
+		@con.file_contents('file').should == 'contents'
 	end
 
 	it "transmits destroy" do
@@ -43,8 +43,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits read_archive" do
-		@con.should_receive(:transmit).with(:action => 'read_archive', :full_path => 'full_path')
-		@con.read_archive('full_path')
+		@con.should_receive(:transmit).with(:action => 'read_archive', :full_path => 'full_path').and_return('archive data')
+		@con.read_archive('full_path').should == 'archive data'
 	end
 
 	it "transmits write_archive" do
@@ -53,18 +53,18 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits index" do
-		@con.should_receive(:transmit).with(:action => 'index', :base_path => 'base_path', :pattern => '.*').and_return("")
-		@con.index('base_path', '.*')
+		@con.should_receive(:transmit).with(:action => 'index', :base_path => 'base_path', :pattern => '.*').and_return("1\n2\n")
+		@con.index('base_path', '.*').should == %w(1 2)
 	end
 
 	it "transmits index_tree" do
-		@con.should_receive(:transmit).with(:action => 'index_tree', :base_path => 'base_path').and_return("")
-		@con.index_tree('base_path')
+		@con.should_receive(:transmit).with(:action => 'index_tree', :base_path => 'base_path').and_return("1\n2\n")
+		@con.index_tree('base_path').should == %w(1 2)
 	end
 
 	it "transmits stat" do
-		@con.should_receive(:transmit).with(:action => 'stat', :full_path => 'full_path').and_return("")
-		@con.stat('full_path')
+		@con.should_receive(:transmit).with(:action => 'stat', :full_path => 'full_path').and_return(YAML.dump(1 => 2))
+		@con.stat('full_path').should == { 1 => 2 }
 	end
 
 	it "transmits size" do

@@ -18,8 +18,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> file_contents(file)" do
-		@con.should_receive(:file_contents).with('file')
-		@con.receive(:action => 'file_contents', :full_path => 'file')
+		@con.should_receive(:file_contents).with('file').and_return('the contents')
+		@con.receive(:action => 'file_contents', :full_path => 'file').should == 'the contents'
 	end
 
 	it "receive -> destroy(file or dir)" do
@@ -43,8 +43,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> read_archive(full_path)" do
-		@con.should_receive(:read_archive).with('full_path')
-		@con.receive(:action => 'read_archive', :full_path => 'full_path')
+		@con.should_receive(:read_archive).with('full_path').and_return('archive data')
+		@con.receive(:action => 'read_archive', :full_path => 'full_path').should == 'archive data'
 	end
 
 	it "receive -> write_archive(archive, dir)" do
@@ -53,23 +53,23 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> index(base_path, pattern)" do
-		@con.should_receive(:index).with('base_path', 'pat').and_return([])
-		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat')
+		@con.should_receive(:index).with('base_path', 'pat').and_return(%w(1 2))
+		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat').should == "1\n2\n"
 	end
 
 	it "receive -> index_tree(base_path)" do
-		@con.should_receive(:index_tree).with('base_path').and_return([])
-		@con.receive(:action => 'index_tree', :base_path => 'base_path')
+		@con.should_receive(:index_tree).with('base_path').and_return(%w(1 2))
+		@con.receive(:action => 'index_tree', :base_path => 'base_path').should == "1\n2\n"
 	end
 
 	it "receive -> stat(full_path)" do
-		@con.should_receive(:stat).with('full_path').and_return({})
-		@con.receive(:action => 'stat', :full_path => 'full_path')
+		@con.should_receive(:stat).with('full_path').and_return(1 => 2)
+		@con.receive(:action => 'stat', :full_path => 'full_path').should == YAML.dump(1 => 2)
 	end
 
 	it "receive -> size(full_path)" do
-		@con.should_receive(:size).with('full_path')
-		@con.receive(:action => 'size', :full_path => 'full_path')
+		@con.should_receive(:size).with('full_path').and_return("1024")
+		@con.receive(:action => 'size', :full_path => 'full_path').should == "1024"
 	end
 
 	it "receive -> unknown action exception" do

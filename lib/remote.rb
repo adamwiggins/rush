@@ -48,7 +48,7 @@ module Rush
 			end
 
 			def index_tree(base_path)
-				transmit(:action => 'index_tree', :base_path => base_path)
+				transmit(:action => 'index_tree', :base_path => base_path).split("\n")
 			end
 
 			def stat(full_path)
