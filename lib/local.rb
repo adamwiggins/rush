@@ -90,7 +90,7 @@ module Rush
 						entries << path
 					end
 				end
-				entries
+				entries.sort
 			end
 
 			def stat(full_path)

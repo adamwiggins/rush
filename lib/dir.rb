@@ -62,15 +62,11 @@ module Rush
 		end
 
 		def files_flattened
-			dirs.inject(files) do |all, subdir|
-				all += subdir.files_flattened
-			end
+			entries_tree.select { |e| !e.dir? }
 		end
 
 		def dirs_flattened
-			dirs.inject(dirs) do |all, subdir|
-				all += subdir.dirs_flattened
-			end
+			entries_tree.select { |e| e.dir? }
 		end
 
 		def find_by_doubleglob(doubleglob)
