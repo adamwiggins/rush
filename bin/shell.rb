@@ -73,6 +73,7 @@ module Rush
 					end
 					print "\n"
 				end
+				puts "#{res.entries.size} matching files with #{res.lines.size} matching lines"
 			else
 				puts "=> #{res.inspect}"
 			end
