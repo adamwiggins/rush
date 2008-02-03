@@ -56,7 +56,7 @@ module Rush
 			end
 
 			def index(base_path, pattern)
-				pattern = pattern.length == 0 ? nil : Regexp.new(pattern)
+				pattern = pattern and pattern.length > 0 ? Regexp.new(pattern) : nil
 
 				dirs = []
 				files = []
