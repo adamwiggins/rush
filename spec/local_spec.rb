@@ -13,73 +13,61 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> write_file(file, contents)" do
-		@con.stub!(:write_file)
 		@con.should_receive(:write_file).with('file', 'contents')
 		@con.receive(:action => 'write_file', :full_path => 'file', :payload => 'contents')
 	end
 
 	it "receive -> file_contents(file)" do
-		@con.stub!(:file_contents)
 		@con.should_receive(:file_contents).with('file')
 		@con.receive(:action => 'file_contents', :full_path => 'file')
 	end
 
 	it "receive -> destroy(file or dir)" do
-		@con.stub!(:destroy)
 		@con.should_receive(:destroy).with('file')
 		@con.receive(:action => 'destroy', :full_path => 'file')
 	end
 
 	it "receive -> create_dir(path)" do
-		@con.stub!(:create_dir)
 		@con.should_receive(:create_dir).with('dir')
 		@con.receive(:action => 'create_dir', :full_path => 'dir')
 	end
 
 	it "receive -> rename(path, name, new_name)" do
-		@con.stub!(:rename)
 		@con.should_receive(:rename).with('path', 'name', 'new_name')
 		@con.receive(:action => 'rename', :path => 'path', :name => 'name', :new_name => 'new_name')
 	end
 
 	it "receive -> copy(src, dst)" do
-		@con.stub!(:copy)
 		@con.should_receive(:copy).with('src', 'dst')
 		@con.receive(:action => 'copy', :src => 'src', :dst => 'dst')
 	end
 
 	it "receive -> read_archive(full_path)" do
-		@con.stub!(:read_archive)
 		@con.should_receive(:read_archive).with('full_path')
 		@con.receive(:action => 'read_archive', :full_path => 'full_path')
 	end
 
 	it "receive -> write_archive(archive, dir)" do
-		@con.stub!(:write_archive)
 		@con.should_receive(:write_archive).with('archive', 'dir')
 		@con.receive(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
 	end
 
 	it "receive -> index(base_path, pattern)" do
-		@con.stub!(:index)
 		@con.should_receive(:index).with('base_path', 'pat').and_return([])
 		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat')
 	end
 
 	it "receive -> index_tree(base_path)" do
-		@con.stub!(:index_tree)
 		@con.should_receive(:index_tree).with('base_path').and_return([])
 		@con.receive(:action => 'index_tree', :base_path => 'base_path')
 	end
 
 	it "receive -> stat(full_path)" do
-		@con.stub!(:stat)
 		@con.should_receive(:stat).with('full_path').and_return({})
 		@con.receive(:action => 'stat', :full_path => 'full_path')
 	end
 
 	it "receive -> size(full_path)" do
-		@con.stub!(:size)
 		@con.should_receive(:size).with('full_path')
 		@con.receive(:action => 'size', :full_path => 'full_path')
 	end

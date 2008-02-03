@@ -81,25 +81,21 @@ describe Rush::Dir do
 	end
 
 	it "maps [] to find_by_name" do
-		@dir.stub!(:find_by_name)
 		@dir.should_receive(:find_by_name).once
 		@dir['one']
 	end
 
 	it "maps [] with a wildcard character to find_by_glob" do
-		@dir.stub!(:find_by_glob)
 		@dir.should_receive(:find_by_glob).once
 		@dir['*']
 	end
 
 	it "maps [] with a regexp to find_by_regexp" do
-		@dir.stub!(:find_by_regexp)
 		@dir.should_receive(:find_by_regexp).once
 		@dir[/pat/]
 	end
 
 	it "can use symbols or strings for [] access" do
-		@dir.stub!(:find_by_name)
 		@dir.should_receive(:find_by_name).once.with('subdir')
 		@dir[:subdir]
 	end
