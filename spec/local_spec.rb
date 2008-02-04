@@ -57,9 +57,9 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat').should == "1\n2\n"
 	end
 
-	it "receive -> index_tree(base_path)" do
-		@con.should_receive(:index_tree).with('base_path').and_return(%w(1 2))
-		@con.receive(:action => 'index_tree', :base_path => 'base_path').should == "1\n2\n"
+	it "receive -> index_tree(base_path, pattern)" do
+		@con.should_receive(:index_tree).with('base_path', 'pat').and_return(%w(1 2))
+		@con.receive(:action => 'index_tree', :base_path => 'base_path', :pattern => 'pat').should == "1\n2\n"
 	end
 
 	it "receive -> stat(full_path)" do

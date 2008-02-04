@@ -123,7 +123,7 @@ module Rush
 					when 'read_archive'   then read_archive(params[:full_path])
 					when 'write_archive'  then write_archive(params[:payload], params[:dir])
 					when 'index'          then index(params[:base_path], params[:pattern]).join("\n") + "\n"
-					when 'index_tree'     then index_tree(params[:base_path]).join("\n") + "\n"
+					when 'index_tree'     then index_tree(params[:base_path], params[:pattern]).join("\n") + "\n"
 					when 'stat'           then YAML.dump(stat(params[:full_path]))
 					when 'size'           then size(params[:full_path])
 				else
