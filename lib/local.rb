@@ -75,7 +75,9 @@ module Rush
 				dirs + files
 			end
 
-			def index_tree(root, dir=nil)
+			def index_tree(root, pattern=nil, dir=nil)
+				pattern = pattern and pattern.length > 0 ? Regexp.new(pattern) : nil
+
 				full_dir = "#{root}/#{dir || ''}"
 
 				entries = []
@@ -83,11 +85,12 @@ module Rush
 					next if fname.slice(0, 1) == '.'
 
 					path = (dir ? "#{dir}/" : "") + fname
+
 					if ::File.directory? "#{root}/#{path}"
-						entries << path + "/"
-						entries += index_tree(root, path)
+						entries << path + "/" if pattern.nil? or fname.match(pattern)
+						entries += index_tree(root, pattern, path)
 					else
-						entries << path
+						entries << path if pattern.nil? or fname.match(pattern)
 					end
 				end
 				entries.sort

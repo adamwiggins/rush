@@ -145,6 +145,11 @@ describe Rush::Connection::Local do
 		@con.index_tree(@sandbox_dir).should == [ 'a/', 'a/b/', 'a/b/c' ]
 	end
 
+	it "index_tree fetches entries recursively with a pattern" do
+		system "cd #{@sandbox_dir}; mkdir -p a/b; touch a/1.rb; touch a/b/2.rb; touch a/3.txt"
+		@con.index_tree(@sandbox_dir, '^.*\.rb$').should == [ 'a/1.rb', 'a/b/2.rb' ]
+	end
+
 	it "stat gives file stats like size and timestamps" do
 		@con.stat(@sandbox_dir).should have_key(:ctime)
 		@con.stat(@sandbox_dir).should have_key(:size)

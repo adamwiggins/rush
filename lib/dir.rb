@@ -51,6 +51,12 @@ module Rush
 			end
 		end
 
+		def find_tree_by_regexp(pattern)
+			connection.index_tree(full_path, pattern.source).map do |fname|
+				Rush::Entry.factory("#{full_path}#{fname}", box)
+			end
+		end
+
 		def self.glob_to_regexp(glob)
 			Regexp.new("^" + glob.gsub(/\./, '\\.').gsub(/\*/, '.*') + "$")
 		end
@@ -72,10 +78,7 @@ module Rush
 		def find_by_doubleglob(doubleglob)
 			glob = doubleglob.gsub(/^\*\*\//, '')
 
-			find_by_glob(glob) +
-			dirs_flattened.inject([]) do |all, subdir|
-				all += subdir.find_by_glob(glob)
-			end
+			find_tree_by_regexp(self.class.glob_to_regexp(glob))
 		end
 
 		def make_entries(filenames)
