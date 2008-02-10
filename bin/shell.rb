@@ -42,7 +42,10 @@ module Rush
 					eval("_ = $last_res", @pure_binding)
 					print_result res
 				rescue Exception => e
-					puts e
+					puts "Exception #{e.class}: #{e}"
+					e.backtrace.each do |t|
+						puts "   #{t}"
+					end
 				end
 			end
 		end

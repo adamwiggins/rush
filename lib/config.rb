@@ -58,12 +58,32 @@ module Rush
 			credentials_file.lines.first.split(":", 2)
 		end
 
+		def save_credentials(user, password)
+			credentials_file.write("#{user}:#{password}\n")
+		end
+
 		def credentials_user
 			credentials[0]
 		end
 
 		def credentials_password
 			credentials[1]
+		end
+
+		def ensure_credentials_exist
+			generate_credentials if credentials_file.contents_or_blank == ""
+		end
+
+		def generate_credentials
+			save_credentials(generate_user, generate_password)
+		end
+
+		def generate_user
+			rand(99999999)
+		end
+
+		def generate_password
+			rand(99999999)
 		end
 
 		def tunnels_file

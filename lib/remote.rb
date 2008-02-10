@@ -62,6 +62,8 @@ module Rush
 			class FailedTransmit < Exception; end
 
 			def transmit(params)
+				tunnel.ensure_tunnel
+
 				require 'net/http'
 
 				payload = params.delete(:payload)

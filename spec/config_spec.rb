@@ -80,4 +80,20 @@ describe Rush::Config do
 		@config.save_tunnels({ 'my.example.com' => 4000 })
 		@config.tunnels_file.contents.should == "my.example.com:4000\n"
 	end
+
+	it "ensure_credentials_exist doesn't do anything if credentials already exist" do
+		@config.credentials_file.write "dummy"
+		@config.should_receive(:generate_credentials).exactly(0).times
+		@config.ensure_credentials_exist
+	end
+
+	it "ensure_credentials_exist generates credentials file if they don't exist" do
+		@config.should_receive(:generate_credentials)
+		@config.ensure_credentials_exist
+	end
+
+	it "generate_credentials saves credentials" do
+		@config.generate_credentials
+		@config.credentials_file.contents.should match(/^.+:.+$/)
+	end
 end
