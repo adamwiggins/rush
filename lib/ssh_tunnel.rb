@@ -35,8 +35,7 @@ class Rush::SshTunnel
 		# the following horror is exactly why rush is needed
 		passwords_file = "~/.rush/passwords"
 		string = "'#{string}'"
-		command = "M=`grep #{string} #{passwords_file} | wc -l`; if [ $M = 0 ]; then echo #{string} >> #{passwords_file}; fi"
-		system "ssh #{@real_host} '#{command}'"
+		ssh "M=`grep #{string} #{passwords_file} | wc -l`; if [ $M = 0 ]; then echo #{string} >> #{passwords_file}; fi"
 	end
 
 	def establish_tunnel
@@ -53,11 +52,15 @@ class Rush::SshTunnel
 	end
 
 	def make_ssh_tunnel(options)
-		raise SshFailed unless system(bash_ssh_command(options))
+		raise SshFailed unless ssh(build_tunnel_args(options))
 	end
 
-	def bash_ssh_command(options)
-		"ssh -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]} '#{options[:stall_command]}' &"
+	def ssh(command)
+		raise SshFailed unless system("ssh #{@real_host} '#{command}'")
+	end
+
+	def build_tunnel_args(options)
+		"-L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]} '#{options[:stall_command]}' &"
 	end
 
 	def next_available_port

@@ -40,16 +40,16 @@ describe Rush::SshTunnel do
 	end
 
 	it "constructs the bash ssh command from an options hash" do
-		@tunnel.bash_ssh_command({
+		@tunnel.build_tunnel_args({
 			:local_port => 123,
 			:remote_port => 456,
 			:ssh_host => 'example.com',
 			:stall_command => 'stall'
-		}).should == "ssh -L 123:127.0.0.1:456 example.com 'stall' &"
+		}).should == "-L 123:127.0.0.1:456 example.com 'stall' &"
 	end
 
 	it "throws an exception when the ssh shell command fails" do
-		@tunnel.should_receive(:bash_ssh_command).with({}).and_return("/bin/false")
+		@tunnel.should_receive(:ssh).and_return(false)
 		lambda { @tunnel.make_ssh_tunnel({}) }.should raise_error(Rush::SshTunnel::SshFailed)
 		@tunnel.config.tunnels_file.contents_or_blank.should == ""
 	end
