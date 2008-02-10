@@ -16,8 +16,8 @@ class Rush::SshTunnel
 	def ensure_tunnel
 		return if @port
 
-		if config.tunnels[host]
-			@port = config.tunnels[host]
+		if config.tunnels[@real_host]
+			@port = config.tunnels[@real_host]
 		else
 			display "Connecting to #{@real_host}..."
 			push_credentials

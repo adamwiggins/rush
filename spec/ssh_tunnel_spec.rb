@@ -11,18 +11,20 @@ describe Rush::SshTunnel do
 		mock_config_cleanup
 	end
 
-	it "gets the real host and port from the tunnels list" do
-		@tunnel.stub!(:establish_tunnel)
-		@tunnel.config.tunnels_file.write("#{@tunnel.host}:123")
-		@tunnel.host.should == 'localhost'
-		@tunnel.port.should == 123
-	end
-
-	it "sets everything up for the tunnel when one does not already exist" do
+	it "ensure_tunnel sets everything up for the tunnel when one does not already exist" do
 		@tunnel.should_receive(:push_credentials)
 		@tunnel.should_receive(:launch_rushd)
 		@tunnel.should_receive(:establish_tunnel)
-		@tunnel.port
+		@tunnel.ensure_tunnel
+	end
+
+	it "tunnel host is always local" do
+		@tunnel.host.should == 'localhost'
+	end
+
+	it "existing tunnel is used when it is specified in the tunnels file" do
+		@tunnel.config.tunnels_file.write "spec.example.com:4567\n"
+		@tunnel.port.should == 4567
 	end
 
 	it "picks the first port number when there are no tunnels yet" do
