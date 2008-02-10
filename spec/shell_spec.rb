@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/base'
 require File.dirname(__FILE__) + '/../bin/shell'
 
 describe Rush::Shell do
-	before(:each) do
+	before do
 		@shell = Rush::Shell.new
 	end
 

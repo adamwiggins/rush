@@ -1,14 +1,14 @@
 require File.dirname(__FILE__) + '/base'
 
 describe Rush::Connection::Local do
-	before(:each) do
+	before do
 		@sandbox_dir = "/tmp/rush_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}; mkdir -p #{@sandbox_dir}"
 
 		@con = Rush::Connection::Remote.new('spec.example.com')
 	end
 
-	after(:each) do
+	after do
 		system "rm -rf #{@sandbox_dir}"
 	end
 

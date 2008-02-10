@@ -2,14 +2,14 @@ require File.dirname(__FILE__) + '/base'
 
 if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X cause no /proc
 	describe Rush::Process do
-		before(:each) do
+		before do
 			@pid = fork do
 				sleep 999
 			end
 			@process = Rush::Process.all.detect { |p| p.pid == @pid }
 		end
 
-		after(:each) do
+		after do
 			system "kill -9 #{@pid}"
 		end
 

@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/base'
 
 describe Rush::SearchResults do
-	before(:each) do
+	before do
 		@results = Rush::SearchResults.new(/pat/)
 		@file = Rush::File.new("file")
 	end

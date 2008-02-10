@@ -1,13 +1,13 @@
 require File.dirname(__FILE__) + '/base'
 
 describe Rush::Config do
-	before(:each) do
+	before do
 		@sandbox_dir = "/tmp/rush_config_spec.#{Process.pid}"
 		system "rm -rf #{@sandbox_dir}"
 		@config = Rush::Config.new(@sandbox_dir)
 	end
 
-	after(:each) do
+	after do
 		system "rm -rf #{@sandbox_dir}"
 	end
 

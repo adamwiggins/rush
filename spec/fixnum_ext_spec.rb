@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/base'
 
 describe Fixnum do
-	before(:each) do
+	before do
 		@num = 2
 	end
 

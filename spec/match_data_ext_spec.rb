@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/base'
 
 describe MatchData do
-	before(:each) do
+	before do
 		@match = "abc".match(/b/)
 	end
 

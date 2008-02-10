@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/base'
 
 describe String do
-	before(:each) do
+	before do
 		@string = "abc"
 	end
 
