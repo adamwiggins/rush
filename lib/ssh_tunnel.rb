@@ -14,16 +14,24 @@ class Rush::SshTunnel
 	end
 
 	def ensure_tunnel
-		return if @port
+		if @port
+			ensure_still_alive
+			return
+		end
 
 		if config.tunnels[@real_host]
 			@port = config.tunnels[@real_host]
+			ensure_still_alive
 		else
-			display "Connecting to #{@real_host}..."
-			push_credentials
-			launch_rushd
-			establish_tunnel
+			setup_everything
 		end
+	end
+
+	def setup_everything
+		display "Connecting to #{@real_host}..."
+		push_credentials
+		launch_rushd
+		establish_tunnel
 	end
 
 	def push_credentials
@@ -48,13 +56,34 @@ class Rush::SshTunnel
 		display "Establishing ssh tunnel"
 		@port = next_available_port
 
-		make_ssh_tunnel(:local_port => port, :remote_port => Rush::Config::DefaultPort, :ssh_host => @real_host, :stall_command => "sleep 9000")
+		make_ssh_tunnel
 
 		tunnels = config.tunnels
-		tunnels[@real_host] = port
+		tunnels[@real_host] = @port
 		config.save_tunnels tunnels
 
 		sleep 0.5
+	end
+
+	def tunnel_options
+		{
+			:local_port => @port,
+			:remote_port => Rush::Config::DefaultPort,
+			:ssh_host => @real_host,
+			:stall_command => "sleep 9000"
+		}
+	end
+
+	def ensure_still_alive
+		setup_everything unless tunnel_alive?
+	end
+
+	def tunnel_alive?
+		`#{tunnel_count_command}`.to_i > 0
+	end
+
+	def tunnel_count_command
+		"ps aux | grep '#{ssh_tunnel_command_without_stall}' | grep -v grep | wc -l"
 	end
 
 	class SshFailed < Exception; end
@@ -63,12 +92,17 @@ class Rush::SshTunnel
 		raise SshFailed unless system("ssh #{@real_host} '#{command}'")
 	end
 
-	def make_ssh_tunnel(options)
-		raise SshFailed unless system("ssh #{build_tunnel_args(options)}")
+	def make_ssh_tunnel
+		raise SshFailed unless system(ssh_tunnel_command)
 	end
 
-	def build_tunnel_args(options)
-		"-L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]} '#{options[:stall_command]}' &"
+	def ssh_tunnel_command_without_stall
+		options = tunnel_options
+		"ssh -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
+	end
+
+	def ssh_tunnel_command
+		ssh_tunnel_command_without_stall + " \"#{tunnel_options[:stall_command]}\""
 	end
 
 	def next_available_port
