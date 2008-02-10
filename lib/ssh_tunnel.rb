@@ -19,16 +19,17 @@ class Rush::SshTunnel
 		if config.tunnels[host]
 			@port = config.tunnels[host]
 		else
+			display "Connecting to #{@real_host}..."
 			push_credentials
+			launch_rushd
 			establish_tunnel
 		end
 	end
 
-	class SshFailed < Exception; end
-
 	def push_credentials
+		display "Pushing credentials"
 		config.ensure_credentials_exist
-		raise SshFailed unless ssh_append_to_credentials(config.credentials_file.contents.strip)
+		ssh_append_to_credentials(config.credentials_file.contents.strip)
 	end
 
 	def ssh_append_to_credentials(string)
@@ -38,8 +39,13 @@ class Rush::SshTunnel
 		ssh "M=`grep #{string} #{passwords_file} | wc -l`; if [ $M = 0 ]; then echo #{string} >> #{passwords_file}; fi"
 	end
 
+	def launch_rushd
+		display "Launching rushd"
+		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd &")
+	end
+
 	def establish_tunnel
-		display "Establishing an ssh tunnel to #{@real_host}..."
+		display "Establishing ssh tunnel"
 		@port = next_available_port
 
 		make_ssh_tunnel(:local_port => port, :remote_port => Rush::Config::DefaultPort, :ssh_host => @real_host, :stall_command => "sleep 9000")
@@ -51,12 +57,14 @@ class Rush::SshTunnel
 		sleep 0.5
 	end
 
-	def make_ssh_tunnel(options)
-		raise SshFailed unless ssh(build_tunnel_args(options))
-	end
+	class SshFailed < Exception; end
 
 	def ssh(command)
 		raise SshFailed unless system("ssh #{@real_host} '#{command}'")
+	end
+
+	def make_ssh_tunnel(options)
+		raise SshFailed unless system("ssh #{build_tunnel_args(options)}")
 	end
 
 	def build_tunnel_args(options)
