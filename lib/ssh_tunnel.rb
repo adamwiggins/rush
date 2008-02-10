@@ -49,7 +49,7 @@ class Rush::SshTunnel
 
 	def launch_rushd
 		display "Launching rushd"
-		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd &")
+		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd > /dev/null 2>&1 &")
 	end
 
 	def establish_tunnel
