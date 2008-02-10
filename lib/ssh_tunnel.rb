@@ -32,7 +32,11 @@ class Rush::SshTunnel
 	end
 
 	def ssh_append_to_credentials(string)
-		system("ssh #{@real_host} 'echo #{string} >> ~/.rush/passwords'")
+		# the following horror is exactly why rush is needed
+		passwords_file = "~/.rush/passwords"
+		string = "'#{string}'"
+		command = "M=`grep #{string} #{passwords_file} | wc -l`; if [ $M = 0 ]; then echo #{string} >> #{passwords_file}; fi"
+		system "ssh #{@real_host} '#{command}'"
 	end
 
 	def establish_tunnel
