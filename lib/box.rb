@@ -1,37 +1,35 @@
-module Rush
-	class Box
-		attr_reader :host
+class Rush::Box
+	attr_reader :host
 
-		def initialize(host='localhost')
-			@host = host
-		end
+	def initialize(host='localhost')
+		@host = host
+	end
 
-		def to_s
-			host
-		end
+	def to_s
+		host
+	end
 
-		def inspect
-			host
-		end
+	def inspect
+		host
+	end
 
-		def filesystem
-			Rush::Entry.factory('/', self)
-		end
+	def filesystem
+		Rush::Entry.factory('/', self)
+	end
 
-		def [](key)
-			filesystem[key]
-		end
+	def [](key)
+		filesystem[key]
+	end
 
-		def connection
-			@connection ||= make_connection
-		end
+	def connection
+		@connection ||= make_connection
+	end
 
-		def make_connection
-			host == 'localhost' ? Rush::Connection::Local.new : Rush::Connection::Remote.new(host)
-		end
+	def make_connection
+		host == 'localhost' ? Rush::Connection::Local.new : Rush::Connection::Remote.new(host)
+	end
 
-		def ==(other)
-			host == other.host
-		end
+	def ==(other)
+		host == other.host
 	end
 end
