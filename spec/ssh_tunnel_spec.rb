@@ -37,4 +37,14 @@ describe Rush::SshTunnel do
 			@tunnel.next_available_port.should == 7772
 		end
 	end
+
+	it "establishes a tunnel and saves it to ~/.rush/tunnels" do
+		mock_config do |config|
+			@tunnel.stub!(:config).and_return(config)
+			@tunnel.should_receive(:make_ssh_tunnel)
+			@tunnel.stub!(:display)
+			@tunnel.establish_tunnel
+			config.tunnels_file.contents.should == "spec.example.com:7771\n"
+		end
+	end
 end

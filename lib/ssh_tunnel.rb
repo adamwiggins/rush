@@ -1,6 +1,6 @@
 class Rush::SshTunnel
 	def initialize(real_host)
-		@real_host = host
+		@real_host = real_host
 		@port
 	end
 
@@ -24,14 +24,20 @@ class Rush::SshTunnel
 	end
 
 	def establish_tunnel
-		puts "Establishing an ssh tunnel to #{host}..."
-		port = next_available_port
-		system "ssh -L #{port}:127.0.0.1:7770 #{host} 'sleep 9000' &"
+		display "Establishing an ssh tunnel to #{@real_host}..."
+		@port = next_available_port
+
+		make_ssh_tunnel(port, '127.0.0.1', Rush::Config::DefaultPort, @real_host, "sleep 9000")
+
 		tunnels = config.tunnels
-		tunnels[host] = port
+		tunnels[@real_host] = port
 		config.save_tunnels tunnels
-		@port = port
+
 		sleep 0.5
+	end
+
+	def make_ssh_tunnel(local_port, remote_host, remote_port, ssh_host, stall_command)
+		system "ssh -L #{local_port}:#{remote_host}:#{remote_port} #{ssh_host} '#{stall_command}' &"
 	end
 
 	def next_available_port
@@ -40,5 +46,9 @@ class Rush::SshTunnel
 
 	def config
 		@config ||= Rush::Config.new
+	end
+
+	def display(msg)
+		puts msg
 	end
 end
