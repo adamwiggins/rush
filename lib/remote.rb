@@ -3,12 +3,11 @@ require 'yaml'
 module Rush
 	module Connection
 		class Remote
-			attr_reader :host
+			attr_reader :host, :tunnel
 
 			def initialize(host)
 				@host = host
-				@real_host = nil
-				@real_port = nil
+				@tunnel = SshTunnel.new(host)
 			end
 
 			def write_file(full_path, contents)
@@ -75,7 +74,7 @@ module Rush
 				req = Net::HTTP::Post.new(uri)
 				req.basic_auth config.credentials_user, config.credentials_password
 
-				Net::HTTP.start(real_host, real_port) do |http|
+				Net::HTTP.start(tunnel.host, tunnel.port) do |http|
 					res = http.request(req, payload)
 					raise NotAuthorized if res.code == "401"
 					raise FailedTransmit if res.code != "200"
@@ -85,43 +84,6 @@ module Rush
 
 			def config
 				@config ||= Rush::Config.new
-			end
-
-			def real_host
-				check_tunnel
-				@real_host
-			end
-
-			def real_port
-				check_tunnel
-				@real_port
-			end
-
-			def check_tunnel
-				return if @real_host and @real_port
-
-				if config.tunnels[host]
-					@real_host = 'localhost'
-					@real_port = config.tunnels[host]
-				else
-					establish_tunnel
-				end
-			end
-
-			def establish_tunnel
-				puts "Establishing an ssh tunnel to #{host}..."
-				port = next_available_port
-				system "ssh -L #{port}:127.0.0.1:7770 #{host} 'sleep 9000' &"
-				tunnels = config.tunnels
-				tunnels[host] = port
-				config.save_tunnels tunnels
-				@real_host = 'localhost'
-				@real_port = port
-				sleep 0.5
-			end
-
-			def next_available_port
-				(config.tunnels.values.max || Rush::Config::DefaultPort) + 1
 			end
 		end
 	end

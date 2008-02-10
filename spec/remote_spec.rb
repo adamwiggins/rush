@@ -71,37 +71,4 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("")
 		@con.size('full_path')
 	end
-
-	it "gets the real host and port from the tunnels list" do
-		mock_config do |config|
-			@con.stub!(:config).and_return(config)
-			@con.stub!(:establish_tunnel)
-			config.tunnels_file.write("#{@con.host}:123")
-			@con.real_host.should == 'localhost'
-			@con.real_port.should == 123
-		end
-	end
-
-	it "calls establish_tunnel when there is no tunnel" do
-		mock_config do |config|
-			@con.stub!(:config).and_return(config)
-			@con.should_receive(:establish_tunnel)
-			@con.real_host
-		end
-	end
-
-	it "picks the first port number when there are no tunnels yet" do
-		mock_config do |config|
-			@con.stub!(:config).and_return(config)
-			@con.next_available_port.should == 7771
-		end
-	end
-
-	it "picks the next port number when there is already a tunnel" do
-		mock_config do |config|
-			@con.stub!(:config).and_return(config)
-			config.tunnels_file.write("#{@con.host}:7771")
-			@con.next_available_port.should == 7772
-		end
-	end
 end
