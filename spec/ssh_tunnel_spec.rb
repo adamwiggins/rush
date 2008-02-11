@@ -18,14 +18,23 @@ describe Rush::SshTunnel do
 		@tunnel.ensure_tunnel
 	end
 
-	it "tunnel host is always local" do
-		@tunnel.host.should == 'localhost'
+	it "ensure_tunnel uses the existing port as long as the tunnel is still alive" do
+		@tunnel.should_receive(:tunnel_alive?).and_return(true)
+		@tunnel.instance_eval("@port = 2345")
+		@tunnel.ensure_tunnel
+		@tunnel.port.should == 2345
 	end
 
 	it "existing tunnel is used when it is specified in the tunnels file" do
 		@tunnel.config.tunnels_file.write "spec.example.com:4567\n"
-		@tunnel.should_receive(:ensure_still_alive)
+		@tunnel.should_receive(:tunnel_alive?).and_return(true)
+		@tunnel.should_not_receive(:setup_everything)
+		@tunnel.ensure_tunnel
 		@tunnel.port.should == 4567
+	end
+
+	it "tunnel host is always local" do
+		@tunnel.host.should == 'localhost'
 	end
 
 	it "picks the first port number when there are no tunnels yet" do
@@ -64,6 +73,12 @@ describe Rush::SshTunnel do
 		@tunnel.ssh_tunnel_command.should == "ssh -f -L 123:127.0.0.1:456 example.com \"stall\""
 	end
 
+	it "ssh_tunnel_command request that the port be set" do
+		@tunnel.should_receive(:tunnel_options).at_least(:once).and_return(:local_port => nil)
+		lambda { @tunnel.ssh_tunnel_command }.should raise_error(Rush::SshTunnel::NoPortSelectedYet)
+	end
+
+
 	it "push_credentials uses ssh to append to remote host's passwords file" do
 		@tunnel.should_receive(:ssh_append_to_credentials).and_return(true)
 		@tunnel.push_credentials
@@ -74,12 +89,6 @@ describe Rush::SshTunnel do
 			cmd.should match(/rushd/)
 		end
 		@tunnel.launch_rushd
-	end
-
-	it "ensure_still_alive sets up from scratch if the tunnel is no longer alive" do
-		@tunnel.should_receive(:tunnel_alive?).and_return(false)
-		@tunnel.should_receive(:setup_everything)
-		@tunnel.ensure_still_alive
 	end
 
 	it "tunnel_alive? checks whether a tunnel is still up" do

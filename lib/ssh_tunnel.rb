@@ -1,7 +1,6 @@
 class Rush::SshTunnel
 	def initialize(real_host)
 		@real_host = real_host
-		@port
 	end
 
 	def host
@@ -9,20 +8,15 @@ class Rush::SshTunnel
 	end
 
 	def port
-		ensure_tunnel
 		@port
 	end
 
 	def ensure_tunnel
-		if @port
-			ensure_still_alive
-			return
-		end
+		return if @port and tunnel_alive?
 
-		if config.tunnels[@real_host]
-			@port = config.tunnels[@real_host]
-			ensure_still_alive
-		else
+		@port = config.tunnels[@real_host]
+
+		if !@port or !tunnel_alive?
 			setup_everything
 		end
 	end
@@ -74,19 +68,16 @@ class Rush::SshTunnel
 		}
 	end
 
-	def ensure_still_alive
-		setup_everything unless tunnel_alive?
-	end
-
 	def tunnel_alive?
 		`#{tunnel_count_command}`.to_i > 0
 	end
 
 	def tunnel_count_command
-		"ps aux | grep '#{ssh_tunnel_command_without_stall}' | grep -v grep | wc -l"
+		"ps x | grep '#{ssh_tunnel_command_without_stall}' | grep -v grep | wc -l"
 	end
 
 	class SshFailed < Exception; end
+	class NoPortSelectedYet < Exception; end
 
 	def ssh(command)
 		raise SshFailed unless system("ssh #{@real_host} '#{command}'")
@@ -98,6 +89,7 @@ class Rush::SshTunnel
 
 	def ssh_tunnel_command_without_stall
 		options = tunnel_options
+		raise NoPortSelectedYet unless options[:local_port]
 		"ssh -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
 	end
 
