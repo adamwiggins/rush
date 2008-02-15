@@ -57,11 +57,6 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'index', :base_path => 'base_path', :glob => '*').should == "1\n2\n"
 	end
 
-	it "receive -> index_tree(base_path, pattern)" do
-		@con.should_receive(:index_tree).with('base_path', 'pat').and_return(%w(1 2))
-		@con.receive(:action => 'index_tree', :base_path => 'base_path', :pattern => 'pat').should == "1\n2\n"
-	end
-
 	it "receive -> stat(full_path)" do
 		@con.should_receive(:stat).with('full_path').and_return(1 => 2)
 		@con.receive(:action => 'stat', :full_path => 'full_path').should == YAML.dump(1 => 2)
@@ -138,16 +133,6 @@ describe Rush::Connection::Local do
 	it "index fetches only files with a certain extension with a flat pattern, *.rb" do
 		system "cd #{@sandbox_dir}; touch a.rb; touch b.txt"
 		@con.index(@sandbox_dir, '*.rb').should == [ 'a.rb' ]
-	end
-
-	it "index_tree fetches entries recursively" do
-		system "cd #{@sandbox_dir}; mkdir -p a/b; touch a/b/c"
-		@con.index_tree(@sandbox_dir).should == [ 'a/', 'a/b/', 'a/b/c' ]
-	end
-
-	it "index_tree fetches entries recursively with a glob" do
-		system "cd #{@sandbox_dir}; mkdir -p a/b; touch a/1.rb; touch a/b/2.rb; touch a/3.txt"
-		@con.index_tree(@sandbox_dir, '*.rb').should == [ 'a/1.rb', 'a/b/2.rb' ]
 	end
 
 	it "stat gives file stats like size and timestamps" do

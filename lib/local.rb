@@ -69,11 +69,6 @@ class Rush::Connection::Local
 		dirs + files
 	end
 
-	def index_tree(root, glob='*')
-		glob = '*' if glob == '' or glob.nil?
-		index(root, "**/#{glob}")
-	end
-
 	def stat(full_path)
 		s = ::File.stat(full_path)
 		{
@@ -101,7 +96,6 @@ class Rush::Connection::Local
 			when 'read_archive'   then read_archive(params[:full_path])
 			when 'write_archive'  then write_archive(params[:payload], params[:dir])
 			when 'index'          then index(params[:base_path], params[:glob]).join("\n") + "\n"
-			when 'index_tree'     then index_tree(params[:base_path], params[:pattern]).join("\n") + "\n"
 			when 'stat'           then YAML.dump(stat(params[:full_path]))
 			when 'size'           then size(params[:full_path])
 		else

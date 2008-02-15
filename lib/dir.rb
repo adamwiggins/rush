@@ -41,9 +41,7 @@ class Rush::Dir < Rush::Entry
 	end
 
 	def entries_tree
-		connection.index_tree(full_path).map do |fname|
-			Rush::Entry.factory("#{full_path}#{fname}", box)
-		end
+		find_by_glob('**/*')
 	end
 
 	def files_flattened
