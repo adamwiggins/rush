@@ -69,25 +69,9 @@ class Rush::Connection::Local
 		dirs + files
 	end
 
-	def index_tree(root, pattern=nil, dir=nil)
-		pattern = pattern and pattern.length > 0 ? Regexp.new(pattern) : nil
-
-		full_dir = "#{root}/#{dir || ''}"
-
-		entries = []
-		::Dir.open(full_dir).each do |fname|
-			next if fname.slice(0, 1) == '.'
-
-			path = (dir ? "#{dir}/" : "") + fname
-
-			if ::File.directory? "#{root}/#{path}"
-				entries << path + "/" if pattern.nil? or fname.match(pattern)
-				entries += index_tree(root, pattern, path)
-			else
-				entries << path if pattern.nil? or fname.match(pattern)
-			end
-		end
-		entries.sort
+	def index_tree(root, glob='*')
+		glob = '*' if glob == '' or glob.nil?
+		index(root, "**/#{glob}")
 	end
 
 	def stat(full_path)

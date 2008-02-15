@@ -69,11 +69,6 @@ describe Rush::Dir do
 		@dir.entries_tree.should == @dir.make_entries(%w(a/ a/b/ a/b/c))
 	end
 
-	it "converts a glob to a regexp" do
-		Rush::Dir.glob_to_regexp('*.rb').should == /^.*\.rb$/
-		Rush::Dir.glob_to_regexp('*x*').should == /^.*x.*$/
-	end
-
 	it "maps [] to find_by_name" do
 		@dir.should_receive(:find_by_name).once
 		@dir['one']

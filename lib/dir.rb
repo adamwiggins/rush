@@ -40,16 +40,6 @@ class Rush::Dir < Rush::Entry
 		end
 	end
 
-	def find_tree_by_regexp(pattern)
-		connection.index_tree(full_path, pattern.source).map do |fname|
-			Rush::Entry.factory("#{full_path}#{fname}", box)
-		end
-	end
-
-	def self.glob_to_regexp(glob)
-		Regexp.new("^" + glob.gsub(/\./, '\\.').gsub(/\*/, '.*') + "$")
-	end
-
 	def entries_tree
 		connection.index_tree(full_path).map do |fname|
 			Rush::Entry.factory("#{full_path}#{fname}", box)
@@ -62,12 +52,6 @@ class Rush::Dir < Rush::Entry
 
 	def dirs_flattened
 		entries_tree.select { |e| e.dir? }
-	end
-
-	def find_by_doubleglob(doubleglob)
-		glob = doubleglob.gsub(/^\*\*\//, '')
-
-		find_tree_by_regexp(self.class.glob_to_regexp(glob))
 	end
 
 	def make_entries(filenames)
