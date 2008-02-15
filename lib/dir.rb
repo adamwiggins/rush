@@ -8,7 +8,7 @@ class Rush::Dir < Rush::Entry
 	end
 
 	def contents
-		find_by_regexp(//)
+		find_by_glob('*')
 	end
 
 	def files
@@ -20,19 +20,13 @@ class Rush::Dir < Rush::Entry
 	end
 
 	def [](key)
-		if key.kind_of? Regexp
-			find_by_regexp(key)
+		key = key.to_s
+		if key == '**'
+			files_flattened
+		elsif key.match(/\*/)
+			find_by_glob(key)
 		else
-			key = key.to_s
-			if key == '**'
-				files_flattened
-			elsif key.slice(0, 3) == '**/'
-				find_by_doubleglob(key)
-			elsif key.match(/\*/)
-				find_by_glob(key)
-			else
-				find_by_name(key)
-			end
+			find_by_name(key)
 		end
 	end
 
@@ -41,12 +35,8 @@ class Rush::Dir < Rush::Entry
 	end
 
 	def find_by_glob(glob)
-		find_by_regexp(self.class.glob_to_regexp(glob))
-	end
-
-	def find_by_regexp(pattern)
-		connection.index(full_path, pattern.source).map do |fname|
-			Rush::Entry.factory("#{full_path}#{fname}", box)
+		connection.index(full_path, glob).map do |fname|
+			Rush::Entry.factory("#{full_path}/#{fname}", box)
 		end
 	end
 

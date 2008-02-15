@@ -53,8 +53,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits index" do
-		@con.should_receive(:transmit).with(:action => 'index', :base_path => 'base_path', :pattern => '.*').and_return("1\n2\n")
-		@con.index('base_path', '.*').should == %w(1 2)
+		@con.should_receive(:transmit).with(:action => 'index', :base_path => 'base_path', :glob => '*').and_return("1\n2\n")
+		@con.index('base_path', '*').should == %w(1 2)
 	end
 
 	it "transmits index_tree" do

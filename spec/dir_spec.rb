@@ -37,6 +37,17 @@ describe Rush::Dir do
 		newfile.parent.should == @dir
 	end
 
+	it "find_by_name finds a single entry in the contents" do
+		file = @dir.create_file('one.rb')
+		@dir.find_by_name('one.rb').should == file
+	end
+
+	it "find_by_glob finds a list of entries by wildcard" do
+		file1 = @dir.create_file('one.rb')
+		file2 = @dir.create_file('two.txt')
+		@dir.find_by_glob('*.rb').should == [ file1 ]
+	end
+
 	it "lists files" do
 		@dir.create_file('a')
 		@dir.files.should == [ Rush::File.new("#{@dirname}/a") ]
@@ -58,26 +69,9 @@ describe Rush::Dir do
 		@dir.entries_tree.should == @dir.make_entries(%w(a/ a/b/ a/b/c))
 	end
 
-	it "find_by_name finds a single entry in the contents" do
-		file = @dir.create_file('one.rb')
-		@dir.find_by_name('one.rb').should == file
-	end
-
 	it "converts a glob to a regexp" do
 		Rush::Dir.glob_to_regexp('*.rb').should == /^.*\.rb$/
 		Rush::Dir.glob_to_regexp('*x*').should == /^.*x.*$/
-	end
-
-	it "find_by_glob finds a list of entries by wildcard" do
-		file1 = @dir.create_file('one.rb')
-		file2 = @dir.create_file('two.txt')
-		@dir.find_by_glob('*.rb').should == [ file1 ]
-	end
-
-	it "find_by_regexp finds a list of entries by pattern" do
-		file1 = @dir.create_file('red')
-		file2 = @dir.create_file('blue2')
-		@dir.find_by_regexp(/\d$/).should == [ file2 ]
 	end
 
 	it "maps [] to find_by_name" do
@@ -88,11 +82,6 @@ describe Rush::Dir do
 	it "maps [] with a wildcard character to find_by_glob" do
 		@dir.should_receive(:find_by_glob).once
 		@dir['*']
-	end
-
-	it "maps [] with a regexp to find_by_regexp" do
-		@dir.should_receive(:find_by_regexp).once
-		@dir[/pat/]
 	end
 
 	it "can use symbols or strings for [] access" do

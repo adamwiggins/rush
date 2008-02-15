@@ -40,8 +40,8 @@ class Rush::Connection::Remote
 		transmit(:action => 'write_archive', :dir => dir, :payload => archive)
 	end
 
-	def index(base_path, pattern)
-		transmit(:action => 'index', :base_path => base_path, :pattern => pattern).split("\n")
+	def index(base_path, glob)
+		transmit(:action => 'index', :base_path => base_path, :glob => glob).split("\n")
 	end
 
 	def index_tree(base_path, pattern)

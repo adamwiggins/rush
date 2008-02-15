@@ -52,9 +52,9 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'write_archive', :dir => 'dir', :payload => 'archive')
 	end
 
-	it "receive -> index(base_path, pattern)" do
-		@con.should_receive(:index).with('base_path', 'pat').and_return(%w(1 2))
-		@con.receive(:action => 'index', :base_path => 'base_path', :pattern => 'pat').should == "1\n2\n"
+	it "receive -> index(base_path, glob)" do
+		@con.should_receive(:index).with('base_path', '*').and_return(%w(1 2))
+		@con.receive(:action => 'index', :base_path => 'base_path', :glob => '*').should == "1\n2\n"
 	end
 
 	it "receive -> index_tree(base_path, pattern)" do
@@ -137,7 +137,7 @@ describe Rush::Connection::Local do
 
 	it "index fetches only files with a certain extension with a flat pattern, *.rb" do
 		system "cd #{@sandbox_dir}; touch a.rb; touch b.txt"
-		@con.index(@sandbox_dir, '^.*\.rb$').should == [ 'a.rb' ]
+		@con.index(@sandbox_dir, '*.rb').should == [ 'a.rb' ]
 	end
 
 	it "index_tree fetches entries recursively" do
