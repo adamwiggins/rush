@@ -92,6 +92,15 @@ describe Rush::Config do
 		@config.ensure_credentials_exist
 	end
 
+	it "secret_characters returns valid characters for username or password" do
+		@config.secret_characters.should be_kind_of(Array)
+	end
+
+	it "generate_secret products a random string for use in username and password" do
+		@config.should_receive(:secret_characters).and_return(%w(a))
+		@config.generate_secret(2, 2).should == "aa"
+	end
+
 	it "generate_credentials saves credentials" do
 		@config.generate_credentials
 		@config.credentials_file.contents.should match(/^.+:.+$/)

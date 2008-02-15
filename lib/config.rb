@@ -78,11 +78,27 @@ class Rush::Config
 	end
 
 	def generate_user
-		rand(99999999)
+		generate_secret(4, 8)
 	end
 
 	def generate_password
-		rand(99999999)
+		generate_secret(8, 15)
+	end
+
+	def generate_secret(min, max)
+		chars = self.secret_characters
+		len = rand(max - min + 1) + min
+		password = ""
+		len.times do |index|
+			password += chars[rand(chars.length)]
+		end
+		password
+	end
+
+	def secret_characters
+		[ ('a'..'z'), ('1'..'9') ].inject([]) do |chars, range|
+			chars += range.to_a
+		end
 	end
 
 	def tunnels_file
