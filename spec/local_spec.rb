@@ -146,4 +146,27 @@ describe Rush::Connection::Local do
 			@con.size(@sandbox_dir).should == (4096*3 + 5)
 		end
 	end
+
+	it "parses ps output on os x" do
+		@con.parse_ps("21712   501   1236   0 /usr/bin/vi somefile.rb").should == {
+			:pid => "21712",
+			:uid => "501",
+			:rss => "1236",
+			:cpu => "0",
+			:command => '/usr/bin/vi',
+			:cmdline => '/usr/bin/vi somefile.rb',
+		}
+	end
+
+	it "gets the list of processes on os x via the ps command" do
+		@con.should_receive(:os_x_raw_ps).and_return <<EOPS
+PID UID   RSS  CPU COMMAND
+1     0   1111   0 cmd1 args
+2   501    222   1 cmd2
+EOPS
+		@con.os_x_processes.should == [
+			{ :pid => "1", :uid => "0", :rss => "1111", :cpu => "0", :command => "cmd1", :cmdline => "cmd1 args" },
+			{ :pid => "2", :uid => "501", :rss => "222", :cpu => "1", :command => "cmd2", :cmdline => "cmd2" },
+		]
+	end
 end

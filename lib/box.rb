@@ -21,6 +21,12 @@ class Rush::Box
 		filesystem[key]
 	end
 
+	def processes
+		connection.processes.map do |ps|
+			Rush::Process.new(ps, self)
+		end
+	end
+
 	def connection
 		@connection ||= make_connection
 	end

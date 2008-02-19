@@ -83,6 +83,73 @@ class Rush::Connection::Local
 		`du -sb #{full_path}`.match(/(\d+)/)[1].to_i
 	end
 
+	def processes
+		if ::File.directory? "/proc"
+			linux_processes
+		else
+			os_x_processes
+		end
+	end
+
+	def linux_processes
+		list = []
+		::Dir["/proc/*/stat"].select { |file| file =~ /\/proc\/\d+\// }.each do |file|
+			begin
+				list << read_proc_file(file)
+			rescue
+				# process died between the dir listing and accessing the file
+			end
+		end
+		list
+	end
+
+	def read_proc_file(file)
+		data = ::File.read(file).split(" ")
+		uid = ::File.stat(file).uid
+		pid = data[0]
+		command = data[1].match(/^\((.*)\)$/)[1]
+		cmdline = ::File.read("/proc/#{pid}/cmdline").gsub(/\0/, ' ')
+		utime = data[13].to_i
+		ktime = data[14].to_i
+		vss = data[22].to_i / 1024
+		rss = data[23].to_i * 4
+		time = utime + ktime
+
+		{
+			:pid => pid,
+			:uid => uid,
+			:command => command,
+			:cmdline => cmdline,
+			:mem => rss,
+			:cpu => time,
+		}
+	end
+
+	def os_x_raw_ps
+		`COLUMNS=9999 ps ax -o "pid uid rss cpu command"`
+	end
+
+	def os_x_processes
+		raw = os_x_raw_ps.split("\n").slice(1, 99999)
+		raw.map do |line|
+			parse_ps(line)
+		end
+	end
+
+	def parse_ps(line)
+		m = line.split(" ", 5)
+		params = {}
+		params[:pid] = m[0]
+		params[:uid] = m[1]
+		params[:rss] = m[2]
+		params[:cpu] = m[3]
+		params[:cmdline] = m[4]
+		params[:command] = params[:cmdline].split(" ").first
+		params
+	end
+
+	####################################
+
 	class UnknownAction < Exception; end
 
 	def receive(params)
