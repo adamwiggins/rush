@@ -21,7 +21,7 @@ class Rush::Process
 	end
 
 	def alive?
-		::File.exists? "/proc/#{pid}"
+		box.connection.process_alive(pid)
 	end
 
 	def kill

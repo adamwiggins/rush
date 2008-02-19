@@ -72,6 +72,11 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'processes').should == YAML.dump([ { :pid => 1 } ])
 	end
 
+	it "receive -> process_alive" do
+		@con.should_receive(:process_alive).with(123).and_return(true)
+		@con.receive(:action => 'process_alive', :pid => 123).should == '1'
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -173,5 +178,9 @@ EOPS
 			{ :pid => "1", :uid => "0", :rss => "1111", :cpu => "0", :command => "cmd1", :cmdline => "cmd1 args" },
 			{ :pid => "2", :uid => "501", :rss => "222", :cpu => "1", :command => "cmd2", :cmdline => "cmd2" },
 		]
+	end
+
+	it "checks whether a given process is alive by pid" do
+		@con.process_alive(Process.pid).should == true
 	end
 end

@@ -56,6 +56,10 @@ class Rush::Connection::Remote
 		YAML.load(transmit(:action => 'processes'))
 	end
 
+	def process_alive(pid)
+		transmit(:action => 'process_alive', :pid => pid)
+	end
+
 	class NotAuthorized < Exception; end
 	class FailedTransmit < Exception; end
 

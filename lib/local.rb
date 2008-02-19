@@ -148,6 +148,10 @@ class Rush::Connection::Local
 		params
 	end
 
+	def process_alive(pid)
+		`ps -p #{pid} | wc -l`.to_i >= 2
+	end
+
 	####################################
 
 	class UnknownAction < Exception; end
@@ -166,6 +170,7 @@ class Rush::Connection::Local
 			when 'stat'           then YAML.dump(stat(params[:full_path]))
 			when 'size'           then size(params[:full_path])
 			when 'processes'      then YAML.dump(processes)
+			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 		else
 			raise UnknownAction
 		end

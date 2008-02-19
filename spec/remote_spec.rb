@@ -71,4 +71,9 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'processes').and_return(YAML.dump([ { :pid => 1 } ]))
 		@con.processes.should == [ { :pid => 1 } ]
 	end
+
+	it "transmits process_alive" do
+		@con.should_receive(:transmit).with(:action => 'process_alive', :pid => 123).and_return(true)
+		@con.process_alive(123).should == true
+	end
 end
