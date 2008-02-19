@@ -60,6 +60,10 @@ class Rush::Connection::Remote
 		transmit(:action => 'process_alive', :pid => pid)
 	end
 
+	def kill_process(pid)
+		transmit(:action => 'kill_process', :pid => pid)
+	end
+
 	class NotAuthorized < Exception; end
 	class FailedTransmit < Exception; end
 

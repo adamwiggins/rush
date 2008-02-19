@@ -76,4 +76,9 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'process_alive', :pid => 123).and_return(true)
 		@con.process_alive(123).should == true
 	end
+
+	it "transmits kill_process" do
+		@con.should_receive(:transmit).with(:action => 'kill_process', :pid => 123)
+		@con.kill_process(123)
+	end
 end

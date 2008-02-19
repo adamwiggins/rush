@@ -152,6 +152,10 @@ class Rush::Connection::Local
 		`ps -p #{pid} | wc -l`.to_i >= 2
 	end
 
+	def kill_process(pid)
+		::Process.kill('TERM', pid)
+	end
+
 	####################################
 
 	class UnknownAction < Exception; end
@@ -171,6 +175,7 @@ class Rush::Connection::Local
 			when 'size'           then size(params[:full_path])
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
+			when 'kill_process'   then kill_process(params[:pid])
 		else
 			raise UnknownAction
 		end

@@ -77,6 +77,11 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'process_alive', :pid => 123).should == '1'
 	end
 
+	it "receive -> kill_process" do
+		@con.should_receive(:kill_process).with(123).and_return(true)
+		@con.receive(:action => 'kill_process', :pid => 123)
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -182,5 +187,10 @@ EOPS
 
 	it "checks whether a given process is alive by pid" do
 		@con.process_alive(Process.pid).should == true
+	end
+
+	it "kills a process by pid" do
+		::Process.should_receive(:kill).with('TERM', 123)
+		@con.kill_process(123)
 	end
 end

@@ -25,7 +25,7 @@ class Rush::Process
 	end
 
 	def kill
-		::Process.kill('TERM', pid)
+		box.connection.kill_process(pid)
 	end
 
 	def self.all
