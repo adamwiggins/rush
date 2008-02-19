@@ -191,6 +191,6 @@ EOPS
 
 	it "kills a process by pid" do
 		::Process.should_receive(:kill).with('TERM', 123)
-		@con.kill_process(123)
+		@con.kill_process('123')
 	end
 end

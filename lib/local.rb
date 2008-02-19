@@ -153,7 +153,7 @@ class Rush::Connection::Local
 	end
 
 	def kill_process(pid)
-		::Process.kill('TERM', pid)
+		::Process.kill('TERM', pid.to_i)
 	end
 
 	####################################
