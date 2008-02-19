@@ -23,6 +23,8 @@ module Rush
 
 			eval @config.load_env, @pure_binding
 
+			eval "def processes; Rush::Box.new('localhost').processes; end", @pure_binding
+
 			commands = @config.load_commands
 			Rush::Dir.class_eval commands
 			Array.class_eval commands
