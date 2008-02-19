@@ -67,6 +67,11 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'size', :full_path => 'full_path').should == "1024"
 	end
 
+	it "receive -> processes" do
+		@con.should_receive(:processes).with().and_return([ { :pid => 1 } ])
+		@con.receive(:action => 'processes').should == YAML.dump([ { :pid => 1 } ])
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end

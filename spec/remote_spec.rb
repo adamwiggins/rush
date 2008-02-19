@@ -66,4 +66,9 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("")
 		@con.size('full_path')
 	end
+
+	it "transmits processes" do
+		@con.should_receive(:transmit).with(:action => 'processes').and_return(YAML.dump([ { :pid => 1 } ]))
+		@con.processes.should == [ { :pid => 1 } ]
+	end
 end

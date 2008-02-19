@@ -52,6 +52,10 @@ class Rush::Connection::Remote
 		transmit(:action => 'size', :full_path => full_path)
 	end
 
+	def processes
+		YAML.load(transmit(:action => 'processes'))
+	end
+
 	class NotAuthorized < Exception; end
 	class FailedTransmit < Exception; end
 

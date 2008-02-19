@@ -165,6 +165,7 @@ class Rush::Connection::Local
 			when 'index'          then index(params[:base_path], params[:glob]).join("\n") + "\n"
 			when 'stat'           then YAML.dump(stat(params[:full_path]))
 			when 'size'           then size(params[:full_path])
+			when 'processes'      then YAML.dump(processes)
 		else
 			raise UnknownAction
 		end
