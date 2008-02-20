@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env ruby
 
-ruby `dirname $0`/server.rb
+require File.dirname(__FILE__) + '/../lib/rush'
+require 'server'
+RushServer.new.run
 

@@ -2,7 +2,7 @@ require 'rubygems'
 require 'mongrel'
 require 'base64'
 
-require File.dirname(__FILE__) + '/../lib/rush'
+require File.dirname(__FILE__) + '/rush'
 
 class RushHandler < Mongrel::HttpHandler
 	def process(request, response)
@@ -65,11 +65,15 @@ class RushHandler < Mongrel::HttpHandler
 	end
 end
 
-host = "127.0.0.1"
-port = Rush::Config::DefaultPort
+class RushServer
+	def run
+		host = "127.0.0.1"
+		port = Rush::Config::DefaultPort
 
-puts "rushd listening on #{host}:#{port}"
+		puts "rushd listening on #{host}:#{port}"
 
-h = Mongrel::HttpServer.new(host, port)
-h.register("/", RushHandler.new)
-h.run.join
+		h = Mongrel::HttpServer.new(host, port)
+		h.register("/", RushHandler.new)
+		h.run.join
+	end
+end
