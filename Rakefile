@@ -43,6 +43,7 @@ spec = Gem::Specification.new do |s|
 	s.email = "adam@heroku.com"
 	s.homepage = "http://rush.heroku.com/"
 	s.executables = [ "rush", "rushd" ]
+	s.rubyforge_project = "ruby-shell"
 
 	s.platform = Gem::Platform::RUBY
 	s.has_rdoc = false
