@@ -1,6 +1,11 @@
+# Rush::Entry is the base class for Rush::File and Rush::Dir.  One or more of
+# these is instantiated whenever you use square brackets to access the
+# filesystem on a box, as well as any other operation that returns an entry or
+# list of entries.
 class Rush::Entry
 	attr_reader :box, :name, :path
 
+	# Initialize with full path to the file or dir, and the box it resides on.
 	def initialize(full_path, box=nil)
 		full_path = ::File.expand_path(full_path, '/')
 		@path = ::File.dirname(full_path)
@@ -8,6 +13,8 @@ class Rush::Entry
 		@box = box || Rush::Box.new('localhost')
 	end
 
+	# The factory checks to see if the full path has a trailing slash for
+	# creating a Rush::Dir rather than the default Rush::File.
 	def self.factory(full_path, box=nil)
 		if full_path.tail(1) == '/'
 			Rush::Dir.new(full_path, box)
@@ -16,7 +23,7 @@ class Rush::Entry
 		end
 	end
 
-	def to_s
+	def to_s      # :nodoc:
 		if box.host == 'localhost'
 			"#{full_path}"
 		else
@@ -24,7 +31,7 @@ class Rush::Entry
 		end
 	end
 
-	def inspect
+	def inspect   # :nodoc:
 		"#{box}:#{full_path}"
 	end
 
@@ -32,6 +39,7 @@ class Rush::Entry
 		box ? box.connection : Rush::Connection::Local.new
 	end
 
+	# The parent dir.  For example, box['/etc/hosts'].parent == box['etc/']
 	def parent
 		@parent ||= Rush::Dir.new(@path)
 	end
@@ -40,27 +48,40 @@ class Rush::Entry
 		"#{@path}/#{@name}"
 	end
 
+	# Timestamp of entry creation.
 	def created_at
 		stat[:ctime]
 	end
 
+	# Timestamp that entry was last modified on.
 	def last_modified
 		stat[:mtime]
 	end
 
+	# Timestamp that entry was last accessed on.
 	def last_accessed
 		stat[:atime]
 	end
 
+	# Attempts to rename, copy, or otherwise place an entry into a dir that already contains an entry by that name will fail with this exception.
 	class NameAlreadyExists < Exception; end
+
+	# Do not use rename or duplicate with a slash; use copy_to or move_to instead.
 	class NameCannotContainSlash < Exception; end
+
+	# You cannot move or copy entries to a path that is not a dir.
 	class NotADir < Exception; end
 
+	# Rename an entry to another name within the same dir.  The object's name
+	# will be updated to match the change on the filesystem.
 	def rename(new_name)
 		connection.rename(@path, @name, new_name)
 		@name = new_name
 	end
 
+	# Rename an entry to another name within the same dir.  The existing object
+	# will not be affected, but a new object representing the newly-created
+	# entry will be returned.
 	def duplicate(new_name)
 		raise NameCannotContainSlash if new_name.match(/\//)
 		new_full_path = "#{@path}/#{new_name}"
@@ -68,6 +89,8 @@ class Rush::Entry
 		self.class.new(new_full_path, box)
 	end
 
+	# Copy the entry to another dir.  Returns an object representing the new
+	# copy.
 	def copy_to(dir)
 		raise NotADir unless dir.class == Rush::Dir
 
@@ -82,30 +105,31 @@ class Rush::Entry
 		self.class.new(new_full_path, dir.box)
 	end
 
+	# Move the entry to another dir.  The object will be updated to show its new
+	# location.
 	def move_to(dir)
 		moved = copy_to(dir)
 		destroy
 		mimic(moved)
 	end
 
-	def mimic(from)
+	def mimic(from)      # :nodoc:
 		@box = from.box
 		@path = from.path
 		@name = from.name
 	end
 
-	def relative_path(subentry)
-	end
-
+	# Unix convention considers entries starting with a . to be hidden.
 	def hidden?
 		name.slice(0, 1) == '.'
 	end
 
+	# Destroy the entry.  If it is a dir, everything inside it will also be destroyed.
 	def destroy
 		connection.destroy(full_path)
 	end
 
-	def ==(other)
+	def ==(other)       # :nodoc:
 		full_path == other.full_path and box == other.box
 	end
 
