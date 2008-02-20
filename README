@@ -42,6 +42,17 @@ Clustering? Well, if you insist:
 
 Run the "rush" binary to enter the interactive shell.
 
+== Reference
+
+For more details on syntax and commands, see:
+
+* Rush::Box
+* Rush::Entry
+* Rush::Commands
+* Rush::File
+* Rush::Dir
+* Rush::Process
+
 == Contact
 
 Adam Wiggins (adam at heroku dot com)
