@@ -1,7 +1,10 @@
 require 'readline'
 
+# Rush::Shell is used to create an interactive shell.  It is invoked by the rush binary.
 module Rush
 	class Shell
+		# Set up the user's environment, including a pure binding into which
+		# env.rb and commands.rb are mixed.
 		def initialize
 			root = Rush::Dir.new('/')
 			home = Rush::Dir.new(ENV['HOME'])
@@ -29,6 +32,7 @@ module Rush
 			Array.class_eval commands
 		end
 
+		# Run the interactive shell using readline.
 		def run
 			loop do
 				cmd = Readline.readline('rush> ')
@@ -51,12 +55,14 @@ module Rush
 			end
 		end
 
+		# Save history to ~/.rush/history when the shell exists.
 		def finish
 			@config.save_history(Readline::HISTORY.to_a)
 			puts
 			exit
 		end
 
+		# Nice printing of different return types, particularly Rush::SearchResults.
 		def print_result(res)
 			if res.kind_of? String
 				puts res
@@ -83,10 +89,18 @@ module Rush
 			end
 		end
 
-		def path_parts(input)
+		def path_parts(input)   # :nodoc:
 			input.match(/^(.+)\[(['"])([^\]]+)$/).to_a.slice(1, 3) rescue [ nil, nil, nil ]
 		end
 
+		# Try to do tab completion on dir square brackets accessors.
+		#
+		# Example:
+		#
+		# dir['subd    # presing tab here will produce dir['subdir/ if subdir exists
+		#
+		# This isn't that cool yet, because it can't do multiple levels of subdirs.
+		# It does work remotely, though, which is pretty sweet.
 		def completion_proc
 			proc do |input|
 				possible_var, quote, partial_path = path_parts(input)

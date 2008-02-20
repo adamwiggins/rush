@@ -1,5 +1,11 @@
 require 'yaml'
 
+# This class it the mirror of Rush::Connection::Local.  A Rush::Box which is
+# not localhost has a remote connection, which it can use to convert method
+# calls to text suitable for transmission across the wire.
+#
+# This is an internal class that does not need to be accessed in normal use of
+# the rush shell or library.
 class Rush::Connection::Remote
 	attr_reader :host, :tunnel
 
@@ -67,6 +73,9 @@ class Rush::Connection::Remote
 	class NotAuthorized < Exception; end
 	class FailedTransmit < Exception; end
 
+	# Given a hash of parameters (converted by the method call on the connection
+	# object), send it across the wire to the RushServer listening on the other
+	# side.  Uses http basic auth, with credentials fetched from the Rush::Config.
 	def transmit(params)
 		tunnel.ensure_tunnel
 

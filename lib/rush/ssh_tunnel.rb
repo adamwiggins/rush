@@ -1,3 +1,5 @@
+# Internal class for managing an ssh tunnel, across which relatively insecure
+# HTTP commands can be sent by Rush::Connection::Remote.
 class Rush::SshTunnel
 	def initialize(real_host)
 		@real_host = real_host

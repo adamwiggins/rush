@@ -1,6 +1,20 @@
+# An instance of this class is returned by Rush::Commands#search.  It contains
+# both the list of entries which matched the search, as well as the raw line
+# matches.  These methods get equivalent functionality to "grep -l" and "grep -h".
+#
+# SearchResults mixes in Rush::Commands so that you can chain multiple searches
+# or do file operations on the resulting entries.
+#
+# Examples:
+#
+#   myproj['**/*.rb'].search(/class/).entries.size
+#   myproj['**/*.rb'].search(/class/).lines.size
+#   myproj['**/*.rb'].search(/class/).copy_to other_dir
 class Rush::SearchResults
 	attr_reader :entries, :lines, :entries_with_lines, :pattern
 
+	# Make a blank container.  Track the pattern so that we can colorize the
+	# output to show what was matched.
 	def initialize(pattern)
 		# Duplication of data, but this lets us return everything in the exact
 		# order it was received.
@@ -10,6 +24,7 @@ class Rush::SearchResults
 		@lines = []
 	end
 
+	# Add a Rush::Entry and the array of string matches.
 	def add(entry, lines)
 		# this assumes that entry is unique
 		@entries << entry

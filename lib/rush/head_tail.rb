@@ -1,3 +1,4 @@
+# Mixin for array and string for methods I wish they had.
 module Rush::HeadTail
 	def head(n)
 		slice(0, n)
