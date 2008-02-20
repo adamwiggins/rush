@@ -1,0 +1,44 @@
+=== About
+
+rush is a replacement for the unix shell (bash, zsh, etc) which uses pure Ruby syntax. Grep through files, find and kill processes, copy files - everything you do in the shell, now in Ruby. Previously if you wanted to count the number of classes in your project, you might use a bash command like:
+
+find myproj -name \*.rb | xargs grep '^\s*class' | wc -l
+
+In rush, this is:
+
+myproj['**/*.rb'].search(/^\s*class/).lines.size
+
+How about killing those pesky stray mongrels? Before:
+
+kill `ps aux | grep mongrel_rails | grep -v grep | cut -c 10-20`
+
+After:
+
+processes.each { |p| p.kill if p.command == "mongrel_rails" }
+
+But rush is more than just an interactive shell and a library: it can also control any number of remote machines from a single location. Copy files or directories between servers as seamlessly as if it was all local. bash and ssh, we love you, but your era is past.
+
+Example of remote access:
+
+local = Rush::Box.new('localhost')
+remote = Rush::Box.new('my.remote.server.com')
+local_dir = local['/Users/adam/myproj/']
+remote_dir = remote['/home/myproj/app/']
+
+local_dir.copy_to remote_dir
+remote_dir['**/.svn/'].each { |d| d.destroy }
+Clustering? Well, if you insist:
+
+local_dir = Rush::Box.new('localhost')['/Users/adam/server_logs/'].create
+servers = %w(www1 www2 www3).map { |n| Rush::Box.new(n) }
+servers.each { |s| s['/var/log/nginx/access.log'].copy_to local_dir["#{s.host}_access.log"] }
+
+=== Usage
+
+Run the "rush" binary to enter the interactive shell.  See the website or rdoc documentation for commands and syntax.
+
+=== Contact
+
+Adam Wiggins (adam at heroku dot com)
+http://rush.heroku.com/
+

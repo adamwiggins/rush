@@ -46,7 +46,7 @@ spec = Gem::Specification.new do |s|
 	s.rubyforge_project = "ruby-shell"
 
 	s.platform = Gem::Platform::RUBY
-	s.has_rdoc = false
+	s.has_rdoc = true
 	
 	s.files = %w(Rakefile) + Dir.glob("{bin,lib,spec}/**/*")
 	
@@ -70,6 +70,16 @@ Rake::TestTask.new do |t|
 	t.libs << "spec"
 	t.test_files = FileList['spec/*_spec.rb']
 	t.verbose = true
+end
+
+Rake::RDocTask.new do |t|
+	t.rdoc_dir = 'doc'
+	t.title    = "rush, a Ruby replacement for bash+ssh"
+	t.options << '--line-numbers' << '--inline-source' << '-A cattr_accessor=object'
+	t.options << '--charset' << 'utf-8'
+	t.rdoc_files.include('README')
+	t.rdoc_files.include('lib/rush.rb')
+	t.rdoc_files.include('lib/rush/*.rb')
 end
 
 CLEAN.include [ 'pkg', '*.gem', '.config' ]
