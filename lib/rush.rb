@@ -1,7 +1,7 @@
 module Rush; end
 module Rush::Connection; end
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/rush')
 
 require 'config'
 require 'commands'

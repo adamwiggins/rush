@@ -1,4 +1,3 @@
-require File.dirname(__FILE__) + '/../lib/rush'
 require 'readline'
 
 module Rush

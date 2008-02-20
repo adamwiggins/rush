@@ -2,8 +2,6 @@ require 'rubygems'
 require 'mongrel'
 require 'base64'
 
-require File.dirname(__FILE__) + '/rush'
-
 class RushHandler < Mongrel::HttpHandler
 	def process(request, response)
 		params = {}
