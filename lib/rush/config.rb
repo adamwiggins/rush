@@ -148,7 +148,7 @@ class Rush::Config
 		string = ""
 		hash.each do |host, port|
 			string += "#{host}:#{port}\n"
-		and
+		end
 		tunnels_file.write string
 	end
 end
