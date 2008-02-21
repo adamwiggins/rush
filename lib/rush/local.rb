@@ -141,7 +141,7 @@ class Rush::Connection::Local
 		params = {}
 		params[:pid] = m[0]
 		params[:uid] = m[1]
-		params[:rss] = m[2]
+		params[:mem] = m[2]
 		params[:cpu] = m[3]
 		params[:cmdline] = m[4]
 		params[:command] = params[:cmdline].split(" ").first

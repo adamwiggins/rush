@@ -8,8 +8,8 @@ class Rush::Process
 		@uid = params[:uid].to_i
 		@command = params[:command]
 		@cmdline = params[:cmdline]
-		@mem = params[:rss]
-		@cpu = params[:time]
+		@mem = params[:mem]
+		@cpu = params[:cpu]
 	end
 
 	def to_s

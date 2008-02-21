@@ -34,6 +34,14 @@ describe Rush::Process do
 		@process.cmdline.should match(/process_spec.rb/)
 	end
 
+	it "knows the memory used" do
+		@process.mem.should > 0
+	end
+
+	it "knows the cpu used" do
+		@process.cpu.should >= 0
+	end
+
 	it "can kill itself" do
 		system "sleep 30 &"
 		@process = Rush::Process.all.detect { |p| p.command == "sleep" }
