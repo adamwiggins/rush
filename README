@@ -53,9 +53,11 @@ For more details on syntax and commands, see:
 * Rush::Dir
 * Rush::Process
 
-== Contact
+== Meta
 
-Adam Wiggins (adam at heroku dot com)
+rush was written by Adam Wiggins (adam at heroku dot com)
+
+rush is released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 http://rush.heroku.com
 
