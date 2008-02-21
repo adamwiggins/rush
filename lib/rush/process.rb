@@ -11,8 +11,8 @@ class Rush::Process
 		@uid = params[:uid].to_i
 		@command = params[:command]
 		@cmdline = params[:cmdline]
-		@mem = params[:rss]
-		@cpu = params[:time]
+		@mem = params[:mem]
+		@cpu = params[:cpu]
 	end
 
 	def to_s      # :nodoc:
@@ -20,7 +20,7 @@ class Rush::Process
 	end
 
 	def inspect   # :nodoc:
-		"Process #{@pid}: #{@cmdline}"
+		"#{box} process #{@pid}: #{@cmdline}"
 	end
 
 	# Returns true if the process is currently running.
