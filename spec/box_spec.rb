@@ -15,4 +15,14 @@ describe Rush::Box do
 	it "looks up entries with [] syntax" do
 		@box['/'].should == Rush::Dir.new('/', @box)
 	end
+
+	it "looks up processes" do
+		@box.connection.should_receive(:processes).and_return([ { :pid => 123 } ])
+		@box.processes.should == [ Rush::Process.new({ :pid => 123 }, @box) ]
+	end
+
+	it "executes bash commands" do
+		@box.connection.should_receive(:bash).with('cmd')
+		@box.bash('cmd')
+	end
 end

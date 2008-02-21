@@ -33,6 +33,10 @@ class Rush::Process
 		box.connection.kill_process(pid)
 	end
 
+	def ==(other)       # :nodoc:
+		pid == other.pid and box == other.box
+	end
+
 	def self.all
 		Rush::Box.new('localhost').processes
 	end

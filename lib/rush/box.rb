@@ -49,6 +49,12 @@ class Rush::Box
 		end
 	end
 
+	# Execute a command in the standard unix shell.  Until the day when it's no
+	# longer needed...
+	def bash(command)
+		connection.bash(command)
+	end
+
 	def connection         # :nodoc:
 		@connection ||= make_connection
 	end

@@ -49,4 +49,9 @@ describe Rush::Process do
 		sleep 0.1
 		@process.alive?.should be_false
 	end
+
+	it "if box and pid are the same, process is equal" do
+		other = Rush::Process.new({ :pid => @process.pid }, @process.box)
+		@process.should == other
+	end
 end

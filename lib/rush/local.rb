@@ -192,6 +192,10 @@ class Rush::Connection::Local
 		::Process.kill('TERM', pid.to_i)
 	end
 
+	def bash(command)
+		system command
+	end
+
 	####################################
 
 	# Raised when the action passed in by RushServer is not known.
@@ -217,6 +221,7 @@ class Rush::Connection::Local
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 			when 'kill_process'   then kill_process(params[:pid])
+			when 'bash'           then bash(params[:command])
 		else
 			raise UnknownAction
 		end

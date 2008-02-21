@@ -82,6 +82,11 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'kill_process', :pid => 123)
 	end
 
+	it "receive -> bash" do
+		@con.should_receive(:bash).with('cmd')
+		@con.receive(:action => 'bash', :command => 'cmd')
+	end
+
 	it "receive -> unknown action exception" do
 		lambda { @con.receive(:action => 'does_not_exist') }.should raise_error(Rush::Connection::Local::UnknownAction)
 	end
@@ -192,5 +197,9 @@ EOPS
 	it "kills a process by pid" do
 		::Process.should_receive(:kill).with('TERM', 123)
 		@con.kill_process('123')
+	end
+
+	it "executes a bash command" do
+		@con.bash("true").should == true
 	end
 end

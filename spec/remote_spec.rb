@@ -81,4 +81,9 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'kill_process', :pid => 123)
 		@con.kill_process(123)
 	end
+
+	it "transmits bash" do
+		@con.should_receive(:transmit).with(:action => 'bash', :command => 'cmd')
+		@con.bash('cmd')
+	end
 end
