@@ -4,8 +4,8 @@ module Rush
 	class Shell
 		def initialize
 			root = Rush::Dir.new('/')
-			home = Rush::Dir.new(ENV['HOME'])
-			pwd = Rush::Dir.new(ENV['PWD'])
+			home = Rush::Dir.new(ENV['HOME']) if ENV['HOME']
+			pwd = Rush::Dir.new(ENV['PWD']) if ENV['PWD']
 
 			@pure_binding = Proc.new { }
 			$last_res = nil
