@@ -17,7 +17,7 @@ class Rush::Process
 	end
 
 	def inspect
-		"Process #{@pid}: #{@cmdline}"
+		"#{box} process #{@pid}: #{@cmdline}"
 	end
 
 	def alive?
