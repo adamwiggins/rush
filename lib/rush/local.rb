@@ -175,8 +175,8 @@ class Rush::Connection::Local
 		params = {}
 		params[:pid] = m[0]
 		params[:uid] = m[1]
-		params[:mem] = m[2]
-		params[:cpu] = m[3]
+		params[:mem] = m[2].to_i
+		params[:cpu] = m[3].to_i
 		params[:cmdline] = m[4]
 		params[:command] = params[:cmdline].split(" ").first
 		params
