@@ -37,7 +37,7 @@ module Rush
 			loop do
 				cmd = Readline.readline('rush> ')
 
-				finish if cmd.nil?
+				finish if cmd.nil? or cmd == 'exit'
 				next if cmd == ""
 				Readline::HISTORY.push(cmd)
 
