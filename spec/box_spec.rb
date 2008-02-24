@@ -25,4 +25,9 @@ describe Rush::Box do
 		@box.connection.should_receive(:bash).with('cmd')
 		@box.bash('cmd')
 	end
+
+	it "establish_connection to set up the connection manually" do
+		@box.connection.should_receive(:ensure_tunnel)
+		@box.establish_connection
+	end
 end

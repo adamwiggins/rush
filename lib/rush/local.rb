@@ -226,4 +226,8 @@ class Rush::Connection::Local
 			raise UnknownAction
 		end
 	end
+
+	# No-op for duck typing with remote connection.
+	def ensure_tunnel
+	end
 end

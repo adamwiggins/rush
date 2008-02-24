@@ -86,4 +86,9 @@ describe Rush::Connection::Local do
 		@con.should_receive(:transmit).with(:action => 'bash', :command => 'cmd')
 		@con.bash('cmd')
 	end
+
+	it "passes through ensure_tunnel" do
+		@con.tunnel.should_receive(:ensure_tunnel)
+		@con.ensure_tunnel
+	end
 end

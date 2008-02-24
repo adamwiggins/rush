@@ -81,7 +81,7 @@ class Rush::Connection::Remote
 	# object), send it across the wire to the RushServer listening on the other
 	# side.  Uses http basic auth, with credentials fetched from the Rush::Config.
 	def transmit(params)
-		tunnel.ensure_tunnel
+		ensure_tunnel
 
 		require 'net/http'
 
@@ -101,6 +101,11 @@ class Rush::Connection::Remote
 			raise FailedTransmit if res.code != "200"
 			res.body
 		end
+	end
+
+	# Set up the tunnel if it is not already running.
+	def ensure_tunnel
+		tunnel.ensure_tunnel
 	end
 
 	def config

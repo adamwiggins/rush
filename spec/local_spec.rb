@@ -202,4 +202,8 @@ EOPS
 	it "executes a bash command" do
 		@con.bash("true").should == true
 	end
+
+	it "ensure_tunnel to match with remote connection" do
+		@con.ensure_tunnel
+	end
 end
