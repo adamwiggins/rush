@@ -89,7 +89,7 @@ class Rush::Connection::Local
 				end
 			end
 		end
-		dirs + files
+		dirs.sort + files.sort
 	end
 
 	# Fetch stats (size, ctime, etc) on an entry.  Size will not be accurate for dirs.
