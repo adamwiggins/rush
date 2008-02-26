@@ -193,7 +193,7 @@ class Rush::Connection::Local
 	end
 
 	def bash(command)
-		system command
+		`#{command}`
 	end
 
 	####################################

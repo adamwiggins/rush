@@ -22,8 +22,8 @@ describe Rush::Box do
 	end
 
 	it "executes bash commands" do
-		@box.connection.should_receive(:bash).with('cmd')
-		@box.bash('cmd')
+		@box.connection.should_receive(:bash).with('cmd').and_return('output')
+		@box.bash('cmd').should == 'output'
 	end
 
 	it "establish_connection to set up the connection manually" do

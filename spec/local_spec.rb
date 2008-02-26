@@ -83,8 +83,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> bash" do
-		@con.should_receive(:bash).with('cmd')
-		@con.receive(:action => 'bash', :command => 'cmd')
+		@con.should_receive(:bash).with('cmd').and_return('output')
+		@con.receive(:action => 'bash', :command => 'cmd').should == 'output'
 	end
 
 	it "receive -> unknown action exception" do
@@ -200,7 +200,7 @@ EOPS
 	end
 
 	it "executes a bash command" do
-		@con.bash("true").should == true
+		@con.bash("echo test").should == "test\n"
 	end
 
 	it "ensure_tunnel to match with remote connection" do
