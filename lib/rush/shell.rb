@@ -90,7 +90,10 @@ module Rush
 		end
 
 		def path_parts(input)   # :nodoc:
-			input.match(/^(.+)\[(['"])([^\]]+)$/).to_a.slice(1, 3) rescue [ nil, nil, nil ]
+			input.match(/(\w+(?:\[[^\]]+\])*)\[(['"])([^\]]+)$/)
+			$~.to_a.slice(1, 3).push($~.pre_match)
+		rescue
+			[ nil, nil, nil, nil ]
 		end
 
 		# Try to do tab completion on dir square brackets accessors.
@@ -103,8 +106,13 @@ module Rush
 		# It does work remotely, though, which is pretty sweet.
 		def completion_proc
 			proc do |input|
-				possible_var, quote, partial_path = path_parts(input)
-				if possible_var and possible_var.match(/^[a-z0-9_]+$/)
+				possible_var, quote, partial_path, pre = path_parts(input)
+				if possible_var
+					original_var, fixed_path = possible_var, ''
+					if /^(.+\/)([^\/]+)$/ === partial_path
+						fixed_path, partial_path = $~.captures
+						possible_var += "['#{fixed_path}']"
+					end
 					full_path = eval("#{possible_var}.full_path", @pure_binding) rescue nil
 					box = eval("#{possible_var}.box", @pure_binding) rescue nil
 					if full_path and box
@@ -112,7 +120,7 @@ module Rush
 						return dir.entries.select do |e|
 							e.name.match(/^#{partial_path}/)
 						end.map do |e|
-							possible_var + '[' + quote + e.name + (e.dir? ? "/" : "")
+							(pre || '') + original_var + '[' + quote + fixed_path + e.name + (e.dir? ? "/" : "")
 						end
 					end
 				end

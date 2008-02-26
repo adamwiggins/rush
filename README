@@ -57,6 +57,8 @@ For more details on syntax and commands, see:
 
 rush was written by Adam Wiggins (adam at heroku dot com)
 
+Patches contributed by: Chihiro Ito
+
 rush is released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 http://rush.heroku.com
