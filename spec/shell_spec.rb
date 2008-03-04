@@ -7,6 +7,6 @@ describe Rush::Shell do
 	end
 
 	it "matches open path commands for readline tab completion" do
-		@shell.path_parts("dir['app").should == [ "dir", "'", "app" ]
+		@shell.path_parts("dir['app").should == [ "dir", "'", "app", "" ]
 	end
 end
