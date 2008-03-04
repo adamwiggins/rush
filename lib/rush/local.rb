@@ -139,6 +139,7 @@ class Rush::Connection::Local
 		pid = data[0]
 		command = data[1].match(/^\((.*)\)$/)[1]
 		cmdline = ::File.read("/proc/#{pid}/cmdline").gsub(/\0/, ' ')
+		parent_pid = data[3].to_i
 		utime = data[13].to_i
 		ktime = data[14].to_i
 		vss = data[22].to_i / 1024
@@ -150,6 +151,7 @@ class Rush::Connection::Local
 			:uid => uid,
 			:command => command,
 			:cmdline => cmdline,
+			:parent_pid => parent_pid,
 			:mem => rss,
 			:cpu => time,
 		}

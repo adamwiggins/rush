@@ -42,12 +42,16 @@ describe Rush::Process do
 		@process.cpu.should >= 0
 	end
 
+	it "knows the parent process" do
+		@process.parent_pid.should == Process.pid
+	end
+
 	it "can kill itself" do
 		system "sleep 30 &"
-		@process = Rush::Process.all.detect { |p| p.command == "sleep" }
-		@process.kill
+		process = Rush::Process.all.detect { |p| p.command == "sleep" }
+		process.kill
 		sleep 0.1
-		@process.alive?.should be_false
+		process.alive?.should be_false
 	end
 
 	it "if box and pid are the same, process is equal" do
