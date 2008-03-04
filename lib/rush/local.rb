@@ -167,19 +167,20 @@ class Rush::Connection::Local
 
 	# ps command used to generate list of processes on non-/proc unixes.
 	def os_x_raw_ps
-		`COLUMNS=9999 ps ax -o "pid uid rss cpu command"`
+		`COLUMNS=9999 ps ax -o "pid uid ppid rss cpu command"`
 	end
 
 	# Parse a single line of the ps command and return the values in a hash
 	# suitable for use in the Rush::Process#new.
 	def parse_ps(line)
-		m = line.split(" ", 5)
+		m = line.split(" ", 6)
 		params = {}
 		params[:pid] = m[0]
 		params[:uid] = m[1]
-		params[:mem] = m[2].to_i
-		params[:cpu] = m[3].to_i
-		params[:cmdline] = m[4]
+		params[:parent_pid] = m[2].to_i
+		params[:mem] = m[3].to_i
+		params[:cpu] = m[4].to_i
+		params[:cmdline] = m[5]
 		params[:command] = params[:cmdline].split(" ").first
 		params
 	end
