@@ -47,8 +47,13 @@ describe Rush::Process do
 		@process.cpu.should >= 0
 	end
 
-	it "knows the parent process" do
+	it "knows the parent process pid" do
 		@process.parent_pid.should == Process.pid
+	end
+
+	it "knows the parent process" do
+		this = Rush::Box.new.processes.select { |p| p.pid == Process.pid }.first
+		@process.parent.should == this
 	end
 
 	it "can kill itself" do

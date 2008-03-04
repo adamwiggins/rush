@@ -24,6 +24,11 @@ class Rush::Process
 		"#{box} process #{@pid}: #{@cmdline}"
 	end
 
+	# Returns the Rush::Process parent of this process.
+	def parent
+		box.processes.select { |p| p.pid == parent_pid }.first
+	end
+
 	# Returns an array of child processes owned by this process.
 	def children
 		box.processes.select { |p| p.parent_pid == pid }
