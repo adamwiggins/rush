@@ -12,6 +12,11 @@ describe Rush::Process do
 		system "kill -9 #{@pid}"
 	end
 
+	it "knows all its child processes" do
+		parent = Rush::Process.all.detect { |p| p.pid == Process.pid }
+		parent.children.should == [ @process ]
+	end
+
 	it "gets the list of all processes" do
 		list = Rush::Process.all
 		list.size.should > 5

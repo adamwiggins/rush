@@ -24,6 +24,11 @@ class Rush::Process
 		"#{box} process #{@pid}: #{@cmdline}"
 	end
 
+	# Returns an array of child processes owned by this process.
+	def children
+		box.processes.select { |p| p.parent_pid == pid }
+	end
+
 	# Returns true if the process is currently running.
 	def alive?
 		box.connection.process_alive(pid)
