@@ -24,6 +24,8 @@ class Rush::Connection::Local
 	# Read raw bytes from a file.
 	def file_contents(full_path)
 		::File.read(full_path)
+	rescue Errno::ENOENT
+		raise Rush::DoesNotExist, full_path
 	end
 
 	# Destroy a file or dir.

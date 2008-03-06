@@ -104,6 +104,11 @@ describe Rush::Connection::Local do
 		@con.file_contents(fname).should == "stuff\n"
 	end
 
+	it "file_contents raises DoesNotExist if the file does not exist" do
+		fname = "#{@sandbox_dir}/does_not_exist"
+		lambda { @con.file_contents(fname) }.should raise_error(Rush::DoesNotExist)
+	end
+
 	it "destroy to destroy a file or dir" do
 		fname = "#{@sandbox_dir}/delete_me"
 		system "touch #{fname}"

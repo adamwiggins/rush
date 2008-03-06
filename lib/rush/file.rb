@@ -52,7 +52,9 @@ class Rush::File < Rush::Entry
 
 	# Return the file's contents, or if it doesn't exist, a blank string.
 	def contents_or_blank
-		contents rescue ""
+		contents
+	rescue Rush::DoesNotExist
+		""
 	end
 
 	# Count the number of lines in the file.
@@ -62,7 +64,9 @@ class Rush::File < Rush::Entry
 
 	# Return an array of lines, or an empty array if the file does not exist.
 	def lines_or_empty
-		lines rescue []
+		lines
+	rescue Rush::DoesNotExist
+		[]
 	end
 
 	include Rush::Commands

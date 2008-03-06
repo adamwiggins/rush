@@ -72,4 +72,8 @@ describe Rush::File do
 	it "can fetch contents or blank if doesn't exist" do
 		Rush::File.new('/does/not/exist').contents_or_blank.should == ""
 	end
+
+	it "can fetch lines, or empty if doesn't exist" do
+		Rush::File.new('/does/not/exist').lines_or_empty.should == []
+	end
 end

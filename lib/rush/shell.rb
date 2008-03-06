@@ -46,7 +46,9 @@ module Rush
 					$last_res = res
 					eval("_ = $last_res", @pure_binding)
 					print_result res
-				rescue Exception => e
+				rescue Rush::Exception => e
+					puts "Exception #{e.class}: #{e}"
+				rescue Object => e
 					puts "Exception #{e.class}: #{e}"
 					e.backtrace.each do |t|
 						puts "   #{::File.expand_path(t)}"
