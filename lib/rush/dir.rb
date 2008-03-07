@@ -127,7 +127,7 @@ class Rush::Dir < Rush::Entry
 	def ls
 		out = [ "#{self}" ]
 		nonhidden_dirs.each do |dir|
-			out << "  #{dir.name}+"
+			out << "  #{dir.name}/"
 		end
 		nonhidden_files.each do |file|
 			out << "  #{file.name}"
