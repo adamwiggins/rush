@@ -118,6 +118,11 @@ class Rush::Dir < Rush::Entry
 		end
 	end
 
+	# Run a bash command starting in this directory.
+	def bash(command)
+		box.bash "cd #{full_path} && #{command}"
+	end
+
 	# Text output of dir listing, equivalent to the regular unix shell's ls command.
 	def ls
 		out = [ "#{self}" ]
@@ -132,12 +137,12 @@ class Rush::Dir < Rush::Entry
 
 	# Run rake within this dir.
 	def rake(*args)
-		system "cd #{full_path}; rake #{args.join(' ')}"
+		bash "rake #{args.join(' ')}"
 	end
 
 	# Run git within this dir.
 	def git(*args)
-		system "cd #{full_path}; git #{args.join(' ')}"
+		bash "git #{args.join(' ')}"
 	end
 
 	include Rush::Commands

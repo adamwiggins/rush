@@ -145,4 +145,9 @@ describe Rush::Dir do
 		@dir.create_dir('a').create_file('b').write('c')
 		@dir.destroy
 	end
+
+	it "can run a bash command within itself" do
+		system "echo test > #{@dir.full_path}/file"
+		@dir.bash("cat file").should == "test\n"
+	end
 end
