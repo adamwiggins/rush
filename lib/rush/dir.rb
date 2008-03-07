@@ -123,6 +123,11 @@ class Rush::Dir < Rush::Entry
 		box.bash "cd #{full_path} && #{command}"
 	end
 
+	# Destroy all of the contents of the directory, leaving it fresh and clean.
+	def purge
+		connection.purge full_path
+	end
+
 	# Text output of dir listing, equivalent to the regular unix shell's ls command.
 	def ls
 		out = [ "#{self}" ]

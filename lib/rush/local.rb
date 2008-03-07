@@ -35,6 +35,13 @@ class Rush::Connection::Local
 		true
 	end
 
+	# Purge the contents of a dir.
+	def purge(full_path)
+		raise "No." if full_path == '/'
+		FileUtils.rm_rf Dir.glob("#{full_path}/*")
+		true
+	end
+
 	# Create a dir.
 	def create_dir(full_path)
 		FileUtils.mkdir_p(full_path)
@@ -256,6 +263,7 @@ class Rush::Connection::Local
 			when 'write_file'     then write_file(params[:full_path], params[:payload])
 			when 'file_contents'  then file_contents(params[:full_path])
 			when 'destroy'        then destroy(params[:full_path])
+			when 'purge'          then purge(params[:full_path])
 			when 'create_dir'     then create_dir(params[:full_path])
 			when 'rename'         then rename(params[:path], params[:name], params[:new_name])
 			when 'copy'           then copy(params[:src], params[:dst])

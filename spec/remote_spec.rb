@@ -27,6 +27,11 @@ describe Rush::Connection::Local do
 		@con.destroy('file')
 	end
 
+	it "transmits purge" do
+		@con.should_receive(:transmit).with(:action => 'purge', :full_path => 'dir')
+		@con.purge('dir')
+	end
+
 	it "transmits create_dir" do
 		@con.should_receive(:transmit).with(:action => 'create_dir', :full_path => 'file')
 		@con.create_dir('file')

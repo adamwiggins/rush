@@ -26,6 +26,10 @@ class Rush::Connection::Remote
 		transmit(:action => 'destroy', :full_path => full_path)
 	end
 
+	def purge(full_path)
+		transmit(:action => 'purge', :full_path => full_path)
+	end
+
 	def create_dir(full_path)
 		transmit(:action => 'create_dir', :full_path => full_path)
 	end

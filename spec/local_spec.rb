@@ -27,6 +27,11 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'destroy', :full_path => 'file')
 	end
 
+	it "receive -> purge(dir)" do
+		@con.should_receive(:purge).with('dir')
+		@con.receive(:action => 'purge', :full_path => 'dir')
+	end
+
 	it "receive -> create_dir(path)" do
 		@con.should_receive(:create_dir).with('dir')
 		@con.receive(:action => 'create_dir', :full_path => 'dir')
@@ -114,6 +119,13 @@ describe Rush::Connection::Local do
 		system "touch #{fname}"
 		@con.destroy(fname)
 		File.exists?(fname).should be_false
+	end
+
+	it "purge to purge a dir" do
+		system "cd #{@sandbox_dir}; touch {1,2}; mkdir 3; touch 3/4"
+		@con.purge(@sandbox_dir)
+		File.exists?(@sandbox_dir).should be_true
+		Dir.glob("#{@sandbox_dir}/*").should == []
 	end
 
 	it "create_dir creates a directory" do
