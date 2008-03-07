@@ -35,4 +35,9 @@ describe Rush::Box do
 		@box.connection.should_receive(:ensure_tunnel)
 		@box.establish_connection
 	end
+
+	it "establish_connection can take a hash of options" do
+		@box.connection.should_receive(:ensure_tunnel).with(:timeout => :infinite)
+		@box.establish_connection(:timeout => :infinite)
+	end
 end

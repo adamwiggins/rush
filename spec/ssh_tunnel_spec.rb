@@ -58,19 +58,35 @@ describe Rush::SshTunnel do
 		@tunnel.tunnel_options.should == {
 			:local_port => 1234,
 			:remote_port => 7770,
-			:ssh_host => 'spec.example.com',
-			:stall_command => 'sleep 9000'
+			:ssh_host => 'spec.example.com'
 		}
 	end
 
-	it "constructs the bash ssh command from the options hash" do
+	it "ssh_stall_command uses an infinite loop for :timeout => :infinite" do
+		@tunnel.ssh_stall_command(:timeout => :infinite).should match(/while .* sleep .* done/)
+	end
+
+	it "ssh_stall_command sleeps for the number of seconds given as the :timeout option" do
+		@tunnel.ssh_stall_command(:timeout => 123).should == "sleep 123"
+	end
+
+	it "ssh_stall_command uses the default timeout when no options are given" do
+		@tunnel.ssh_stall_command.should == "sleep 9000"
+	end
+
+	it "constructs the ssh tunnel command (everything but stall) from the options hash" do
 		@tunnel.should_receive(:tunnel_options).at_least(:once).and_return(
 			:local_port => 123,
 			:remote_port => 456,
-			:ssh_host => 'example.com',
-			:stall_command => 'stall'
+			:ssh_host => 'example.com'
 		)
-		@tunnel.ssh_tunnel_command.should == "ssh -f -L 123:127.0.0.1:456 example.com \"stall\""
+		@tunnel.ssh_tunnel_command_without_stall.should == "ssh -f -L 123:127.0.0.1:456 example.com"
+	end
+
+	it "combines the tunnel command without stall and the stall command into the final command" do
+		@tunnel.should_receive(:ssh_tunnel_command_without_stall).and_return('ssh command')
+		@tunnel.should_receive(:ssh_stall_command).and_return('sleep 123')
+		@tunnel.ssh_tunnel_command.should == 'ssh command "sleep 123"'
 	end
 
 	it "ssh_tunnel_command request that the port be set" do

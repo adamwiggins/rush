@@ -127,8 +127,8 @@ class Rush::Connection::Remote
 	end
 
 	# Set up the tunnel if it is not already running.
-	def ensure_tunnel
-		tunnel.ensure_tunnel
+	def ensure_tunnel(options={})
+		tunnel.ensure_tunnel(options)
 	end
 
 	# Remote connections are alive when the box on the other end is responding

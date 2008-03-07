@@ -62,9 +62,10 @@ class Rush::Box
 
 	# This is called automatically the first time an action is invoked, but you
 	# may wish to call it manually ahead of time in order to have the tunnel
-	# already set up and running.
-	def establish_connection
-		connection.ensure_tunnel
+	# already set up and running.  You can also use this to pass a timeout option,
+	# either :timeout => (seconds) or :timeout => :infinite.
+	def establish_connection(options={})
+		connection.ensure_tunnel(options)
 	end
 
 	def connection         # :nodoc:

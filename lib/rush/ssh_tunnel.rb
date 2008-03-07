@@ -13,21 +13,21 @@ class Rush::SshTunnel
 		@port
 	end
 
-	def ensure_tunnel
+	def ensure_tunnel(options={})
 		return if @port and tunnel_alive?
 
 		@port = config.tunnels[@real_host]
 
 		if !@port or !tunnel_alive?
-			setup_everything
+			setup_everything(options)
 		end
 	end
 
-	def setup_everything
+	def setup_everything(options={})
 		display "Connecting to #{@real_host}..."
 		push_credentials
 		launch_rushd
-		establish_tunnel
+		establish_tunnel(options)
 	end
 
 	def push_credentials
@@ -48,11 +48,11 @@ class Rush::SshTunnel
 		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd > /dev/null 2>&1 &")
 	end
 
-	def establish_tunnel
+	def establish_tunnel(options={})
 		display "Establishing ssh tunnel"
 		@port = next_available_port
 
-		make_ssh_tunnel
+		make_ssh_tunnel(options)
 
 		tunnels = config.tunnels
 		tunnels[@real_host] = @port
@@ -66,7 +66,6 @@ class Rush::SshTunnel
 			:local_port => @port,
 			:remote_port => Rush::Config::DefaultPort,
 			:ssh_host => @real_host,
-			:stall_command => "sleep 9000"
 		}
 	end
 
@@ -85,8 +84,8 @@ class Rush::SshTunnel
 		raise SshFailed unless system("ssh #{@real_host} '#{command}'")
 	end
 
-	def make_ssh_tunnel
-		raise SshFailed unless system(ssh_tunnel_command)
+	def make_ssh_tunnel(options={})
+		raise SshFailed unless system(ssh_tunnel_command(options))
 	end
 
 	def ssh_tunnel_command_without_stall
@@ -95,8 +94,18 @@ class Rush::SshTunnel
 		"ssh -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
 	end
 
-	def ssh_tunnel_command
-		ssh_tunnel_command_without_stall + " \"#{tunnel_options[:stall_command]}\""
+	def ssh_stall_command(options={})
+		if options[:timeout] == :infinite
+			"while [ 1 ]; do sleep 1000; done"
+		elsif options[:timeout].to_i > 10
+			"sleep #{options[:timeout].to_i}"
+		else
+			"sleep 9000"
+		end
+	end
+
+	def ssh_tunnel_command(options={})
+		ssh_tunnel_command_without_stall + ' "' + ssh_stall_command(options) + '"'
 	end
 
 	def next_available_port
