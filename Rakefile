@@ -45,6 +45,10 @@ spec = Gem::Specification.new do |s|
 	s.executables = [ "rush", "rushd" ]
 	s.rubyforge_project = "ruby-shell"
 
+	s.add_dependency 'mongrel'
+	s.add_dependency 'rspec'
+	s.add_dependency 'session'
+
 	s.platform = Gem::Platform::RUBY
 	s.has_rdoc = true
 	
