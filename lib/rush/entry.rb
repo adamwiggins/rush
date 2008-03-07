@@ -48,6 +48,14 @@ class Rush::Entry
 		"#{@path}/#{@name}"
 	end
 
+	# Return true if the entry currently exists on the filesystem of the box.
+	def exists?
+		stat
+		true
+	rescue Rush::DoesNotExist
+		false
+	end
+
 	# Timestamp of entry creation.
 	def created_at
 		stat[:ctime]

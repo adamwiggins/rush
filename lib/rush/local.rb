@@ -103,6 +103,8 @@ class Rush::Connection::Local
 			:atime => s.atime,
 			:mtime => s.mtime,
 		}
+	rescue Errno::ENOENT
+		raise Rush::DoesNotExist, full_path
 	end
 
 	# Fetch the size of a dir, since a standard file stat does not include the
