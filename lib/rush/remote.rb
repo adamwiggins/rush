@@ -74,9 +74,6 @@ class Rush::Connection::Remote
 		transmit(:action => 'bash', :command => command)
 	end
 
-	class NotAuthorized < Exception; end
-	class FailedTransmit < Exception; end
-
 	# Given a hash of parameters (converted by the method call on the connection
 	# object), send it across the wire to the RushServer listening on the other
 	# side.  Uses http basic auth, with credentials fetched from the Rush::Config.
@@ -97,10 +94,32 @@ class Rush::Connection::Remote
 
 		Net::HTTP.start(tunnel.host, tunnel.port) do |http|
 			res = http.request(req, payload)
-			raise NotAuthorized if res.code == "401"
-			raise FailedTransmit if res.code != "200"
-			res.body
+			process_result(res.code, res.body)
 		end
+	end
+
+	# Take the http result of a transmit and raise an error, or return the body
+	# of the result when valid.
+	def process_result(code, body)
+		raise Rush::NotAuthorized if code == "401"
+
+		if code == "400"	
+			klass, message = parse_exception(body)
+			raise klass, message
+		end
+
+		raise Rush::FailedTransmit if code != "200"
+
+		body
+	end
+
+	# Parse an exception returned from the server, with the class name on the
+	# first line and the message on the second.
+	def parse_exception(body)
+		klass, message = body.split("\n", 2)
+		raise "invalid exception class: #{klass}" unless klass.match(/^Rush::[A-Za-z]+$/)
+		klass = Object.module_eval(klass)
+		[ klass, message.strip ]
 	end
 
 	# Set up the tunnel if it is not already running.

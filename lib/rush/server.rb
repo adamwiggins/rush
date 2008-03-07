@@ -28,10 +28,17 @@ class RushHandler < Mongrel::HttpHandler
 			log msg
 
 			params[:payload] = payload
-			result = box.connection.receive(params)
 
-			response.start(200) do |head, out|
-				out.write result
+			begin
+				result = box.connection.receive(params)
+
+				response.start(200) do |head, out|
+					out.write result
+				end
+			rescue Rush::Exception => e
+				response.start(400) do |head, out|
+					out.write "#{e.class}\n#{e.message}\n"
+				end
 			end
 		end
 	end

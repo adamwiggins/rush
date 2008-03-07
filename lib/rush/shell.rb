@@ -48,7 +48,7 @@ module Rush
 					print_result res
 				rescue Rush::Exception => e
 					puts "Exception #{e.class}: #{e}"
-				rescue Object => e
+				rescue ::Exception => e
 					puts "Exception #{e.class}: #{e}"
 					e.backtrace.each do |t|
 						puts "   #{::File.expand_path(t)}"
