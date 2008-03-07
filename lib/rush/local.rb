@@ -48,16 +48,12 @@ class Rush::Connection::Local
 		true
 	end
 
-	class NameAlreadyExists < Exception; end
-	class NameCannotContainSlash < Exception; end
-	class NotADir < Exception; end
-
 	# Rename an entry within a dir.
 	def rename(path, name, new_name)
-		raise NameCannotContainSlash if new_name.match(/\//)
+		raise(Rush::NameCannotContainSlash, "#{path} rename #{name} to #{new_name}") if new_name.match(/\//)
 		old_full_path = "#{path}/#{name}"
 		new_full_path = "#{path}/#{new_name}"
-		raise NameAlreadyExists if ::File.exists?(new_full_path)
+		raise(Rush::NameAlreadyExists, "#{path} rename #{name} to #{new_name}") if ::File.exists?(new_full_path)
 		FileUtils.mv(old_full_path, new_full_path)
 		true
 	end

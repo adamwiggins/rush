@@ -77,9 +77,6 @@ class Rush::Entry
 	# Do not use rename or duplicate with a slash; use copy_to or move_to instead.
 	class NameCannotContainSlash < Exception; end
 
-	# You cannot move or copy entries to a path that is not a dir.
-	class NotADir < Exception; end
-
 	# Rename an entry to another name within the same dir.  The object's name
 	# will be updated to match the change on the filesystem.
 	def rename(new_name)
