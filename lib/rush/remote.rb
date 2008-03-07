@@ -105,7 +105,7 @@ class Rush::Connection::Remote
 
 		if code == "400"	
 			klass, message = parse_exception(body)
-			raise klass, message
+			raise klass, "#{host}:#{message}"
 		end
 
 		raise Rush::FailedTransmit if code != "200"
