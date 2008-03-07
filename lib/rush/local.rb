@@ -115,6 +115,8 @@ class Rush::Connection::Local
 	def processes
 		if ::File.directory? "/proc"
 			linux_processes
+		elsif ::File.directory? "C:/WINDOWS"
+			windows_processes
 		else
 			os_x_processes
 		end
@@ -185,6 +187,34 @@ class Rush::Connection::Local
 		params[:cmdline] = m[5]
 		params[:command] = params[:cmdline].split(" ").first
 		params
+	end
+
+	# Process list on Windows.
+	def windows_processes
+		require 'win32ole'
+		wmi = WIN32OLE.connect("winmgmts://")
+		wmi.ExecQuery("select * from win32_process").map do |proc_info|
+			parse_oleprocinfo(proc_info)
+		end
+	end
+
+	# Parse the Windows OLE process info.
+	def parse_oleprocinfo(proc_info)
+		command = proc_info.Name
+		pid = proc_info.ProcessId
+		uid = 0
+		cmdline = proc_info.CommandLine
+		rss = proc_info.MaximumWorkingSetSize
+		time = proc_info.KernelModeTime.to_i + proc_info.UserModeTime.to_i
+
+		{
+			:pid => pid,
+			:uid => uid,
+			:command => command,
+			:cmdline => cmdline,
+			:mem => rss,
+			:cpu => time,
+		}
 	end
 
 	# Returns true if the specified pid is running.
