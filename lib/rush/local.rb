@@ -228,7 +228,16 @@ class Rush::Connection::Local
 	end
 
 	def bash(command)
-		`#{command}`
+		require 'session'
+
+		sh = Session::Bash.new
+		out, err = sh.execute command
+		retval = sh.status
+		sh.close!
+
+		raise(Rush::BashFailed, err) if retval != 0
+
+		out
 	end
 
 	####################################

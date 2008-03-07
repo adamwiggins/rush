@@ -11,4 +11,7 @@ module Rush
 
 	# The entry (file or dir) referenced does not exist.  Message is the entry's full path.
 	class DoesNotExist < Exception; end
+
+	# The bash command had a non-zero return value.  Message is stderr.
+	class BashFailed < Exception; end
 end

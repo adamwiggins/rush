@@ -1,3 +1,5 @@
+require 'rubygems'
+
 module Rush; end
 module Rush::Connection; end
 

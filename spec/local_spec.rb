@@ -205,8 +205,12 @@ EOPS
 		@con.kill_process('123')
 	end
 
-	it "executes a bash command" do
+	it "executes a bash command, returning stdout when successful" do
 		@con.bash("echo test").should == "test\n"
+	end
+
+	it "executes a bash command, raising and error (with stderr as the message) when return value is nonzero" do
+		lambda { @con.bash("no_such_bin") }.should raise_error(Rush::BashFailed, /command not found/)
 	end
 
 	it "ensure_tunnel to match with remote connection" do
