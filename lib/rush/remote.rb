@@ -71,7 +71,7 @@ class Rush::Connection::Remote
 	end
 
 	def bash(command)
-		transmit(:action => 'bash', :command => command)
+		transmit(:action => 'bash', :payload => command)
 	end
 
 	# Given a hash of parameters (converted by the method call on the connection

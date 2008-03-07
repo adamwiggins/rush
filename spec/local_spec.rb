@@ -84,7 +84,7 @@ describe Rush::Connection::Local do
 
 	it "receive -> bash" do
 		@con.should_receive(:bash).with('cmd').and_return('output')
-		@con.receive(:action => 'bash', :command => 'cmd').should == 'output'
+		@con.receive(:action => 'bash', :payload => 'cmd').should == 'output'
 	end
 
 	it "receive -> unknown action exception" do

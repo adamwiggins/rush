@@ -83,7 +83,7 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits bash" do
-		@con.should_receive(:transmit).with(:action => 'bash', :command => 'cmd').and_return('output')
+		@con.should_receive(:transmit).with(:action => 'bash', :payload => 'cmd').and_return('output')
 		@con.bash('cmd').should == 'output'
 	end
 

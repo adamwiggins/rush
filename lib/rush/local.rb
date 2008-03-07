@@ -265,7 +265,7 @@ class Rush::Connection::Local
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 			when 'kill_process'   then kill_process(params[:pid])
-			when 'bash'           then bash(params[:command])
+			when 'bash'           then bash(params[:payload])
 		else
 			raise UnknownAction
 		end
