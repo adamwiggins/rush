@@ -127,6 +127,15 @@ class Rush::Connection::Remote
 		tunnel.ensure_tunnel
 	end
 
+	# Remote connections are alive when the box on the other end is responding
+	# to commands.
+	def alive?
+		index('/', 'alive_check')
+		true
+	rescue
+		false
+	end
+
 	def config
 		@config ||= Rush::Config.new
 	end

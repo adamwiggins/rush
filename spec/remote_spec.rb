@@ -112,4 +112,14 @@ describe Rush::Connection::Local do
 		@con.tunnel.should_receive(:ensure_tunnel)
 		@con.ensure_tunnel
 	end
+
+	it "is alive if the box is responding to commands" do
+		@con.should_receive(:index).and_return(:dummy)
+		@con.should be_alive
+	end
+
+	it "not alive if an attempted command throws an exception" do
+		@con.should_receive(:index).and_raise(RuntimeError)
+		@con.should_not be_alive
+	end
 end

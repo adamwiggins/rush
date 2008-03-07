@@ -26,6 +26,11 @@ describe Rush::Box do
 		@box.bash('cmd').should == 'output'
 	end
 
+	it "checks the connection to determine if it is alive" do
+		@box.connection.should_receive(:alive?).and_return(true)
+		@box.should be_alive
+	end
+
 	it "establish_connection to set up the connection manually" do
 		@box.connection.should_receive(:ensure_tunnel)
 		@box.establish_connection

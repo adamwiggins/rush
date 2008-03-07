@@ -55,6 +55,11 @@ class Rush::Box
 		connection.bash(command)
 	end
 
+	# Returns true if the box is responding to commands.
+	def alive?
+		connection.alive?
+	end
+
 	# This is called automatically the first time an action is invoked, but you
 	# may wish to call it manually ahead of time in order to have the tunnel
 	# already set up and running.

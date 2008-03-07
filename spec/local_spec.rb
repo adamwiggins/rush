@@ -216,4 +216,8 @@ EOPS
 	it "ensure_tunnel to match with remote connection" do
 		@con.ensure_tunnel
 	end
+
+	it "always returns true on alive?" do
+		@con.should be_alive
+	end
 end

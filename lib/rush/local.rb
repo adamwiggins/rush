@@ -274,4 +274,9 @@ class Rush::Connection::Local
 	# No-op for duck typing with remote connection.
 	def ensure_tunnel
 	end
+
+	# Local connections are always alive.
+	def alive?
+		true
+	end
 end
