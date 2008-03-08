@@ -13,5 +13,7 @@ class Array
 		self
 	end
 
+	include Rush::FindBy
+
 	include Rush::HeadTail
 end
