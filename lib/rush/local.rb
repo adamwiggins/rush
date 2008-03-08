@@ -224,12 +224,24 @@ class Rush::Connection::Local
 
 	# Returns true if the specified pid is running.
 	def process_alive(pid)
-		`ps -p #{pid} | wc -l`.to_i >= 2
+		::Process.kill(0, pid)
+		true
+	rescue Errno::ESRCH
+		false
 	end
 
 	# Terminate a process, by pid.
 	def kill_process(pid)
-		::Process.kill('TERM', pid.to_i)
+		::Process.kill('TERM', pid)
+
+		# keep trying until it's dead (technique borrowed from god)
+		5.times do
+			return if !process_alive(pid)
+			sleep 0.5
+			::Process.kill('TERM', pid) rescue nil
+		end
+
+		::Process.kill('KILL', pid) rescue nil
 	end
 
 	def bash(command)
@@ -270,7 +282,7 @@ class Rush::Connection::Local
 			when 'size'           then size(params[:full_path])
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
-			when 'kill_process'   then kill_process(params[:pid])
+			when 'kill_process'   then kill_process(params[:pid].to_i)
 			when 'bash'           then bash(params[:payload])
 		else
 			raise UnknownAction

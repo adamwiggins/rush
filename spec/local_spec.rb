@@ -84,7 +84,7 @@ describe Rush::Connection::Local do
 
 	it "receive -> kill_process" do
 		@con.should_receive(:kill_process).with(123).and_return(true)
-		@con.receive(:action => 'kill_process', :pid => 123)
+		@con.receive(:action => 'kill_process', :pid => '123')
 	end
 
 	it "receive -> bash" do
@@ -213,13 +213,17 @@ EOPS
 		]
 	end
 
-	it "checks whether a given process is alive by pid" do
-		@con.process_alive(Process.pid).should == true
+	it "the current process should be alive" do
+		@con.process_alive(Process.pid).should be_true
+	end
+
+	it "a made-up process should not be alive" do
+		@con.process_alive(99999).should be_false
 	end
 
 	it "kills a process by pid" do
-		::Process.should_receive(:kill).with('TERM', 123)
-		@con.kill_process('123')
+		::Process.should_receive(:kill).at_least(:once)
+		@con.kill_process(123)
 	end
 
 	it "executes a bash command, returning stdout when successful" do
