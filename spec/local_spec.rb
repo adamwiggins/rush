@@ -149,6 +149,14 @@ describe Rush::Connection::Local do
 		File.exists?("#{@sandbox_dir}/subdir/a").should be_true
 	end
 
+	it "copy raises DoesNotExist with source path if it doesn't exist or otherwise can't be accessed" do
+		lambda { @con.copy('/does/not/exist', '/tmp') }.should raise_error(Rush::DoesNotExist, '/does/not/exist')
+	end
+
+	it "copy raises DoesNotExist with destination path if it can't access the destination" do
+		lambda { @con.copy('/tmp', '/does/not/exist') }.should raise_error(Rush::DoesNotExist, '/does/not')
+	end
+
 	it "read_archive to pull an archive of a dir into a byte stream" do
 		system "touch #{@sandbox_dir}/a"
 		@con.read_archive(@sandbox_dir).size.should > 50
