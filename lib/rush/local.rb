@@ -99,6 +99,8 @@ class Rush::Connection::Local
 			end
 		end
 		dirs.sort + files.sort
+	rescue Errno::ENOENT
+		raise Rush::DoesNotExist, base_path
 	end
 
 	# Fetch stats (size, ctime, etc) on an entry.  Size will not be accurate for dirs.

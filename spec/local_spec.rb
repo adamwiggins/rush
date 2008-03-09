@@ -180,6 +180,10 @@ describe Rush::Connection::Local do
 		@con.index(@sandbox_dir, '*.rb').should == [ 'a.rb' ]
 	end
 
+	it "index raises DoesNotExist when the base path is invalid" do
+		lambda { @con.index('/does/not/exist', '*') }.should raise_error(Rush::DoesNotExist, '/does/not/exist')
+	end
+
 	it "stat gives file stats like size and timestamps" do
 		@con.stat(@sandbox_dir).should have_key(:ctime)
 		@con.stat(@sandbox_dir).should have_key(:size)
