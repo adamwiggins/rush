@@ -41,11 +41,13 @@ class RushHandler < Mongrel::HttpHandler
 				end
 			end
 		end
+	rescue Exception => e
+		log e.full_display
 	end
 
 	def authorize(auth)
 		unless m = auth.match(/^Basic (.+)$/)
-			logs "Request with no authorization data"
+			log "Request with no authorization data"
 			return false
 		end
 
@@ -53,7 +55,7 @@ class RushHandler < Mongrel::HttpHandler
 		user, password = decoded.split(':', 2)
 
 		if user.nil? or user.length == 0 or password.nil? or password.length == 0
-			logs "Malformed user or password"
+			log "Malformed user or password"
 			return false
 		end
 
@@ -92,5 +94,24 @@ class RushServer
 		h = Mongrel::HttpServer.new(host, port)
 		h.register("/", rushd)
 		h.run.join
+	end
+end
+
+class Exception
+	def full_display
+		out = []
+		out << "Exception #{self.class} => #{self}"
+		out << "Backtrace:"
+		out << self.filtered_backtrace.collect do |t|
+			"   #{t}"
+		end
+		out << ""
+		out.join("\n")
+	end
+
+	def filtered_backtrace
+		backtrace.reject do |bt|
+			bt.match(/^\/usr\//)
+		end
 	end
 end
