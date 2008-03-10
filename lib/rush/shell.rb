@@ -10,9 +10,6 @@ module Rush
 			home = Rush::Dir.new(ENV['HOME']) if ENV['HOME']
 			pwd = Rush::Dir.new(ENV['PWD']) if ENV['PWD']
 
-			@pure_binding = Proc.new { }
-			$last_res = nil
-
 			@config = Rush::Config.new
 
 			@config.load_history.each do |item|
@@ -23,9 +20,11 @@ module Rush
 			Readline.completion_append_character = nil
 			Readline.completion_proc = completion_proc
 
-			eval @config.load_env, @pure_binding
+			@box = Rush::Box.new
+			@pure_binding = @box.instance_eval "binding"
+			$last_res = nil
 
-			eval "def processes; Rush::Box.new('localhost').processes; end", @pure_binding
+			eval @config.load_env, @pure_binding
 
 			commands = @config.load_commands
 			Rush::Dir.class_eval commands
