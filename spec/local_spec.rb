@@ -128,6 +128,13 @@ describe Rush::Connection::Local do
 		Dir.glob("#{@sandbox_dir}/*").should == []
 	end
 
+	it "purge kills hidden (dotfile) entries too" do
+		system "cd #{@sandbox_dir}; touch .killme"
+		@con.purge(@sandbox_dir)
+		File.exists?(@sandbox_dir).should be_true
+		`cd #{@sandbox_dir}; ls -lA | wc -l`.to_i.should == 0
+	end
+
 	it "create_dir creates a directory" do
 		fname = "#{@sandbox_dir}/a/b/c/"
 		@con.create_dir(fname)

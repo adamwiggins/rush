@@ -38,7 +38,10 @@ class Rush::Connection::Local
 	# Purge the contents of a dir.
 	def purge(full_path)
 		raise "No." if full_path == '/'
-		FileUtils.rm_rf Dir.glob("#{full_path}/*")
+		Dir.chdir(full_path) do
+			all = Dir.glob("*", File::FNM_DOTMATCH).reject { |f| f == '.' or f == '..' }
+			FileUtils.rm_rf all
+		end
 		true
 	end
 
