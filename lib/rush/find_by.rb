@@ -12,6 +12,8 @@ module Rush::FindBy
 			find_by(m[1], args.first)
 		elsif m = meth.to_s.match(/^find_all_by_([a-z_]+)$/)
 			find_all_by(m[1], args.first)
+		else
+			super
 		end
 	end
 

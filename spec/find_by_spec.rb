@@ -7,8 +7,7 @@ describe Rush::FindBy do
 
 			def initialize(bar)
 				@bar = bar
-			end
-		end
+			end end
 
 		@one = Foo.new('one')
 		@two = Foo.new('two')
@@ -51,5 +50,9 @@ describe Rush::FindBy do
 
 	it "find_by_ with field not recognized by objects raises no errors" do
 		@list.find_by_nothing('x')
+	end
+
+	it "raises NoMethodError for things other than find_by" do
+		lambda { @list.does_not_exist }.should raise_error(NoMethodError)
 	end
 end
