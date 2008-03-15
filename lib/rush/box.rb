@@ -49,13 +49,27 @@ class Rush::Box
 		end
 	end
 
-	# Execute a command in the standard unix shell.  Optional parameter :user
-	# switches to that user via sudo first, if you have permission.  Example:
+	# Execute a command in the standard unix shell.  Options:
+	#
+	# :user => unix username to become via sudo
+	# :env => hash of environment variables
+	#
+	# Example:
 	#
 	#   box.bash '/etc/init.d/mysql restart', :user => 'root'
+	#   box.bash 'rake db:migrate', :user => 'www', :env => { :RAILS_ENV => 'production' }
 	#
 	def bash(command, options={})
-		connection.bash(command, options[:user])
+		connection.bash(command_with_environment(command, options[:env]), options[:user])
+	end
+
+	def command_with_environment(command, env)   # :nodoc:
+		return command unless env
+
+		vars = env.map do |key, value|
+			"export #{key}='#{value}'"
+		end
+		vars.push(command).join("\n")
 	end
 
 	# Returns true if the box is responding to commands.
