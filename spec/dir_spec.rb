@@ -150,4 +150,10 @@ describe Rush::Dir do
 		system "echo test > #{@dir.full_path}/file"
 		@dir.bash("cat file").should == "test\n"
 	end
+
+	it "passes bash options (e.g., :user) through to the box bash command" do
+		@box.should_receive(:bash).with('cmd', 'options')
+		@box.bash('cmd', 'options')
+	end
+
 end

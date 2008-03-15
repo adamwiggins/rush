@@ -88,8 +88,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> bash" do
-		@con.should_receive(:bash).with('cmd').and_return('output')
-		@con.receive(:action => 'bash', :payload => 'cmd').should == 'output'
+		@con.should_receive(:bash).with('cmd', 'user').and_return('output')
+		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user').should == 'output'
 	end
 
 	it "receive -> unknown action exception" do
@@ -244,6 +244,10 @@ EOPS
 
 	it "executes a bash command, raising and error (with stderr as the message) when return value is nonzero" do
 		lambda { @con.bash("no_such_bin") }.should raise_error(Rush::BashFailed, /command not found/)
+	end
+
+	it "executes a bash command as another user using sudo" do
+		@con.bash("echo test2", ENV['user']).should == "test2\n"
 	end
 
 	it "ensure_tunnel to match with remote connection" do

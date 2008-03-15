@@ -22,8 +22,13 @@ describe Rush::Box do
 	end
 
 	it "executes bash commands" do
-		@box.connection.should_receive(:bash).with('cmd').and_return('output')
+		@box.connection.should_receive(:bash).with('cmd', nil).and_return('output')
 		@box.bash('cmd').should == 'output'
+	end
+
+	it "executes bash commands with an optional user" do
+		@box.connection.should_receive(:bash).with('cmd', 'user')
+		@box.bash('cmd', :user => 'user')
 	end
 
 	it "checks the connection to determine if it is alive" do

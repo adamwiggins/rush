@@ -49,10 +49,13 @@ class Rush::Box
 		end
 	end
 
-	# Execute a command in the standard unix shell.  Until the day when it's no
-	# longer needed...
-	def bash(command)
-		connection.bash(command)
+	# Execute a command in the standard unix shell.  Optional parameter :user
+	# switches to that user via sudo first, if you have permission.  Example:
+	#
+	#   box.bash '/etc/init.d/mysql restart', :user => 'root'
+	#
+	def bash(command, options={})
+		connection.bash(command, options[:user])
 	end
 
 	# Returns true if the box is responding to commands.
