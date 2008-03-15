@@ -118,9 +118,9 @@ class Rush::Dir < Rush::Entry
 		end
 	end
 
-	# Run a bash command starting in this directory.
-	def bash(command)
-		box.bash "cd #{full_path} && #{command}"
+	# Run a bash command starting in this directory.  Options are the same as Rush::Box#bash.
+	def bash(command, options={})
+		box.bash "cd #{full_path} && #{command}", options
 	end
 
 	# Destroy all of the contents of the directory, leaving it fresh and clean.

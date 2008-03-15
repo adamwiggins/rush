@@ -74,8 +74,8 @@ class Rush::Connection::Remote
 		transmit(:action => 'kill_process', :pid => pid)
 	end
 
-	def bash(command)
-		transmit(:action => 'bash', :payload => command)
+	def bash(command, user)
+		transmit(:action => 'bash', :payload => command, :user => user)
 	end
 
 	# Given a hash of parameters (converted by the method call on the connection

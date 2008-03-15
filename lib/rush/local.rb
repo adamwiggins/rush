@@ -253,11 +253,17 @@ class Rush::Connection::Local
 		::Process.kill('KILL', pid) rescue nil
 	end
 
-	def bash(command)
+	def bash(command, user=nil)
 		require 'session'
 
 		sh = Session::Bash.new
-		out, err = sh.execute command
+
+		if user and user != ""
+			out, err = sh.execute "sudo -u #{user} bash", :stdin => command
+		else
+			out, err = sh.execute command
+		end
+
 		retval = sh.status
 		sh.close!
 
@@ -292,7 +298,7 @@ class Rush::Connection::Local
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 			when 'kill_process'   then kill_process(params[:pid].to_i)
-			when 'bash'           then bash(params[:payload])
+			when 'bash'           then bash(params[:payload], params[:user])
 		else
 			raise UnknownAction
 		end
