@@ -18,7 +18,7 @@ How about killing those pesky stray mongrels? Before:
 
 After:
 
-  processes.each { |p| p.kill if p.command == "mongrel_rails" }
+  processes.find_all_by_cmdline(/mongrel_rails/).each { |p| p.kill }
 
 But rush is more than just an interactive shell and a library: it can also control any number of remote machines from a single location. Copy files or directories between servers as seamlessly as if it was all local.
 
