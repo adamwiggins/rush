@@ -31,6 +31,16 @@ describe Rush::Box do
 		@box.bash('cmd', :user => 'user')
 	end
 
+	it "builds a script of environment variables to prefix the bash command" do
+		@box.command_with_environment('cmd', { :a => 'b' }).should == "export a='b'\ncmd"
+	end
+
+	it "sets the environment variables from the provided hash" do
+		@box.connection.stub!(:bash)
+		@box.should_receive(:command_with_environment).with('cmd', { 1 => 2 })
+		@box.bash('cmd', :env => { 1 => 2 })
+	end
+
 	it "checks the connection to determine if it is alive" do
 		@box.connection.should_receive(:alive?).and_return(true)
 		@box.should be_alive
