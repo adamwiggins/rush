@@ -132,7 +132,7 @@ describe Rush::Connection::Local do
 		system "cd #{@sandbox_dir}; touch .killme"
 		@con.purge(@sandbox_dir)
 		File.exists?(@sandbox_dir).should be_true
-		`cd #{@sandbox_dir}; ls -lA | wc -l`.to_i.should == 0
+		`cd #{@sandbox_dir}; ls -lA | grep -v total | wc -l`.to_i.should == 0
 	end
 
 	it "create_dir creates a directory" do
