@@ -8,6 +8,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__) + '/rush')
 require 'exceptions'
 require 'config'
 require 'commands'
+require 'access'
 require 'entry'
 require 'file'
 require 'dir'
