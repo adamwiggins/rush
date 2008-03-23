@@ -115,4 +115,10 @@ describe Rush::Entry do
 		copy.mimic(@entry)
 		copy.path.should == @entry.path
 	end
+
+	it "can update the read access permission" do
+		system "chmod 666 #{@filename}"
+		@entry.access = { :read => :user }
+		`ls -l #{@filename}`.should match(/^-r--------/)
+	end
 end

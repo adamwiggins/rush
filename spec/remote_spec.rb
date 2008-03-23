@@ -67,6 +67,11 @@ describe Rush::Connection::Local do
 		@con.stat('full_path').should == { 1 => 2 }
 	end
 
+	it "transmits set_access" do
+		@con.should_receive(:transmit).with(:action => 'set_access', :full_path => 'full_path', :user => 'joe', :user_read => 1)
+		@con.set_access('full_path', :user => 'joe', :user_read => 1)
+	end
+
 	it "transmits size" do
 		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("")
 		@con.size('full_path')

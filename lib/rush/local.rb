@@ -119,6 +119,10 @@ class Rush::Connection::Local
 		raise Rush::DoesNotExist, full_path
 	end
 
+	def set_access(full_path, access)
+		access.apply(full_path)
+	end
+
 	# Fetch the size of a dir, since a standard file stat does not include the
 	# size of the contents.
 	def size(full_path)
@@ -294,6 +298,7 @@ class Rush::Connection::Local
 			when 'write_archive'  then write_archive(params[:payload], params[:dir])
 			when 'index'          then index(params[:base_path], params[:glob]).join("\n") + "\n"
 			when 'stat'           then YAML.dump(stat(params[:full_path]))
+			when 'set_access'     then set_access(params[:full_path], Rush::Access.from_hash(params))
 			when 'size'           then size(params[:full_path])
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'

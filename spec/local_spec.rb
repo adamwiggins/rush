@@ -67,6 +67,14 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'stat', :full_path => 'full_path').should == YAML.dump(1 => 2)
 	end
 
+	it "receive -> set_access(full_path, user, group, permissions)" do
+		access = mock("access")
+		Rush::Access.should_receive(:from_hash).with(:action => 'set_access', :full_path => 'full_path', :user => 'joe').and_return(access)
+
+		@con.should_receive(:set_access).with('full_path', access)
+		@con.receive(:action => 'set_access', :full_path => 'full_path', :user => 'joe')
+	end
+
 	it "receive -> size(full_path)" do
 		@con.should_receive(:size).with('full_path').and_return("1024")
 		@con.receive(:action => 'size', :full_path => 'full_path').should == "1024"
@@ -199,6 +207,12 @@ describe Rush::Connection::Local do
 	it "stat raises DoesNotExist if the entry does not exist" do
 		fname = "#{@sandbox_dir}/does_not_exist"
 		lambda { @con.stat(fname) }.should raise_error(Rush::DoesNotExist, fname)
+	end
+
+	it "set_access invokes the access object" do
+		access = mock("access")
+		access.should_receive(:apply).with('/some/path')
+		@con.set_access('/some/path', access)
 	end
 
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different

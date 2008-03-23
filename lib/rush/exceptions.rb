@@ -23,4 +23,7 @@ module Rush
 
 	# You cannot move or copy entries to a path that is not a dir (should end with trailing slash).
 	class NotADir < Exception; end
+
+	# A user or permission value specified to set access was not valid.
+	class BadAccessSpecifier < Exception; end
 end

@@ -58,6 +58,10 @@ class Rush::Connection::Remote
 		YAML.load(transmit(:action => 'stat', :full_path => full_path))
 	end
 
+	def set_access(full_path, access)
+		transmit access.to_hash.merge(:action => 'set_access', :full_path => full_path)
+	end
+
 	def size(full_path)
 		transmit(:action => 'size', :full_path => full_path)
 	end

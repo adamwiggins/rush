@@ -1,3 +1,5 @@
+# A class to hold an ownership (user/group) and permissions (r/w/x) for files and dirs.
+# See Rush::Entry#access= for information on the public-facing interface.
 class Rush::Access
 	attr_accessor :user
 	attr_accessor :group
