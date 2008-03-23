@@ -5,10 +5,6 @@ class Rush::Access
 	attr_accessor :group_read, :group_write, :group_execute
 	attr_accessor :other_read, :other_write, :other_execute
 
-	def initialize(options={})
-		parse(options)
-	end
-
 	def self.roles
 		%w(user group other)
 	end
@@ -29,6 +25,61 @@ class Rush::Access
 				set_matrix(perms, roles)
 			end
 		end
+		self
+	end
+
+	def self.parse(options)
+		new.parse(options)
+	end
+
+	def apply(full_path)
+		FileUtils.chmod(octal_permissions, full_path)
+	rescue Errno::ENOENT
+		raise Rush::DoesNotExist, full_path
+	end
+
+	def to_hash
+		hash = { :user => user, :group => group }
+		self.class.roles.each do |role|
+			self.class.permissions.each do |perm|
+				key = "#{role}_#{perm}".to_sym
+				hash[key] = send(key) ? 1 : 0
+			end
+		end
+		hash
+	end
+
+	def from_hash(hash)
+		self.user = hash[:user]
+		self.group = hash[:group]
+		self.class.roles.each do |role|
+			self.class.permissions.each do |perm|
+				key = "#{role}_#{perm}"
+				send("#{key}=".to_sym, hash[key.to_sym].to_i == 1 ? true : false)
+			end
+		end
+		self
+	end
+
+	def self.from_hash(hash)
+		new.from_hash(hash)
+	end
+
+	def octal_permissions
+		perms = [ 0, 0, 0 ]
+		perms[0] += 4 if user_read
+		perms[0] += 2 if user_write
+		perms[0] += 1 if user_execute
+		
+		perms[1] += 4 if group_read
+		perms[1] += 2 if group_write
+		perms[1] += 1 if group_execute
+
+		perms[2] += 4 if other_read
+		perms[2] += 2 if other_write
+		perms[2] += 1 if other_execute
+
+		eval("0" + perms.join)
 	end
 
 	def set_matrix(perms, roles)
