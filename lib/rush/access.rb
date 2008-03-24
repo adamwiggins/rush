@@ -1,8 +1,6 @@
-# A class to hold an ownership (user/group) and permissions (r/w/x) for files and dirs.
+# A class to hold permissions (read, write, execute) for files and dirs.
 # See Rush::Entry#access= for information on the public-facing interface.
 class Rush::Access
-	attr_accessor :user
-	attr_accessor :group
 	attr_accessor :user_read, :user_write, :user_execute
 	attr_accessor :group_read, :group_write, :group_execute
 	attr_accessor :other_read, :other_write, :other_execute
@@ -17,15 +15,9 @@ class Rush::Access
 
 	def parse(options)
 		options.each do |key, value|
-			if key == :user
-				self.user = value
-			elsif key == :group
-				self.group = value
-			else
-				perms = extract_list('permission', key, self.class.permissions)
-				roles = extract_list('role', value, self.class.roles)
-				set_matrix(perms, roles)
-			end
+			perms = extract_list('permission', key, self.class.permissions)
+			roles = extract_list('role', value, self.class.roles)
+			set_matrix(perms, roles)
 		end
 		self
 	end
@@ -41,7 +33,7 @@ class Rush::Access
 	end
 
 	def to_hash
-		hash = { :user => user, :group => group }
+		hash = {}
 		self.class.roles.each do |role|
 			self.class.permissions.each do |perm|
 				key = "#{role}_#{perm}".to_sym
@@ -52,8 +44,6 @@ class Rush::Access
 	end
 
 	def from_hash(hash)
-		self.user = hash[:user]
-		self.group = hash[:group]
 		self.class.roles.each do |role|
 			self.class.permissions.each do |perm|
 				key = "#{role}_#{perm}"

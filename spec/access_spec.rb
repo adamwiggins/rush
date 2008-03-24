@@ -55,17 +55,7 @@ describe Rush::Access do
 		@access.group_write.should == true
 	end
 
-	it "parse options hash: user" do
-		@access.parse(:user => 'joe')
-		@access.user.should == 'joe'
-	end
-
-	it "parse options hash: group" do
-		@access.parse(:group => 'users')
-		@access.group.should == 'users'
-	end
-
-	it "parse options hash: permissions" do
+	it "parse options hash" do
 		@access.parse(:read => :user)
 		@access.user_read.should == true
 	end
@@ -97,12 +87,8 @@ describe Rush::Access do
 	end
 
 	it "serializes itself to a hash" do
-		@access.user = "joe"
-		@access.group = "users"
 		@access.user_read = true
 		@access.to_hash.should == {
-			:user => 'joe',
-			:group => 'users',
 			:user_read => 1, :user_write => 0, :user_execute => 0,
 			:group_read => 0, :group_write => 0, :group_execute => 0,
 			:other_read => 0, :other_write => 0, :other_execute => 0,
@@ -110,16 +96,14 @@ describe Rush::Access do
 	end
 
 	it "unserializes from a hash" do
-		@access.from_hash(:user => 'joe', :group => 'users', :user_read => '1')
-		@access.user.should == 'joe'
-		@access.group.should == 'users'
+		@access.from_hash(:user_read => '1')
 		@access.user_read.should == true
 	end
 
 	it "initializes from a serialized hash" do
 		@access.class.should_receive(:new).and_return(@access)
-		@access.class.from_hash(:user => 'test').should == @access
-		@access.user.should == 'test'
+		@access.class.from_hash(:user_read => '1').should == @access
+		@access.user_read.should == true
 	end
 
 	it "initializes from a parsed options hash" do
