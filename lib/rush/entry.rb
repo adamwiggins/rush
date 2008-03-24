@@ -149,8 +149,16 @@ class Rush::Entry
 		connection.set_access(full_path, Rush::Access.parse(options))
 	end
 
+	# Returns a hash with up to nine values, combining user/group/other with read/write/execute.
+	# The key is omitted if the value is false.
+	#
+	# Examples:
+	#
+	#   entry.access               # -> { :user_read => true, :user_write => true, :group_read => true }
+	#   entry.access[:other_read]  # -> true or nil
+	#
 	def access
-		Rush::Access.new.from_octal(stat[:mode]).to_hash
+		Rush::Access.new.from_octal(stat[:mode]).display_hash
 	end
 
 	# Destroy the entry.  If it is a dir, everything inside it will also be destroyed.

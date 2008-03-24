@@ -126,4 +126,9 @@ describe Rush::Access do
 		@access.user_write.should == true
 		@access.user_execute.should == false
 	end
+
+	it "computes a display hash by dropping false keys and converting the 1s to trues" do
+		@access.should_receive(:to_hash).and_return(:red => 1, :green => 0, :blue => 1)
+		@access.display_hash.should == { :red => true, :blue => true }
+	end
 end

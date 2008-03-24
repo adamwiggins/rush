@@ -43,6 +43,14 @@ class Rush::Access
 		hash
 	end
 
+	def display_hash
+		hash = {}
+		to_hash.each do |key, value|
+			hash[key] = true if value == 1
+		end
+		hash
+	end
+
 	def from_hash(hash)
 		self.class.roles.each do |role|
 			self.class.permissions.each do |perm|
