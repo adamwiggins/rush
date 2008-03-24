@@ -114,6 +114,7 @@ class Rush::Connection::Local
 			:ctime => s.ctime,
 			:atime => s.atime,
 			:mtime => s.mtime,
+			:mode => s.mode
 		}
 	rescue Errno::ENOENT
 		raise Rush::DoesNotExist, full_path

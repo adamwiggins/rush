@@ -204,6 +204,10 @@ describe Rush::Connection::Local do
 		@con.stat(@sandbox_dir).should have_key(:size)
 	end
 
+	it "stat fetches the octal permissions" do
+		@con.stat(@sandbox_dir)[:mode].should be_kind_of(Fixnum)
+	end
+
 	it "stat raises DoesNotExist if the entry does not exist" do
 		fname = "#{@sandbox_dir}/does_not_exist"
 		lambda { @con.stat(fname) }.should raise_error(Rush::DoesNotExist, fname)

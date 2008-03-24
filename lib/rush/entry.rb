@@ -149,6 +149,10 @@ class Rush::Entry
 		connection.set_access(full_path, Rush::Access.parse(options))
 	end
 
+	def access
+		Rush::Access.new.from_octal(stat[:mode]).to_hash
+	end
+
 	# Destroy the entry.  If it is a dir, everything inside it will also be destroyed.
 	def destroy
 		connection.destroy(full_path)

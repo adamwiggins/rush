@@ -111,4 +111,19 @@ describe Rush::Access do
 		@access.class.parse(:read => :user_group).should == @access
 		@access.user_read.should == true
 	end
+
+	it "converts and octal integer into an array of integers" do
+		@access.octal_integer_array(0740).should == [ 7, 4, 0 ]
+	end
+
+	it "filters out anything above the top three digits (File.stat returns some extra data there)" do
+		@access.octal_integer_array(0100644).should == [ 6, 4, 4 ]
+	end
+
+	it "taskes permissions from an octal representation" do
+		@access.from_octal(0644)
+		@access.user_read.should == true
+		@access.user_write.should == true
+		@access.user_execute.should == false
+	end
 end

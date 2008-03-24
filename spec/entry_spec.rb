@@ -121,4 +121,13 @@ describe Rush::Entry do
 		@entry.access = { :read => :user }
 		`ls -l #{@filename}`.should match(/^-r--------/)
 	end
+
+	it "reads the file permissions in the access hash" do
+		system "chmod 644 #{@filename}"
+		@entry.access[:user_read].should == 1
+		@entry.access[:user_write].should == 1
+		@entry.access[:user_execute].should == 0
+		@entry.access[:group_read].should == 1
+		@entry.access[:group_write].should == 0
+	end
 end

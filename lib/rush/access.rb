@@ -74,6 +74,30 @@ class Rush::Access
 		eval("0" + perms.join)
 	end
 
+	def from_octal(mode)
+		perms = octal_integer_array(mode)
+
+		self.user_read = (perms[0] & 4) > 0 ? true : false
+		self.user_write = (perms[0] & 2) > 0 ? true : false
+		self.user_execute = (perms[0] & 1) > 0 ? true : false
+	
+		self.group_read = (perms[1] & 4) > 0 ? true : false
+		self.group_write = (perms[1] & 2) > 0 ? true : false
+		self.group_execute = (perms[1] & 1) > 0 ? true : false
+
+		self.other_read = (perms[2] & 4) > 0 ? true : false
+		self.other_write = (perms[2] & 2) > 0 ? true : false
+		self.other_execute = (perms[2] & 1) > 0 ? true : false
+
+		self
+	end
+
+	def octal_integer_array(mode)
+		mode %= 01000                      # filter out everything but the bottom three digits
+		mode = sprintf("%o", mode)         # convert to string
+		mode.split("").map { |p| p.to_i }  # and finally, array of integers
+	end
+
 	def set_matrix(perms, roles)
 		perms.each do |perm|
 			roles.each do |role|
