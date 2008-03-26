@@ -119,7 +119,7 @@ module Rush
 					if full_path and box
 						dir = Rush::Dir.new(full_path, box)
 						return dir.entries.select do |e|
-							e.name.match(/^#{partial_path}/)
+							e.name.match(/^#{Regexp.escape(partial_path)}/)
 						end.map do |e|
 							(pre || '') + original_var + '[' + quote + fixed_path + e.name + (e.dir? ? "/" : "")
 						end
