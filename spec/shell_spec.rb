@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/base'
-require 'shell'
+require 'rush/shell'
 
 describe Rush::Shell do
 	before do
