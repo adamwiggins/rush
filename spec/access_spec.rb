@@ -56,7 +56,7 @@ describe Rush::Access do
 	end
 
 	it "parse options hash" do
-		@access.parse(:read => :user)
+		@access.parse(:user_can => :read)
 		@access.user_read.should == true
 	end
 
@@ -108,7 +108,7 @@ describe Rush::Access do
 
 	it "initializes from a parsed options hash" do
 		@access.class.should_receive(:new).and_return(@access)
-		@access.class.parse(:read => :user_group).should == @access
+		@access.class.parse(:user_and_group_can => :read).should == @access
 		@access.user_read.should == true
 	end
 

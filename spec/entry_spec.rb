@@ -118,7 +118,7 @@ describe Rush::Entry do
 
 	it "can update the read access permission" do
 		system "chmod 666 #{@filename}"
-		@entry.access = { :read => :user }
+		@entry.access = { :user_can => :read }
 		`ls -l #{@filename}`.should match(/^-r--------/)
 	end
 

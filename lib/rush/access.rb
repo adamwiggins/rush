@@ -15,8 +15,10 @@ class Rush::Access
 
 	def parse(options)
 		options.each do |key, value|
-			perms = extract_list('permission', key, self.class.permissions)
-			roles = extract_list('role', value, self.class.roles)
+			next unless m = key.to_s.match(/(.*)_can$/)
+			key = m[1].to_sym
+			roles = extract_list('role', key, self.class.roles)
+			perms = extract_list('permission', value, self.class.permissions)
 			set_matrix(perms, roles)
 		end
 		self

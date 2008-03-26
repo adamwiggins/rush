@@ -129,20 +129,20 @@ class Rush::Entry
 		name.slice(0, 1) == '.'
 	end
 
-	# Set the permissions and ownership for the entry.
-	# Ownership is set by :user and :group.
+	# Set the access permissions for the entry.
 	#
 	# Permissions are set by role and permissions combinations which can be specified individually
-	# or grouped together - :read => :user, :write => :user is the same as :read_write => :user.
+	# or grouped together.  :user_can => :read, :user_can => :write is the same
+	# as :user_can => :read_write.
 	#
-	# You can also insert 'and' if you find it reads better, like :read_and_write => :user_and_group.
+	# You can also insert 'and' if you find it reads better, like :user_and_group_can => :read_and_write.
 	#
 	# Any permission excluded is set to deny access.  The access call does not set partial
 	# permissions which combine with the existing state of the entry, like "chmod o+r" would.
 	#
 	# Examples:
 	#
-	#   file.access = { :user => 'adam', :group => 'users', :read_and_write => :user, :read => :group_and_other }
+	#   file.access = { :user_can => :read_write, :group_other_can => :read }
 	#   dir.access = { :user => 'adam', :group => 'users', :read_write_execute => :user_group }
 	#
 	def access=(options)
