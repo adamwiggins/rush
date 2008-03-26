@@ -124,6 +124,6 @@ describe Rush::Entry do
 
 	it "reads the file permissions in the access hash" do
 		system "chmod 640 #{@filename}"
-		@entry.access.should == { :user_read => true, :user_write => true, :group_read => true }
+		@entry.access.should == { :user_can_read => true, :user_can_write => true, :group_can_read => true }
 	end
 end

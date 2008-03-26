@@ -154,8 +154,8 @@ class Rush::Entry
 	#
 	# Examples:
 	#
-	#   entry.access               # -> { :user_read => true, :user_write => true, :group_read => true }
-	#   entry.access[:other_read]  # -> true or nil
+	#   entry.access                   # -> { :user_can_read => true, :user_can_write => true, :group_can_read => true }
+	#   entry.access[:other_can_read]  # -> true or nil
 	#
 	def access
 		Rush::Access.new.from_octal(stat[:mode]).display_hash

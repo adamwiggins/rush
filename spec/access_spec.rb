@@ -38,39 +38,39 @@ describe Rush::Access do
 
 	it "sets one value in the matrix of permissions and roles" do
 		@access.set_matrix(%w(read), %w(user))
-		@access.user_read.should == true
+		@access.user_can_read.should == true
 	end
 
 	it "sets two values in the matrix of permissions and roles" do
 		@access.set_matrix(%w(read), %w(user group))
-		@access.user_read.should == true
-		@access.group_read.should == true
+		@access.user_can_read.should == true
+		@access.group_can_read.should == true
 	end
 
 	it "sets four values in the matrix of permissions and roles" do
 		@access.set_matrix(%w(read write), %w(user group))
-		@access.user_read.should == true
-		@access.group_read.should == true
-		@access.user_write.should == true
-		@access.group_write.should == true
+		@access.user_can_read.should == true
+		@access.group_can_read.should == true
+		@access.user_can_write.should == true
+		@access.group_can_write.should == true
 	end
 
 	it "parse options hash" do
 		@access.parse(:user_can => :read)
-		@access.user_read.should == true
+		@access.user_can_read.should == true
 	end
 
 	it "generates octal permissions from its member vars" do
-		@access.user_read = true
+		@access.user_can_read = true
 		@access.octal_permissions.should == 0400
 	end
 
 	it "generates octal permissions from its member vars" do
-		@access.user_read = true
-		@access.user_write = true
-		@access.user_execute = true
-		@access.group_read = true
-		@access.group_execute = true
+		@access.user_can_read = true
+		@access.user_can_write = true
+		@access.user_can_execute = true
+		@access.group_can_read = true
+		@access.group_can_execute = true
 		@access.octal_permissions.should == 0750
 	end
 
@@ -78,7 +78,7 @@ describe Rush::Access do
 		file = "/tmp/rush_spec_#{Process.pid}"
 		begin
 			system "rm -rf #{file}; touch #{file}; chmod 770 #{file}"
-			@access.user_read = true
+			@access.user_can_read = true
 			@access.apply(file)
 			`ls -l #{file}`.should match(/^-r--------/)
 		ensure
@@ -87,29 +87,29 @@ describe Rush::Access do
 	end
 
 	it "serializes itself to a hash" do
-		@access.user_read = true
+		@access.user_can_read = true
 		@access.to_hash.should == {
-			:user_read => 1, :user_write => 0, :user_execute => 0,
-			:group_read => 0, :group_write => 0, :group_execute => 0,
-			:other_read => 0, :other_write => 0, :other_execute => 0,
+			:user_can_read => 1, :user_can_write => 0, :user_can_execute => 0,
+			:group_can_read => 0, :group_can_write => 0, :group_can_execute => 0,
+			:other_can_read => 0, :other_can_write => 0, :other_can_execute => 0,
 		}
 	end
 
 	it "unserializes from a hash" do
-		@access.from_hash(:user_read => '1')
-		@access.user_read.should == true
+		@access.from_hash(:user_can_read => '1')
+		@access.user_can_read.should == true
 	end
 
 	it "initializes from a serialized hash" do
 		@access.class.should_receive(:new).and_return(@access)
-		@access.class.from_hash(:user_read => '1').should == @access
-		@access.user_read.should == true
+		@access.class.from_hash(:user_can_read => '1').should == @access
+		@access.user_can_read.should == true
 	end
 
 	it "initializes from a parsed options hash" do
 		@access.class.should_receive(:new).and_return(@access)
 		@access.class.parse(:user_and_group_can => :read).should == @access
-		@access.user_read.should == true
+		@access.user_can_read.should == true
 	end
 
 	it "converts and octal integer into an array of integers" do
@@ -122,9 +122,9 @@ describe Rush::Access do
 
 	it "taskes permissions from an octal representation" do
 		@access.from_octal(0644)
-		@access.user_read.should == true
-		@access.user_write.should == true
-		@access.user_execute.should == false
+		@access.user_can_read.should == true
+		@access.user_can_write.should == true
+		@access.user_can_execute.should == false
 	end
 
 	it "computes a display hash by dropping false keys and converting the 1s to trues" do
