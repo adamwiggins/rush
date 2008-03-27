@@ -31,6 +31,21 @@ module Rush
 			Array.class_eval commands
 		end
 
+		# Run a single command.
+		def execute(cmd)
+			res = eval(cmd, @pure_binding)
+			$last_res = res
+			eval("_ = $last_res", @pure_binding)
+			print_result res
+		rescue Rush::Exception => e
+			puts "Exception #{e.class} -> #{e.message}"
+		rescue ::Exception => e
+			puts "Exception #{e.class} -> #{e.message}"
+			e.backtrace.each do |t|
+				puts "   #{::File.expand_path(t)}"
+			end
+		end
+
 		# Run the interactive shell using readline.
 		def run
 			loop do
@@ -40,19 +55,7 @@ module Rush
 				next if cmd == ""
 				Readline::HISTORY.push(cmd)
 
-				begin
-					res = eval(cmd, @pure_binding)
-					$last_res = res
-					eval("_ = $last_res", @pure_binding)
-					print_result res
-				rescue Rush::Exception => e
-					puts "Exception #{e.class} -> #{e.message}"
-				rescue ::Exception => e
-					puts "Exception #{e.class} -> #{e.message}"
-					e.backtrace.each do |t|
-						puts "   #{::File.expand_path(t)}"
-					end
-				end
+				execute(cmd)
 			end
 		end
 

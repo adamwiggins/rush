@@ -3,5 +3,11 @@
 require File.dirname(__FILE__) + '/../lib/rush'
 require File.dirname(__FILE__) + '/../lib/rush/shell'
 
-Rush::Shell.new.run
+shell = Rush::Shell.new
+
+if ARGV.size > 0
+	shell.execute ARGV.join(' ')
+else
+	shell.run
+end
 
