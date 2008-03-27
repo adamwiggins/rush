@@ -31,7 +31,7 @@ require 'rake/rdoctask'
 require 'fileutils'
 include FileUtils
 
-version = "0.2"
+version = "0.3"
 name = "rush"
 
 spec = Gem::Specification.new do |s|
