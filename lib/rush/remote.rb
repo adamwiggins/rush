@@ -104,6 +104,8 @@ class Rush::Connection::Remote
 			res = http.request(req, payload)
 			process_result(res.code, res.body)
 		end
+	rescue EOFError
+		raise Rush::RushdNotRunning
 	end
 
 	# Take the http result of a transmit and raise an error, or return the body

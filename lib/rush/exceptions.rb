@@ -5,8 +5,10 @@ module Rush
 	# Client was not authorized by remote server; check credentials.
 	class NotAuthorized < Exception; end
 
-	# Failed to transmit to the remote server; check if the ssh tunnel is alive,
-	# and rushd is listening on the other end.
+	# rushd is not running on the remote box.
+	class RushdNotRunning < Exception; end
+
+	# An unrecognized status code was returned by rushd.
 	class FailedTransmit < Exception; end
 
 	# The entry (file or dir) referenced does not exist.  Message is the entry's full path.
