@@ -272,7 +272,7 @@ EOPS
 	end
 
 	it "executes a bash command as another user using sudo" do
-		@con.bash("echo test2", ENV['user']).should == "test2\n"
+		@con.bash("echo test2", ENV['USER']).should == "test2\n"
 	end
 
 	it "ensure_tunnel to match with remote connection" do
