@@ -73,8 +73,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits size" do
-		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("")
-		@con.size('full_path')
+		@con.should_receive(:transmit).with(:action => 'size', :full_path => 'full_path').and_return("123")
+		@con.size('full_path').should == 123
 	end
 
 	it "transmits processes" do

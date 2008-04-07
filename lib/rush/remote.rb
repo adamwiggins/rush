@@ -63,7 +63,7 @@ class Rush::Connection::Remote
 	end
 
 	def size(full_path)
-		transmit(:action => 'size', :full_path => full_path)
+		transmit(:action => 'size', :full_path => full_path).to_i
 	end
 
 	def processes
