@@ -264,7 +264,7 @@ class Rush::Connection::Local
 		sh = Session::Bash.new
 
 		if user and user != ""
-			out, err = sh.execute "sudo -H -u #{user} bash", :stdin => command
+			out, err = sh.execute "cd /; sudo -H -u #{user} bash", :stdin => command
 		else
 			out, err = sh.execute command
 		end
