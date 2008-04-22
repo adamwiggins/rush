@@ -263,6 +263,11 @@ EOPS
 		@con.kill_process(123)
 	end
 
+	it "does not raise an error if the process is already dead" do
+		::Process.should_receive(:kill).and_raise(Errno::ESRCH)
+		lambda { @con.kill_process(123) }.should_not raise_error
+	end
+
 	it "executes a bash command, returning stdout when successful" do
 		@con.bash("echo test").should == "test\n"
 	end
