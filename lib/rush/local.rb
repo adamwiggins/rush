@@ -256,6 +256,9 @@ class Rush::Connection::Local
 		end
 
 		::Process.kill('KILL', pid) rescue nil
+
+	rescue Errno::ESRCH
+		# if it's dead, great - do nothing
 	end
 
 	def bash(command, user=nil)
