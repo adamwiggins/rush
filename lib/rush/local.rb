@@ -133,7 +133,7 @@ class Rush::Connection::Local
 	# Get the list of processes as an array of hashes.
 	def processes
 		if ::File.directory? "/proc"
-			linux_processes
+			resolve_unix_uids(linux_processes)
 		elsif ::File.directory? "C:/WINDOWS"
 			windows_processes
 		else
@@ -152,6 +152,33 @@ class Rush::Connection::Local
 			end
 		end
 		list
+	end
+
+	def resolve_unix_uids(list)
+		@uid_map = {} # reset the cache between uid resolutions.
+		list.each do |process|
+			process[:user] = resolve_unix_uid_to_user(process[:uid])
+		end
+		list
+	end
+
+	# resolve uid to user
+	def resolve_unix_uid_to_user(uid)
+		require 'etc'
+
+		@uid_map ||= {}
+		uid = uid.to_i
+
+		return @uid_map[uid] if !@uid_map[uid].nil?
+		
+		begin
+			record = Etc.getpwuid(uid)
+		rescue ArgumentError
+			return nil
+		end
+
+		@uid_map[uid] = record.name
+		@uid_map[uid]
 	end
 
 	# Read a single file in /proc and store the parsed values in a hash suitable

@@ -287,4 +287,18 @@ EOPS
 	it "always returns true on alive?" do
 		@con.should be_alive
 	end
+
+	it "resolves a unix uid to a user" do
+		@con.resolve_unix_uid_to_user(0).should == "root"
+		@con.resolve_unix_uid_to_user('0').should == "root"
+	end
+
+	it "returns nil if the unix uid does not exist" do
+		@con.resolve_unix_uid_to_user(9999).should be_nil
+	end
+
+	it "iterates through a process list and resolves the unix uid for each" do
+		list = [ { :uid => 0, :command => 'pureftpd' }, { :uid => 9999, :command => 'defunk' } ]
+		@con.resolve_unix_uids(list).should == [ { :uid => 0, :user => 'root', :command => 'pureftpd' }, { :uid => 9999, :command => 'defunk', :user => nil } ]
+	end
 end

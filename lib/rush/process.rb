@@ -1,6 +1,6 @@
 # An array of these objects is returned by Rush::Box#processes.
 class Rush::Process
-	attr_reader :box, :pid, :uid, :parent_pid, :command, :cmdline, :mem, :cpu
+	attr_reader :box, :pid, :uid, :parent_pid, :command, :cmdline, :mem, :cpu, :user
 
 	# params is a hash returned by the system-specific method of looking up the
 	# process list.
@@ -9,6 +9,7 @@ class Rush::Process
 
 		@pid = params[:pid].to_i
 		@uid = params[:uid].to_i
+		@user = params[:user]
 		@command = params[:command]
 		@cmdline = params[:cmdline]
 		@mem = params[:mem]
