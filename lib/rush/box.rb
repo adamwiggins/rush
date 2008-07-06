@@ -49,18 +49,29 @@ class Rush::Box
 		end
 	end
 
-	# Execute a command in the standard unix shell.  Options:
+	# Execute a command in the standard unix shell.  Returns the contents of
+	# stdout if successful, or raises Rush::BashFailed with the output of stderr
+	# if the shell returned a non-zero value.  Options:
 	#
 	# :user => unix username to become via sudo
 	# :env => hash of environment variables
+	# :background => run in the background (returns Rush::Process instead of stdout)
 	#
-	# Example:
+	# Examples:
 	#
 	#   box.bash '/etc/init.d/mysql restart', :user => 'root'
 	#   box.bash 'rake db:migrate', :user => 'www', :env => { :RAILS_ENV => 'production' }
+	#   box.bash 'mongrel_rails start', :background => true
 	#
 	def bash(command, options={})
-		connection.bash(command_with_environment(command, options[:env]), options[:user])
+		cmd_with_env = command_with_environment(command, options[:env])
+
+		if options[:background]
+			pid = connection.bash(cmd_with_env, options[:user], true)
+			processes.find_by_pid(pid)
+		else
+			connection.bash(cmd_with_env, options[:user], false)
+		end
 	end
 
 	def command_with_environment(command, env)   # :nodoc:

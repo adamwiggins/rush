@@ -288,7 +288,9 @@ class Rush::Connection::Local
 		# if it's dead, great - do nothing
 	end
 
-	def bash(command, user=nil)
+	def bash(command, user=nil, background=false)
+		return bash_background(command, user) if background
+
 		require 'session'
 
 		sh = Session::Bash.new
@@ -305,6 +307,27 @@ class Rush::Connection::Local
 		raise(Rush::BashFailed, err) if retval != 0
 
 		out
+	end
+
+	def bash_background(command, user)
+		inpipe, outpipe = IO.pipe
+
+		pid = fork do
+			outpipe.write command
+			outpipe.close
+			STDIN.reopen(inpipe)
+
+			if user and user != ''
+				exec "cd /; sudo -H -u #{user} bash"
+			else
+				exec "bash"
+			end
+		end
+		outpipe.close
+
+		Process::detach pid
+
+		pid
 	end
 
 	####################################
@@ -334,7 +357,7 @@ class Rush::Connection::Local
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 			when 'kill_process'   then kill_process(params[:pid].to_i)
-			when 'bash'           then bash(params[:payload], params[:user])
+			when 'bash'           then bash(params[:payload], params[:user], params[:background] == 'true')
 		else
 			raise UnknownAction
 		end

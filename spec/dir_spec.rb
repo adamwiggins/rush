@@ -152,8 +152,8 @@ describe Rush::Dir do
 	end
 
 	it "passes bash options (e.g., :user) through to the box bash command" do
-		@box.should_receive(:bash).with('cmd', 'options')
-		@box.bash('cmd', 'options')
+		@box.should_receive(:bash).with('cmd', :opt1 => 1, :opt2 => 2)
+		@box.bash('cmd', :opt1 => 1, :opt2 => 2)
 	end
 
 end

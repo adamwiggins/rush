@@ -95,9 +95,14 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'kill_process', :pid => '123')
 	end
 
-	it "receive -> bash" do
-		@con.should_receive(:bash).with('cmd', 'user').and_return('output')
-		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user').should == 'output'
+	it "receive -> bash (foreground)" do
+		@con.should_receive(:bash).with('cmd', 'user', false).and_return('output')
+		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'false').should == 'output'
+	end
+
+	it "receive -> bash (background)" do
+		@con.should_receive(:bash).with('cmd', 'user', true).and_return('output')
+		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'true').should == 'output'
 	end
 
 	it "receive -> unknown action exception" do
@@ -278,6 +283,10 @@ EOPS
 
 	it "executes a bash command as another user using sudo" do
 		@con.bash("echo test2", ENV['USER']).should == "test2\n"
+	end
+
+	it "executes a bash command in the background, returning the pid" do
+		@con.bash("true", nil, true).should > 0
 	end
 
 	it "ensure_tunnel to match with remote connection" do
