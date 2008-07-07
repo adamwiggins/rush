@@ -70,10 +70,6 @@ module Rush
 		def print_result(res)
 			if res.kind_of? String
 				puts res
-			elsif res.kind_of? Array
-				res.each do |item|
-					puts item
-				end
 			elsif res.kind_of? Rush::SearchResults
 				widest = res.entries.map { |k| k.full_path.length }.max
 				res.entries_with_lines.each do |entry, lines|
@@ -88,6 +84,10 @@ module Rush
 					print "\n"
 				end
 				puts "#{res.entries.size} matching files with #{res.lines.size} matching lines"
+			elsif res.respond_to? :each
+				res.each do |item|
+					puts item
+				end
 			else
 				puts "=> #{res.inspect}"
 			end
