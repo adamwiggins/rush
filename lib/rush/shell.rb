@@ -85,9 +85,16 @@ module Rush
 				end
 				puts "#{res.entries.size} matching files with #{res.lines.size} matching lines"
 			elsif res.respond_to? :each
+				counts = {}
 				res.each do |item|
 					puts item
+					counts[item.class] ||= 0
+					counts[item.class] += 1
 				end
+				count_s = counts.map do |klass, count|
+					"#{count} x #{klass}"
+				end.join(', ')
+				puts count_s
 			else
 				puts "=> #{res.inspect}"
 			end
