@@ -41,8 +41,8 @@ class Rush::Box
 		filesystem[key]
 	end
 
-	# Get the list of processes currently running on the box.  Returns an array
-	# of Rush::Process.
+	# Get the list of processes running on the box, not unlike "ps aux" in bash.
+	# Returns a Rush::ProcessSet.
 	def processes
 		Rush::ProcessSet.new(
 			connection.processes.map do |ps|
