@@ -44,9 +44,11 @@ class Rush::Box
 	# Get the list of processes currently running on the box.  Returns an array
 	# of Rush::Process.
 	def processes
-		connection.processes.map do |ps|
-			Rush::Process.new(ps, self)
-		end
+		Rush::ProcessSet.new(
+			connection.processes.map do |ps|
+				Rush::Process.new(ps, self)
+			end
+		)
 	end
 
 	# Execute a command in the standard unix shell.  Returns the contents of
