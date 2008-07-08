@@ -91,10 +91,14 @@ module Rush
 					counts[item.class] ||= 0
 					counts[item.class] += 1
 				end
-				count_s = counts.map do |klass, count|
-					"#{count} x #{klass}"
-				end.join(', ')
-				puts count_s
+				if counts == {}
+					puts "=> (empty set)"
+				else
+					count_s = counts.map do |klass, count|
+						"#{count} x #{klass}"
+					end.join(', ')
+					puts "=> #{count_s}"
+				end
 			else
 				puts "=> #{res.inspect}"
 			end
