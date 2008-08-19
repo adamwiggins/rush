@@ -55,13 +55,15 @@ For more details on syntax and commands, see:
 
 == Meta
 
-rush was written by Adam Wiggins (adam at heroku dot com)
+Created by Adam Wiggins
 
-Patches contributed by: Chihiro Ito, Gabriel Ware, Michael Schutte, and Ricardo Chimal Jr.
+Patches contributed by Chihiro Ito, Gabriel Ware, Michael Schutte, Ricardo Chimal Jr., and Nicholas Schlueter
 
 Logo by James Lindenbaum
 
-rush is released under the MIT License: http://www.opensource.org/licenses/mit-license.php
+Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 http://rush.heroku.com
+
+http://groups.google.com/group/ruby-shell
 
