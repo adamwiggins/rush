@@ -3,6 +3,7 @@ require 'readline'
 # Rush::Shell is used to create an interactive shell.  It is invoked by the rush binary.
 module Rush
 	class Shell
+		attr_accessor :suppress_output
 		# Set up the user's environment, including a pure binding into which
 		# env.rb and commands.rb are mixed.
 		def initialize
@@ -68,6 +69,7 @@ module Rush
 
 		# Nice printing of different return types, particularly Rush::SearchResults.
 		def print_result(res)
+			return if self.suppress_output
 			if res.kind_of? String
 				puts res
 			elsif res.kind_of? Rush::SearchResults
