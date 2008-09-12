@@ -21,6 +21,14 @@ class Rush::Connection::Local
 		true
 	end
 
+	# Append contents to a file
+	def append_to_file(full_path, contents)
+		::File.open(full_path, 'a') do |f|
+			f.write contents
+		end
+		true
+	end
+
 	# Read raw bytes from a file.
 	def file_contents(full_path)
 		::File.read(full_path)
@@ -342,6 +350,7 @@ class Rush::Connection::Local
 	def receive(params)
 		case params[:action]
 			when 'write_file'     then write_file(params[:full_path], params[:payload])
+			when 'append_to_file' then append_to_file(params[:full_path], params[:payload])
 			when 'file_contents'  then file_contents(params[:full_path])
 			when 'destroy'        then destroy(params[:full_path])
 			when 'purge'          then purge(params[:full_path])

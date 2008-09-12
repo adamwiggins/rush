@@ -29,6 +29,11 @@ class Rush::File < Rush::Entry
 		connection.write_file(full_path, new_contents)
 	end
 
+	# Append new contents to the end of the file, keeping what was in it.
+	def append(contents)
+		connection.append_to_file(full_path, contents)
+	end
+
 	# Return an array of lines from the file, similar to stdlib's File#readlines.
 	def lines
 		contents.split("\n")

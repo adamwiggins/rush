@@ -17,6 +17,11 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'write_file', :full_path => 'file', :payload => 'contents')
 	end
 
+	it "receive -> append_to_file(file, contents)" do
+		@con.should_receive(:append_to_file).with('file', 'contents')
+		@con.receive(:action => 'append_to_file', :full_path => 'file', :payload => 'contents')
+	end
+
 	it "receive -> file_contents(file)" do
 		@con.should_receive(:file_contents).with('file').and_return('the contents')
 		@con.receive(:action => 'file_contents', :full_path => 'file').should == 'the contents'
@@ -114,6 +119,13 @@ describe Rush::Connection::Local do
 		data = "some data"
 		@con.write_file(fname, data)
 		File.read(fname).should == data
+	end
+
+	it "append_to_file appends contents to a file" do
+		fname = "#{@sandbox_dir}/a_file"
+		system "echo line1 > #{fname}"
+		@con.append_to_file(fname, 'line2')
+		File.read(fname).should == "line1\nline2"
 	end
 
 	it "file_contents reads a file's contents" do

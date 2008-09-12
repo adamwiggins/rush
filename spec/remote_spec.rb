@@ -17,6 +17,11 @@ describe Rush::Connection::Local do
 		@con.write_file('file', 'contents')
 	end
 
+	it "transmits append_to_file" do
+		@con.should_receive(:transmit).with(:action => 'append_to_file', :full_path => 'file', :payload => 'contents')
+		@con.append_to_file('file', 'contents')
+	end
+
 	it "transmits file_contents" do
 		@con.should_receive(:transmit).with(:action => 'file_contents', :full_path => 'file').and_return('contents')
 		@con.file_contents('file').should == 'contents'

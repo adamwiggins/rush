@@ -18,6 +18,10 @@ class Rush::Connection::Remote
 		transmit(:action => 'write_file', :full_path => full_path, :payload => contents)
 	end
 
+	def append_to_file(full_path, contents)
+		transmit(:action => 'append_to_file', :full_path => full_path, :payload => contents)
+	end
+
 	def file_contents(full_path)
 		transmit(:action => 'file_contents', :full_path => full_path)
 	end
