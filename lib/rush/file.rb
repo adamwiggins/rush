@@ -33,6 +33,7 @@ class Rush::File < Rush::Entry
 	def append(contents)
 		connection.append_to_file(full_path, contents)
 	end
+	alias_method :<<, :append
 
 	# Return an array of lines from the file, similar to stdlib's File#readlines.
 	def lines
