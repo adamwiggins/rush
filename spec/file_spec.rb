@@ -39,6 +39,10 @@ describe Rush::File do
 		@file.contents.should == @contents
 	end
 
+	it "read is an alias for contents" do
+		@file.read.should == @contents
+	end
+
 	it "can write new contents" do
 		@file.write('write test')
 		@file.contents.should == 'write test'

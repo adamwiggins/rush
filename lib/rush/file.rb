@@ -22,6 +22,8 @@ class Rush::File < Rush::Entry
 		connection.file_contents(full_path)
 	end
 
+	alias :read :contents
+
 	# Write to the file, overwriting whatever was already in it.
 	#
 	# Example: file.write "hello, world\n"
