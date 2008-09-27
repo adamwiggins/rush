@@ -318,9 +318,9 @@ class Rush::Connection::Local
 	end
 
 	def bash_background(command, user)
-		inpipe, outpipe = IO.pipe
-
 		pid = fork do
+			inpipe, outpipe = IO.pipe
+
 			outpipe.write command
 			outpipe.close
 			STDIN.reopen(inpipe)
@@ -331,7 +331,6 @@ class Rush::Connection::Local
 				exec "bash"
 			end
 		end
-		outpipe.close
 
 		Process::detach pid
 
