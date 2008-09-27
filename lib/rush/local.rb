@@ -325,6 +325,8 @@ class Rush::Connection::Local
 			outpipe.close
 			STDIN.reopen(inpipe)
 
+			close_all_descriptors([inpipe.to_i])
+
 			if user and user != ''
 				exec "cd /; sudo -H -u #{user} bash"
 			else
@@ -335,6 +337,13 @@ class Rush::Connection::Local
 		Process::detach pid
 
 		pid
+	end
+
+	def close_all_descriptors(keep_open = [])
+		3.upto(256) do |fd|
+			next if keep_open.include?(fd)
+			IO::new(fd).close rescue nil
+		end
 	end
 
 	####################################
