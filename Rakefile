@@ -46,7 +46,6 @@ spec = Gem::Specification.new do |s|
 	s.rubyforge_project = "ruby-shell"
 
 	s.add_dependency 'mongrel'
-	s.add_dependency 'rspec'
 	s.add_dependency 'session'
 
 	s.platform = Gem::Platform::RUBY
