@@ -6,7 +6,7 @@
 #
 # Example:
 #
-#   local = Rush::Box.new('localhost')
+#   local = Rush::Box.new
 #   local['/etc/hosts'].contents
 #   local.processes
 #
