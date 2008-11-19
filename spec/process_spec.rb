@@ -34,7 +34,7 @@ describe Rush::Process do
 	end
 
 	it "knows the executed binary" do
-		@process.command.should match(/^ruby/)
+		@process.command.should match(/ruby/)
 	end
 
 	it "knows the command line" do
