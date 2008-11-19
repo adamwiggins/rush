@@ -1,10 +1,10 @@
 = rush -- manage your unix systems with pure Ruby
 
-rush is a replacement for the unix shell (bash, zsh, etc) which uses pure Ruby syntax. Grep through files, find and kill processes, copy files - everything you do in the shell, now in Ruby.
+rush is a unix integration library and an interactive shell which uses pure Ruby syntax.  Walk directory trees; create, copy, search, and destroy files; find and kill processes - everything you'd normally do with shell commands, now in the strict and elegant world of Ruby.
 
 == Usage
 
-Previously if you wanted to count the number of classes in your project, you might use a bash command like:
+Count the number of classes in your project using bash:
 
   find myproj -name \*.rb | xargs grep '^\s*class' | wc -l
 
@@ -12,15 +12,31 @@ In rush, this is:
 
   myproj['**/*.rb'].search(/^\s*class/).lines.size
 
-How about killing those pesky stray mongrels? Before:
+Pesky stray mongrels?  In bash:
 
   kill `ps aux | grep mongrel_rails | grep -v grep | cut -c 10-20`
 
-After:
+In rush:
 
   processes.filter(:cmdline => /mongrel_rails/).kill
 
-But rush is more than just an interactive shell and a library: it can also control any number of remote machines from a single location. Copy files or directories between servers as seamlessly as if it was all local.
+== As a library
+
+  require 'rubygems'
+  require 'rush'
+
+  puts Rush.my_process.pid
+  puts Rush.processes.size
+  puts Rush.bash("echo SHELL COMMAND | tr A-Z a-z")
+  puts Rush.launch_dir['*.rb'].search(/Rush/).entries.inspect
+
+== Invoking the shell
+
+Run the "rush" binary to enter the interactive shell.
+
+== Remote access and clustering
+
+rush can control any number of remote machines from a single location. Copy files or directories between servers as seamlessly as if it was all local.
 
 Example of remote access:
 
@@ -32,15 +48,11 @@ Example of remote access:
   local_dir.copy_to remote_dir
   remote_dir['**/.svn/'].each { |d| d.destroy }
 
-Clustering? Well, if you insist:
+Clustering:
 
   local_dir = Rush::Box.new('localhost')['/Users/adam/server_logs/'].create
   servers = %w(www1 www2 www3).map { |n| Rush::Box.new(n) }
   servers.each { |s| s['/var/log/nginx/access.log'].copy_to local_dir["#{s.host}_access.log"] }
-
-== Invoking the shell
-
-Run the "rush" binary to enter the interactive shell.
 
 == Reference
 
