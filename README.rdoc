@@ -58,11 +58,12 @@ Clustering:
 
 For more details on syntax and commands, see:
 
-* Rush::Box
+* Rush
 * Rush::Entry
-* Rush::Commands
 * Rush::File
 * Rush::Dir
+* Rush::Commands
+* Rush::Box
 * Rush::Process
 
 == Meta

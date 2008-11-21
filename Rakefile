@@ -76,11 +76,11 @@ Rake::TestTask.new do |t|
 end
 
 Rake::RDocTask.new do |t|
-	t.rdoc_dir = 'doc'
+	t.rdoc_dir = 'rdoc'
 	t.title    = "rush, a Ruby replacement for bash+ssh"
 	t.options << '--line-numbers' << '--inline-source' << '-A cattr_accessor=object'
 	t.options << '--charset' << 'utf-8'
-	t.rdoc_files.include('README')
+	t.rdoc_files.include('README.rdoc')
 	t.rdoc_files.include('lib/rush.rb')
 	t.rdoc_files.include('lib/rush/*.rb')
 end
