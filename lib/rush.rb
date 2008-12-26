@@ -3,6 +3,14 @@ require 'rubygems'
 # The top-level Rush module has some convenience methods for accessing the
 # local box.
 module Rush
+	# Access the root filesystem of the local box.  Example:
+	#
+	#   Rush['/etc/hosts'].contents
+	#
+	def self.[](key)
+		box[key]
+	end
+
 	# Create a dir object from the path of a provided file.  Example:
 	#
 	#   Rush.dir(__FILE__).files
