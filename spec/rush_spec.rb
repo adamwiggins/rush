@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + '/base'
 
 describe Rush do
+	it "fetches a local file path" do
+		Rush['/etc/hosts'].full_path.should == '/etc/hosts'
+	end
+
 	it "fetches the dir of __FILE__" do
 		Rush.dir(__FILE__).name.should == 'spec'
 	end
