@@ -59,8 +59,8 @@ describe Rush::Process do
 	end
 
 	it "can kill itself" do
-		system "sleep 30 &"
-		process = Rush::Process.all.detect { |p| p.command == "sleep" }
+		process = Rush.bash("sleep 30", :background => true)
+		process.alive?.should be_true
 		process.kill
 		sleep 0.1
 		process.alive?.should be_false
