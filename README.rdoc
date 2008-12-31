@@ -25,6 +25,11 @@ In rush:
   require 'rubygems'
   require 'rush'
 
+  file = Rush['/tmp/myfile']
+  file.write "hello"
+  puts file.contents
+  file.destroy
+
   puts Rush.my_process.pid
   puts Rush.processes.size
   puts Rush.bash("echo SHELL COMMAND | tr A-Z a-z")
