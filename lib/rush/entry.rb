@@ -18,6 +18,8 @@ class Rush::Entry
 	def self.factory(full_path, box=nil)
 		if full_path.tail(1) == '/'
 			Rush::Dir.new(full_path, box)
+		elsif File.directory?(full_path)
+			Rush::Dir.new(full_path, box)
 		else
 			Rush::File.new(full_path, box)
 		end
