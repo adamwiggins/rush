@@ -46,6 +46,8 @@ class Rush::Dir < Rush::Entry
 			find_by_name(key)
 		end
 	end
+	# Slashes work as well, e.g. dir/'subdir/file'
+	alias_method :/, :[]
 
 	def find_by_name(name)    # :nodoc:
 		Rush::Entry.factory("#{full_path}/#{name}", box)
