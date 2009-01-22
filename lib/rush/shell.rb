@@ -112,6 +112,8 @@ module Rush
 				$~.to_a.slice(1, 4).push($~.pre_match)
 			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)(\.)(\w*)$/
 				$~.to_a.slice(1, 3).push($~.pre_match)
+			when /((?:@{1,2}|\$|)\w+)$/
+				$~.to_a.slice(1, 1).push(nil).push($~.pre_match)
 			else
 				[ nil, nil, nil ]
 			end
@@ -146,6 +148,17 @@ module Rush
 			end
 		end
 
+		def complete_variable(partial_name, pre)
+			lvars = eval('local_variables', @pure_binding)
+			gvars = eval('global_variables', @pure_binding)
+			ivars = eval('instance_variables', @pure_binding)
+			(lvars + gvars + ivars).select do |e|
+				e.match(/^#{Regexp.escape(partial_name)}/)
+			end.map do |e|
+				(pre || '') + e
+			end
+		end
+
 		# Try to do tab completion on dir square brackets and slash accessors.
 		#
 		# Example:
@@ -164,6 +177,8 @@ module Rush
 						complete_path(receiver, accessor, *rest)
 					when /^\.$/
 						complete_method(receiver, accessor, *rest)
+					when nil
+						complete_variable(receiver, *rest)
 					end
 				end
 			end
