@@ -110,6 +110,8 @@ module Rush
 			case input
 			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\[(['"])([^\]]+)$/
 				$~.to_a.slice(1, 3).push('[').push($~.pre_match)
+			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\/(['"])([^\2]+)$/
+				$~.to_a.slice(1, 3).push('/').push($~.pre_match)
 			else
 				[ nil, nil, nil, nil, nil ]
 			end
