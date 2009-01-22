@@ -110,8 +110,22 @@ module Rush
 			case input
 			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)([\[\/])(['"])([^\3]*)$/
 				$~.to_a.slice(1, 4).push($~.pre_match)
+			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)(\.)(\w*)$/
+				$~.to_a.slice(1, 3).push($~.pre_match)
 			else
-				[ nil, nil, nil, nil, nil ]
+				[ nil, nil, nil ]
+			end
+		end
+
+		def complete_method(receiver, dot, partial_name, pre)
+			path = eval("#{receiver}.full_path", @pure_binding) rescue nil
+			box = eval("#{receiver}.box", @pure_binding) rescue nil
+			if path and box
+				(box[path].methods - Object.methods).select do |e|
+					e.match(/^#{Regexp.escape(partial_name)}/)
+				end.map do |e|
+					(pre || '') + receiver + dot + e
+				end
 			end
 		end
 
@@ -145,7 +159,12 @@ module Rush
 			proc do |input|
 				receiver, accessor, *rest = path_parts(input)
 				if receiver
-					complete_path(receiver, accessor, *rest)
+					case accessor
+					when /^[\[\/]$/
+						complete_path(receiver, accessor, *rest)
+					when /^\.$/
+						complete_method(receiver, accessor, *rest)
+					end
 				end
 			end
 		end
