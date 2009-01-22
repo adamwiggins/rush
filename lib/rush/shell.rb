@@ -108,26 +108,27 @@ module Rush
 
 		def path_parts(input)		# :nodoc:
 			case input
-			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\[(['"])([^\2]+)$/
-				$~.to_a.slice(1, 3).push('[').push($~.pre_match)
-			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\/(['"])([^\2]+)$/
-				$~.to_a.slice(1, 3).push('/').push($~.pre_match)
+			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)(\[)(['"])([^\3]+)$/
+				$~.to_a.slice(1, 4).push($~.pre_match)
+			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)(\/)(['"])([^\3]+)$/
+				$~.to_a.slice(1, 4).push($~.pre_match)
 			else
 				[ nil, nil, nil, nil, nil ]
 			end
 		end
 
-		# Try to do tab completion on dir square brackets accessors.
+		# Try to do tab completion on dir square brackets and slash accessors.
 		#
 		# Example:
 		#
 		# dir['subd    # presing tab here will produce dir['subdir/ if subdir exists
+		# dir/'subd    # presing tab here will produce dir/'subdir/ if subdir exists
 		#
 		# This isn't that cool yet, because it can't do multiple levels of subdirs.
 		# It does work remotely, though, which is pretty sweet.
 		def completion_proc
 			proc do |input|
-				possible_var, quote, partial_path, accessor, pre = path_parts(input)
+				possible_var, accessor, quote, partial_path, pre = path_parts(input)
 				if possible_var
 					original_var, fixed_path = possible_var, ''
 					if /^(.+\/)([^\/]+)$/ === partial_path
