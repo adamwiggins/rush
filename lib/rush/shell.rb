@@ -107,7 +107,7 @@ module Rush
 		end
 
 		def path_parts(input)   # :nodoc:
-			input.match(/(\w+(?:\[[^\]]+\])*)\[(['"])([^\]]+)$/)
+			input.match(/((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\[(['"])([^\]]+)$/)
 			$~.to_a.slice(1, 3).push($~.pre_match)
 		rescue
 			[ nil, nil, nil, nil ]
