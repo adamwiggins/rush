@@ -108,7 +108,7 @@ module Rush
 
 		def path_parts(input)		# :nodoc:
 			case input
-			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\[(['"])([^\]]+)$/
+			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\[(['"])([^\2]+)$/
 				$~.to_a.slice(1, 3).push('[').push($~.pre_match)
 			when /((?:@{1,2}|\$|)\w+(?:\[[^\]]+\])*)\/(['"])([^\2]+)$/
 				$~.to_a.slice(1, 3).push('/').push($~.pre_match)
