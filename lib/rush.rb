@@ -54,6 +54,11 @@ module Rush
 	def self.box
 		@@box = Rush::Box.new
 	end
+
+	# Quote a path for use in backticks, say.
+	def self.quote(path)
+		path.gsub(/(?=[^a-zA-Z0-9_.\/\-\x7F-\xFF\n])/n, '\\').gsub(/\n/, "'\n'").sub(/^$/, "''")
+	end
 end
 
 module Rush::Connection; end
