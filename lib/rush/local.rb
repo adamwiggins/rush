@@ -83,12 +83,12 @@ class Rush::Connection::Local
 	# transmitted to another server for a copy or move.  Note that archive
 	# operations have the dir name implicit in the archive.
 	def read_archive(full_path)
-		`cd #{::File.dirname(full_path)}; tar c #{::File.basename(full_path)}`
+		`cd #{Rush.quote(::File.dirname(full_path))}; tar c #{Rush.quote(::File.basename(full_path))}`
 	end
 
 	# Extract an in-memory archive to a dir.
 	def write_archive(archive, dir)
-		IO.popen("cd #{dir}; tar x", "w") do |p|
+		IO.popen("cd #{Rush::quote(dir)}; tar x", "w") do |p|
 			p.write archive
 		end
 	end
@@ -135,7 +135,7 @@ class Rush::Connection::Local
 	# Fetch the size of a dir, since a standard file stat does not include the
 	# size of the contents.
 	def size(full_path)
-		`du -sb #{full_path}`.match(/(\d+)/)[1].to_i
+		`du -sb #{Rush.quote(full_path)}`.match(/(\d+)/)[1].to_i
 	end
 
 	# Get the list of processes as an array of hashes.

@@ -194,12 +194,25 @@ describe Rush::Connection::Local do
 		@con.read_archive(@sandbox_dir).size.should > 50
 	end
 
+	it "read_archive works for paths with spaces" do
+		system "mkdir -p #{@sandbox_dir}/with\\ space; touch #{@sandbox_dir}/with\\ space/a"
+		@con.read_archive("#{@sandbox_dir}/with space").size.should > 50
+	end
+
 	it "write_archive to turn a byte stream into a dir" do
 		system "cd #{@sandbox_dir}; mkdir -p a; touch a/b; tar cf xfer.tar a; mkdir dst"
 		archive = File.read("#{@sandbox_dir}/xfer.tar")
 		@con.write_archive(archive, "#{@sandbox_dir}/dst")
 		File.directory?("#{@sandbox_dir}/dst/a").should be_true
 		File.exists?("#{@sandbox_dir}/dst/a/b").should be_true
+	end
+
+	it "write_archive works for paths with spaces" do
+		system "cd #{@sandbox_dir}; mkdir -p a; touch a/b; tar cf xfer.tar a; mkdir with\\ space"
+		archive = File.read("#{@sandbox_dir}/xfer.tar")
+		@con.write_archive(archive, "#{@sandbox_dir}/with space")
+		File.directory?("#{@sandbox_dir}/with space/a").should be_true
+		File.exists?("#{@sandbox_dir}/with space/a/b").should be_true
 	end
 
 	it "index fetches list of all files and dirs in a dir when pattern is empty" do
