@@ -43,13 +43,13 @@ module Rush::Commands
 
 	# Invoke vi on one or more files - only works locally.
 	def vi(*args)
-		names = entries.map { |f| f.full_path }.join(' ')
+		names = entries.map { |f| f.quoted_path }.join(' ')
 		system "vim #{names} #{args.join(' ')}"
 	end
 
 	# Invoke TextMate on one or more files - only works locally.
 	def mate(*args)
-		names = entries.map { |f| f.full_path }.join(' ')
+		names = entries.map { |f| f.quoted_path }.join(' ')
 		system "mate #{names} #{args.join(' ')}"
 	end
 end
