@@ -75,7 +75,7 @@ For more details on syntax and commands, see:
 
 Created by Adam Wiggins
 
-Patches contributed by Chihiro Ito, Gabriel Ware, Michael Schutte, Ricardo Chimal Jr., and Nicholas Schlueter, and Pedro Belo
+Patches contributed by Chihiro Ito, Gabriel Ware, Michael Schutte, Ricardo Chimal Jr., and Nicholas Schlueter, Pedro Belo, and Martin Kuehl
 
 Logo by James Lindenbaum
 
