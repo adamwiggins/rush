@@ -94,7 +94,7 @@ class Rush::Entry
 	# will not be affected, but a new object representing the newly-created
 	# entry will be returned.
 	def duplicate(new_name)
-		raise NameCannotContainSlash if new_name.match(/\//)
+		raise Rush::NameCannotContainSlash if new_name.match(/\//)
 		new_full_path = "#{@path}/#{new_name}"
 		connection.copy(full_path, new_full_path)
 		self.class.new(new_full_path, box)
@@ -103,7 +103,7 @@ class Rush::Entry
 	# Copy the entry to another dir.  Returns an object representing the new
 	# copy.
 	def copy_to(dir)
-		raise NotADir unless dir.class == Rush::Dir
+		raise Rush::NotADir unless dir.class == Rush::Dir
 
 		if box == dir.box
 			connection.copy(full_path, dir.full_path)
