@@ -88,6 +88,7 @@ class Rush::Entry
 	def rename(new_name)
 		connection.rename(@path, @name, new_name)
 		@name = new_name
+		self
 	end
 
 	# Rename an entry to another name within the same dir.  The existing object

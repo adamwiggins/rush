@@ -56,6 +56,10 @@ describe Rush::Entry do
 		File.exists?("#{@sandbox_dir}/#{new_file}").should be_true
 	end
 
+	it "rename returns the renamed file" do
+		@entry.rename('file2').should == @entry.parent['file2']
+	end
+
 	it "can't rename itself if another file already exists with that name" do
 		new_file = "test3"
 		system "touch #{@sandbox_dir}/#{new_file}"
