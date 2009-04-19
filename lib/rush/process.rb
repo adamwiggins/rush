@@ -22,7 +22,11 @@ class Rush::Process
 	end
 
 	def inspect   # :nodoc:
-		"#{box} process #{@pid}: #{@cmdline}"
+		if box.to_s != 'localhost'
+			"#{box} #{@pid}: #{@cmdline}"
+		else
+			"#{@pid}: #{@cmdline}"
+		end
 	end
 
 	# Returns the Rush::Process parent of this process.
