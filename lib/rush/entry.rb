@@ -62,17 +62,17 @@ class Rush::Entry
 		false
 	end
 
-	# Timestamp of entry creation.
-	def created_at
+	# Timestamp of most recent change to the entry (permissions, contents, etc).
+	def changed_at
 		stat[:ctime]
 	end
 
-	# Timestamp that entry was last modified on.
+	# Timestamp of last modification of the contents.
 	def last_modified
 		stat[:mtime]
 	end
 
-	# Timestamp that entry was last accessed on.
+	# Timestamp that entry was last accessed (read from or written to).
 	def last_accessed
 		stat[:atime]
 	end

@@ -30,8 +30,8 @@ describe Rush::Entry do
 		Rush::Entry.new('/1/2/../3').full_path.should == '/1/3'
 	end
 
-	it "knows its created_at time" do
-		@entry.created_at.should == File.stat(@filename).ctime
+	it "knows its changed_at time" do
+		@entry.changed_at.should == File.stat(@filename).ctime
 	end
 
 	it "knows its last_modified time" do
