@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'yaml'
+require 'timeout'
 
 # Rush::Box uses a connection object to execute all rush commands.  If the box
 # is local, Rush::Connection::Local is created.  The local connection is the
@@ -280,14 +281,24 @@ class Rush::Connection::Local
 	end
 
 	# Terminate a process, by pid.
-	def kill_process(pid)
-		::Process.kill('TERM', pid)
+	def kill_process(pid, options={})
+		# time to wait before terminating the process, in seconds
+		wait = options[:wait] || 3
 
-		# keep trying until it's dead (technique borrowed from god)
-		5.times do
-			return if !process_alive(pid)
-			sleep 0.5
-			::Process.kill('TERM', pid) rescue nil
+		if wait > 0
+			::Process.kill('TERM', pid)
+
+			# keep trying until it's dead (technique borrowed from god)
+			begin
+				Timeout.timeout(wait) do
+					loop do
+						return if !process_alive(pid)
+						sleep 0.5
+						::Process.kill('TERM', pid) rescue nil
+					end
+				end
+			rescue Timeout::Error
+			end
 		end
 
 		::Process.kill('KILL', pid) rescue nil
@@ -373,7 +384,7 @@ class Rush::Connection::Local
 			when 'size'           then size(params[:full_path])
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
-			when 'kill_process'   then kill_process(params[:pid].to_i)
+			when 'kill_process'   then kill_process(params[:pid].to_i, YAML.load(params[:payload]))
 			when 'bash'           then bash(params[:payload], params[:user], params[:background] == 'true')
 		else
 			raise UnknownAction

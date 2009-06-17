@@ -96,8 +96,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> kill_process" do
-		@con.should_receive(:kill_process).with(123).and_return(true)
-		@con.receive(:action => 'kill_process', :pid => '123')
+		@con.should_receive(:kill_process).with(123, :wait => 10).and_return(true)
+		@con.receive(:action => 'kill_process', :pid => '123', :payload => YAML.dump(:wait => 10))
 	end
 
 	it "receive -> bash (foreground)" do
@@ -288,9 +288,23 @@ EOPS
 		@con.process_alive(99999).should be_false
 	end
 
-	it "kills a process by pid" do
-		::Process.should_receive(:kill).at_least(:once)
+	it "kills a process by pid sending a TERM" do
+		@con.stub!(:process_alive).and_return(false)
+		::Process.should_receive(:kill).with('TERM', 123).once
 		@con.kill_process(123)
+	end
+
+	it "kills a process by pid sending a KILL signal if TERM doesn't work" do
+		@con.stub!(:process_alive).and_return(true)
+		::Process.should_receive(:kill).with('TERM', 123).at_least(:twice)
+		::Process.should_receive(:kill).with('KILL', 123)
+		@con.kill_process(123)
+	end
+
+	it "kills a process by pid without sending TERM if :wait is zero" do
+		::Process.should_not_receive(:kill).with('TERM', 123)
+		::Process.should_receive(:kill).with('KILL', 123)
+		@con.kill_process(123, :wait => 0)
 	end
 
 	it "does not raise an error if the process is already dead" do

@@ -45,8 +45,8 @@ class Rush::Process
 	end
 
 	# Terminate the process.
-	def kill
-		box.connection.kill_process(pid)
+	def kill(options={})
+		box.connection.kill_process(pid, options)
 	end
 
 	def ==(other)       # :nodoc:

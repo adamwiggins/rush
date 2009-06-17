@@ -32,8 +32,8 @@ class Rush::ProcessSet
 	end
 
 	# Kill all processes in the set.
-	def kill
-		processes.each { |p| p.kill }
+	def kill(options={})
+		processes.each { |p| p.kill(options) }
 	end
 
 	# Check status of all processes in the set, returns an array of booleans.

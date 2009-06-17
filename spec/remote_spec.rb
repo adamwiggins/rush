@@ -93,8 +93,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits kill_process" do
-		@con.should_receive(:transmit).with(:action => 'kill_process', :pid => 123)
-		@con.kill_process(123)
+		@con.should_receive(:transmit).with(:action => 'kill_process', :pid => 123, :payload => YAML.dump(:wait => 10))
+		@con.kill_process(123, :wait => 10)
 	end
 
 	it "transmits bash" do
