@@ -1,4 +1,28 @@
 require 'rake'
+
+require 'jeweler'
+
+Jeweler::Tasks.new do |s|
+	s.name = "rush"
+	s.summary = "A Ruby replacement for bash+ssh."
+	s.description = "A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client."
+	s.author = "Adam Wiggins"
+	s.email = "adam@heroku.com"
+	s.homepage = "http://rush.heroku.com/"
+	s.executables = [ "rush", "rushd" ]
+	s.rubyforge_project = "ruby-shell"
+	s.has_rdoc = true
+
+	s.add_dependency 'mongrel'
+	s.add_dependency 'session'
+	
+	s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
+end
+
+Jeweler::RubyforgeTasks.new
+
+######################################################
+
 require 'spec/rake/spectask'
 
 desc "Run all specs"
@@ -23,57 +47,7 @@ task :default => :spec
 
 ######################################################
 
-require 'rake'
-require 'rake/testtask'
-require 'rake/clean'
-require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require 'fileutils'
-include FileUtils
-
-version = "0.6"
-name = "rush"
-
-spec = Gem::Specification.new do |s|
-	s.name = name
-	s.version = version
-	s.summary = "A Ruby replacement for bash+ssh."
-	s.description = "A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client."
-	s.author = "Adam Wiggins"
-	s.email = "adam@heroku.com"
-	s.homepage = "http://rush.heroku.com/"
-	s.executables = [ "rush", "rushd" ]
-	s.rubyforge_project = "ruby-shell"
-
-	s.add_dependency 'mongrel'
-	s.add_dependency 'session'
-
-	s.platform = Gem::Platform::RUBY
-	s.has_rdoc = true
-	
-	s.files = %w(Rakefile) + Dir.glob("{bin,lib,spec}/**/*")
-	
-	s.require_path = "lib"
-	s.bindir = "bin"
-end
-
-Rake::GemPackageTask.new(spec) do |p|
-	p.need_tar = true if RUBY_PLATFORM !~ /mswin/
-end
-
-task :install => [ :package ] do
-	sh %{sudo gem install pkg/#{name}-#{version}.gem}
-end
-
-task :uninstall => [ :clean ] do
-	sh %{sudo gem uninstall #{name}}
-end
-
-Rake::TestTask.new do |t|
-	t.libs << "spec"
-	t.test_files = FileList['spec/*_spec.rb']
-	t.verbose = true
-end
 
 Rake::RDocTask.new do |t|
 	t.rdoc_dir = 'rdoc'
@@ -84,6 +58,4 @@ Rake::RDocTask.new do |t|
 	t.rdoc_files.include('lib/rush.rb')
 	t.rdoc_files.include('lib/rush/*.rb')
 end
-
-CLEAN.include [ 'pkg', '*.gem', '.config' ]
 
