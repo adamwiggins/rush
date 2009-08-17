@@ -13,7 +13,6 @@ Jeweler::Tasks.new do |s|
 	s.rubyforge_project = "ruby-shell"
 	s.has_rdoc = true
 
-	s.add_dependency 'mongrel'
 	s.add_dependency 'session'
 	
 	s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
