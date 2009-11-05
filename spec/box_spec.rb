@@ -38,7 +38,11 @@ describe Rush::Box do
 	end
 
 	it "builds a script of environment variables to prefix the bash command" do
-		@box.command_with_environment('cmd', { :a => 'b' }).should == "export a='b'\ncmd"
+		@box.command_with_environment('cmd', { :a => 'b' }).should == "export a=\"b\"\ncmd"
+	end
+
+	it "escapes quotes on environment variables" do
+		@box.command_with_environment('cmd', { :a => 'a"b' }).should == "export a=\"a\\\"b\"\ncmd"
 	end
 
 	it "sets the environment variables from the provided hash" do
