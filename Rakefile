@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |s|
 	s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
 end
 
-Jeweler::RubyforgeTasks.new
+Jeweler::GemcutterTasks.new
 
 ######################################################
 
