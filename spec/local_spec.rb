@@ -100,13 +100,18 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'kill_process', :pid => '123', :payload => YAML.dump(:wait => 10))
 	end
 
+	it "receive -> bash (reset environment)" do
+		@con.should_receive(:bash).with('cmd', 'user', false, true).and_return('output')
+		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'false', :reset_environment => 'true').should == 'output'
+	end
+
 	it "receive -> bash (foreground)" do
-		@con.should_receive(:bash).with('cmd', 'user', false).and_return('output')
+		@con.should_receive(:bash).with('cmd', 'user', false, false).and_return('output')
 		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'false').should == 'output'
 	end
 
 	it "receive -> bash (background)" do
-		@con.should_receive(:bash).with('cmd', 'user', true).and_return('output')
+		@con.should_receive(:bash).with('cmd', 'user', true, false).and_return('output')
 		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'true').should == 'output'
 	end
 

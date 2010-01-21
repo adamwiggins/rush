@@ -64,15 +64,17 @@ class Rush::Box
 	#   box.bash '/etc/init.d/mysql restart', :user => 'root'
 	#   box.bash 'rake db:migrate', :user => 'www', :env => { :RAILS_ENV => 'production' }
 	#   box.bash 'mongrel_rails start', :background => true
+	#   box.bash 'rake db:migrate', :user => 'www', :env => { :RAILS_ENV => 'production' }, :reset_environment => true
 	#
 	def bash(command, options={})
 		cmd_with_env = command_with_environment(command, options[:env])
+		options[:reset_environment] ||= false
 
 		if options[:background]
-			pid = connection.bash(cmd_with_env, options[:user], true)
+			pid = connection.bash(cmd_with_env, options[:user], true, options[:reset_environment])
 			processes.find_by_pid(pid)
 		else
-			connection.bash(cmd_with_env, options[:user], false)
+			connection.bash(cmd_with_env, options[:user], false, options[:reset_environment])
 		end
 	end
 

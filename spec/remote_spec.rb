@@ -98,8 +98,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "transmits bash" do
-		@con.should_receive(:transmit).with(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'bg').and_return('output')
-		@con.bash('cmd', 'user', 'bg').should == 'output'
+		@con.should_receive(:transmit).with(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'bg', :reset_environment => false).and_return('output')
+		@con.bash('cmd', 'user', 'bg', false).should == 'output'
 	end
 
 	it "an http result code of 401 raises NotAuthorized" do

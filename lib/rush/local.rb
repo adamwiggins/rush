@@ -307,17 +307,19 @@ class Rush::Connection::Local
 		# if it's dead, great - do nothing
 	end
 
-	def bash(command, user=nil, background=false)
-		return bash_background(command, user) if background
+	def bash(command, user=nil, background=false, reset_environment=false)
+		return bash_background(command, user, reset_environment) if background
 
 		require 'session'
 
 		sh = Session::Bash.new
 
+		shell = reset_environment ? "env -i bash" : "bash"
+
 		if user and user != ""
-			out, err = sh.execute "cd /; sudo -H -u #{user} bash", :stdin => command
+			out, err = sh.execute "cd /; sudo -H -u #{user} \"#{shell}\"", :stdin => command
 		else
-			out, err = sh.execute command
+			out, err = sh.execute shell, :stdin => command
 		end
 
 		retval = sh.status
@@ -328,7 +330,7 @@ class Rush::Connection::Local
 		out
 	end
 
-	def bash_background(command, user)
+	def bash_background(command, user, reset_environment)
 		pid = fork do
 			inpipe, outpipe = IO.pipe
 
@@ -338,10 +340,12 @@ class Rush::Connection::Local
 
 			close_all_descriptors([inpipe.to_i])
 
+			shell = reset_environment ? "env -i bash" : "bash"
+
 			if user and user != ''
-				exec "cd /; sudo -H -u #{user} bash"
+				exec "cd /; sudo -H -u #{user} \"#{shell}\""
 			else
-				exec "bash"
+				exec shell
 			end
 		end
 
@@ -385,7 +389,7 @@ class Rush::Connection::Local
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 			when 'kill_process'   then kill_process(params[:pid].to_i, YAML.load(params[:payload]))
-			when 'bash'           then bash(params[:payload], params[:user], params[:background] == 'true')
+			when 'bash'           then bash(params[:payload], params[:user], params[:background] == 'true', params[:reset_environment] == 'true')
 		else
 			raise UnknownAction
 		end

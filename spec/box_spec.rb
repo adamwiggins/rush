@@ -22,17 +22,17 @@ describe Rush::Box do
 	end
 
 	it "executes bash commands" do
-		@box.connection.should_receive(:bash).with('cmd', nil, false).and_return('output')
+		@box.connection.should_receive(:bash).with('cmd', nil, false, false).and_return('output')
 		@box.bash('cmd').should == 'output'
 	end
 
 	it "executes bash commands with an optional user" do
-		@box.connection.should_receive(:bash).with('cmd', 'user', false)
+		@box.connection.should_receive(:bash).with('cmd', 'user', false, false)
 		@box.bash('cmd', :user => 'user')
 	end
 
 	it "executes bash commands in the background, returning a Rush::Process" do
-		@box.connection.should_receive(:bash).with('cmd', nil, true).and_return(123)
+		@box.connection.should_receive(:bash).with('cmd', nil, true, false).and_return(123)
 		@box.stub!(:processes).and_return([ mock('ps', :pid => 123) ])
 		@box.bash('cmd', :background => true).pid.should == 123
 	end
