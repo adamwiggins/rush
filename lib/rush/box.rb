@@ -82,7 +82,8 @@ class Rush::Box
 		return command unless env
 
 		vars = env.map do |key, value|
-			"export #{key}=\"#{value.to_s.gsub('"', '\\"')}\""
+			escaped = value.to_s.gsub('"', '\\"').gsub('`', '\\\`')
+			"export #{key}=\"#{escaped}\""
 		end
 		vars.push(command).join("\n")
 	end

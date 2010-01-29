@@ -45,6 +45,10 @@ describe Rush::Box do
 		@box.command_with_environment('cmd', { :a => 'a"b' }).should == "export a=\"a\\\"b\"\ncmd"
 	end
 
+	it "escapes backticks on environment variables" do
+		@box.command_with_environment('cmd', { :a => 'a`b' }).should == "export a=\"a\\\`b\"\ncmd"
+	end
+
 	it "converts environment variables to_s" do
 		@box.command_with_environment('cmd', { :a => nil, :b => 123 }).should == "export a=\"\"\nexport b=\"123\"\ncmd"
 	end
