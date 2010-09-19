@@ -26,7 +26,6 @@ class Rush::SshTunnel
 	def setup_everything(options={})
 		display "Connecting to #{@real_host}..."
 		push_credentials
-		launch_rushd
 		establish_tunnel(options)
 	end
 
@@ -41,11 +40,6 @@ class Rush::SshTunnel
 		passwords_file = "~/.rush/passwords"
 		string = "'#{string}'"
 		ssh "M=`grep #{string} #{passwords_file} 2>/dev/null | wc -l`; if [ $M = 0 ]; then mkdir -p .rush; chmod 700 .rush; echo #{string} >> #{passwords_file}; chmod 600 #{passwords_file}; fi"
-	end
-
-	def launch_rushd
-		display "Launching rushd"
-		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd > /dev/null 2>&1 &")
 	end
 
 	def establish_tunnel(options={})

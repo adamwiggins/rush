@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-require File.dirname(__FILE__) + '/../lib/rush'
-require File.dirname(__FILE__) + '/../lib/rush/server'
-
-RushServer.new.run
-

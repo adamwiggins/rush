@@ -13,7 +13,6 @@ describe Rush::SshTunnel do
 
 	it "ensure_tunnel sets everything up for the tunnel when one does not already exist" do
 		@tunnel.should_receive(:push_credentials)
-		@tunnel.should_receive(:launch_rushd)
 		@tunnel.should_receive(:establish_tunnel)
 		@tunnel.ensure_tunnel
 	end
@@ -98,13 +97,6 @@ describe Rush::SshTunnel do
 	it "push_credentials uses ssh to append to remote host's passwords file" do
 		@tunnel.should_receive(:ssh_append_to_credentials).and_return(true)
 		@tunnel.push_credentials
-	end
-
-	it "launches rushd on the remote host via ssh" do
-		@tunnel.should_receive(:ssh) do |cmd|
-			cmd.should match(/rushd/)
-		end
-		@tunnel.launch_rushd
 	end
 
 	it "tunnel_alive? checks whether a tunnel is still up" do
