@@ -50,7 +50,7 @@ describe Rush::Box do
 	end
 
 	it "converts environment variables to_s" do
-		@box.command_with_environment('cmd', { :a => nil, :b => 123 }).should == "export a=\"\"\nexport b=\"123\"\ncmd"
+		@box.command_with_environment('cmd', { "a" => nil, "b" => 123 }.sort).should == "export a=\"\"\nexport b=\"123\"\ncmd"
 	end
 
 	it "sets the environment variables from the provided hash" do
