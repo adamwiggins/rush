@@ -9,7 +9,7 @@ Jeweler::Tasks.new do |s|
 	s.author = "Adam Wiggins"
 	s.email = "adam@heroku.com"
 	s.homepage = "http://rush.heroku.com/"
-	s.executables = [ "rush", "rushd" ]
+	s.executables = [ "rush"]
 	s.rubyforge_project = "ruby-shell"
 	s.has_rdoc = true
 

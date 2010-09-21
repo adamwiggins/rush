@@ -42,6 +42,7 @@ class Rush::SshTunnel
 		ssh "M=`grep #{string} #{passwords_file} 2>/dev/null | wc -l`; if [ $M = 0 ]; then mkdir -p .rush; chmod 700 .rush; echo #{string} >> #{passwords_file}; chmod 600 #{passwords_file}; fi"
 	end
 
+
 	def establish_tunnel(options={})
 		display "Establishing ssh tunnel"
 		@port = next_available_port

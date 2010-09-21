@@ -6,7 +6,7 @@ module Rush
 	class NotAuthorized < Exception; end
 
 	# rushd is not running on the remote box.
-	class RushdNotRunning < Exception; end
+	class HTTPTunnelNotRunning < Exception; end
 
 	# An unrecognized status code was returned by rushd.
 	class FailedTransmit < Exception; end
