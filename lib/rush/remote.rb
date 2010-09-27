@@ -12,6 +12,7 @@ class Rush::Connection::Remote
 	def initialize(host)
 		@host = host
 		@tunnel = Rush::SshTunnel.new(host)
+		
 	end
 
 	def write_file(full_path, contents)
@@ -90,42 +91,22 @@ class Rush::Connection::Remote
 	# object), send it across the wire to the RushServer listening on the other
 	# side.  Uses http basic auth, with credentials fetched from the Rush::Config.
 	def transmit(params)
-		ensure_tunnel
-
-		require 'net/http'
-
-		payload = params.delete(:payload)
-
-		uri = "/?"
-		params.each do |key, value|
-			uri += "#{key}=#{value}&"
-		end
-
-		req = Net::HTTP::Post.new(uri)
-		req.basic_auth config.credentials_user, config.credentials_password
-
-		Net::HTTP.start(tunnel.host, tunnel.port) do |http|
-			res = http.request(req, payload)
-			process_result(res.code, res.body)
-		end
-	rescue EOFError
-		raise Rush::RushdNotRunning
-	end
-
-	# Take the http result of a transmit and raise an error, or return the body
-	# of the result when valid.
-	def process_result(code, body)
-		raise Rush::NotAuthorized if code == "401"
-
-		if code == "400"	
-			klass, message = parse_exception(body)
-			raise klass, "#{host}:#{message}"
-		end
-
-		raise Rush::FailedTransmit if code != "200"
-
-		body
-	end
+	  
+		begin
+		  ensure_tunnel
+	    
+      client = TCPSocket.open(tunnel.host, tunnel.port)
+      client.puts(params.to_yaml)
+      
+      response = client.recvfrom( 5000 )[0].chomp
+	  rescue => e
+      # raise Rush::FailedTransmit
+      puts "something terrible happend ..."
+      puts e
+      client.close
+  	end
+    
+  end
 
 	# Parse an exception returned from the server, with the class name on the
 	# first line and the message on the second.
@@ -140,7 +121,9 @@ class Rush::Connection::Remote
 	def ensure_tunnel(options={})
 		tunnel.ensure_tunnel(options)
 	end
-
+	def ensure_server(options={})
+		tunnel.ensure_server(options)
+	end
 	# Remote connections are alive when the box on the other end is responding
 	# to commands.
 	def alive?

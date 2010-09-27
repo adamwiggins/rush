@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adam Wiggins"]
-  s.date = %q{2010-09-21}
+  s.date = %q{2010-09-22}
   s.default_executable = %q{rush}
   s.description = %q{A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client.}
   s.email = %q{adam@heroku.com}
