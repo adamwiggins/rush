@@ -1,6 +1,7 @@
 # The config class accesses files in ~/.rush to load and save user preferences.
 class Rush::Config
 	DefaultPort = 7770
+  DefaultSshPort = 22
 
 	attr_reader :dir
 

@@ -2,7 +2,8 @@
 # HTTP commands can be sent by Rush::Connection::Remote.
 class Rush::SshTunnel
 	def initialize(real_host)
-		@real_host = real_host
+    @real_host, @real_port = real_host.split(':',2)
+    @real_port = @real_port || Rush::Config::DefaultSshPort
 	end
 
 	def host
@@ -12,6 +13,10 @@ class Rush::SshTunnel
 	def port
 		@port
 	end
+
+  def real_port
+    @real_port
+  end
 
 	def ensure_tunnel(options={})
 		return if @port and tunnel_alive?
@@ -81,7 +86,7 @@ class Rush::SshTunnel
 	class NoPortSelectedYet < Exception; end
 
 	def ssh(command)
-		raise SshFailed unless system("ssh #{@real_host} '#{command}'")
+		raise SshFailed unless system("ssh -p #{real_port} #{@real_host} '#{command}'")
 	end
 
 	def make_ssh_tunnel(options={})
@@ -91,7 +96,7 @@ class Rush::SshTunnel
 	def ssh_tunnel_command_without_stall
 		options = tunnel_options
 		raise NoPortSelectedYet unless options[:local_port]
-		"ssh -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
+		"ssh -p #{real_port} -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
 	end
 
 	def ssh_stall_command(options={})
