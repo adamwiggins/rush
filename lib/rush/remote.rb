@@ -1,5 +1,5 @@
 require 'yaml'
-
+require "socket"
 # This class it the mirror of Rush::Connection::Local.  A Rush::Box which is
 # not localhost has a remote connection, which it can use to convert method
 # calls to text suitable for transmission across the wire.
