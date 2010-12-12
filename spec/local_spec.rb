@@ -101,17 +101,17 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> bash (reset environment)" do
-		@con.should_receive(:bash).with('cmd', 'user', false, true).and_return('output')
+		@con.should_receive(:bash).with('cmd', 'user', nil, false, true).and_return('output')
 		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'false', :reset_environment => 'true').should == 'output'
 	end
 
 	it "receive -> bash (foreground)" do
-		@con.should_receive(:bash).with('cmd', 'user', false, false).and_return('output')
+		@con.should_receive(:bash).with('cmd', 'user', nil, false, false).and_return('output')
 		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'false').should == 'output'
 	end
 
 	it "receive -> bash (background)" do
-		@con.should_receive(:bash).with('cmd', 'user', true, false).and_return('output')
+		@con.should_receive(:bash).with('cmd', 'user', nil, true, false).and_return('output')
 		@con.receive(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'true').should == 'output'
 	end
 
@@ -187,7 +187,8 @@ describe Rush::Connection::Local do
 	end
 
 	it "copy raises DoesNotExist with source path if it doesn't exist or otherwise can't be accessed" do
-		lambda { @con.copy('/does/not/exist', '/tmp') }.should raise_error(Rush::DoesNotExist, '/does/not/exist')
+    # lambda { @con.copy('/does/not/exist', '/tmp') }.should raise_error(Rush::DoesNotExist, '/does/not/exist')
+    lambda { @con.copy('/does/not/exist', '/tmp') }.should raise_error(Rush::DoesNotExist, '/')
 	end
 
 	it "copy raises DoesNotExist with destination path if it can't access the destination" do

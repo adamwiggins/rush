@@ -1,5 +1,6 @@
 # Internal class for managing an ssh tunnel, across which relatively insecure
 # HTTP commands can be sent by Rush::Connection::Remote.
+
 class Rush::SshTunnel
 	def initialize(real_host)
 		@real_host = real_host
@@ -33,7 +34,10 @@ class Rush::SshTunnel
 		establish_tunnel(options)
 	end
   def launch_rushd
+        
   		display "Launching rushd"
+  		#setup a routine to follow to provission the server
+  		ssh("if [`which rushd grep | wc -l` -le 1 ]; then exit;")
   		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd > /dev/null 2>&1 &")
   end
 	def push_credentials
@@ -46,6 +50,7 @@ class Rush::SshTunnel
 		# the following horror is exactly why rush is needed
 		passwords_file = "~/.rush/passwords"
 		string = "'#{string}'"
+		
 		ssh "M=`grep #{string} #{passwords_file} 2>/dev/null | wc -l`; if [ $M = 0 ]; then mkdir -p .rush; chmod 700 .rush; echo #{string} >> #{passwords_file}; chmod 600 #{passwords_file}; fi"
 	end
 
@@ -99,7 +104,8 @@ class Rush::SshTunnel
 	def ssh_tunnel_command_without_stall
 		options = tunnel_options
 		raise NoPortSelectedYet unless options[:local_port]
-		"ssh -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
+		"ssh -f -N -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
+    # "ssh -f -L #{options[:local_port]}:127.0.0.1:#{options[:remote_port]} #{options[:ssh_host]}"
 	end
 
 	def ssh_stall_command(options={})
@@ -113,7 +119,9 @@ class Rush::SshTunnel
 	end
 
 	def ssh_tunnel_command(options={})
-		ssh_tunnel_command_without_stall + ' "' + ssh_stall_command(options) + '"'
+	  
+	  ssh_tunnel_command_without_stall
+    # ssh_tunnel_command_without_stall + ' "' + ssh_stall_command(options) + '"'
 	end
 
 	def next_available_port

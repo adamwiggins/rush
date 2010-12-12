@@ -100,20 +100,21 @@ describe Rush::Connection::Local do
 	it "transmits bash" do
 		@con.should_receive(:transmit).with(:action => 'bash', :payload => 'cmd', :user => 'user', :background => 'bg', :reset_environment => false).and_return('output')
 		@con.bash('cmd', 'user', 'bg', false).should == 'output'
+		
 	end
-
-	it "an http result code of 401 raises NotAuthorized" do
-		lambda { @con.process_result("401", "") }.should raise_error(Rush::NotAuthorized)
-	end
-
-	it "an http result code of 400 raises the exception passed in the result body" do
-		@con.stub!(:parse_exception).and_return(Rush::DoesNotExist, "message")
-		lambda { @con.process_result("400", "") }.should raise_error(Rush::DoesNotExist)
-	end
-
-	it "an http result code of 501 (or anything other than the other defined codes) raises FailedTransmit" do
-		lambda { @con.process_result("501", "") }.should raise_error(Rush::FailedTransmit)
-	end
+  # 
+  # it "an http result code of 401 raises NotAuthorized" do
+  #   lambda { @con.process_result("401", "") }.should raise_error(Rush::NotAuthorized)
+  # end
+  # 
+  # it "an http result code of 400 raises the exception passed in the result body" do
+  #   @con.stub!(:parse_exception).and_return(Rush::DoesNotExist, "message")
+  #   lambda { @con.process_result("400", "") }.should raise_error(Rush::DoesNotExist)
+  # end
+  # 
+  # it "an http result code of 501 (or anything other than the other defined codes) raises FailedTransmit" do
+  #   lambda { @con.process_result("501", "") }.should raise_error(Rush::FailedTransmit)
+  # end
 
 	it "parse_exception takes the class from the first line and the message from the second" do
 		@con.parse_exception("Rush::DoesNotExist\nthe message\n").should == [ Rush::DoesNotExist, "the message" ]

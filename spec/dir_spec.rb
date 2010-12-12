@@ -121,13 +121,13 @@ describe Rush::Dir do
 	it "lists nonhidden files" do
 		@dir.create_file('show')
 		@dir.create_file('.dont_show')
-		@dir.nonhidden_files.should == @dir.make_entries(%(show))
+		@dir.nonhidden_files.should == @dir.make_entries(%w(show))
 	end
 
 	it "lists nonhidden dirs" do
 		@dir.create_dir('show')
 		@dir.create_dir('.dont_show')
-		@dir.nonhidden_dirs.should == @dir.make_entries(%(show/))
+		@dir.nonhidden_dirs.should == @dir.make_entries(%w(show/))
 	end
 
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different

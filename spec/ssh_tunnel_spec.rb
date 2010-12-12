@@ -79,12 +79,12 @@ describe Rush::SshTunnel do
 			:remote_port => 456,
 			:ssh_host => 'example.com'
 		)
-		@tunnel.ssh_tunnel_command_without_stall.should == "ssh -f -L 123:127.0.0.1:456 example.com"
+		@tunnel.ssh_tunnel_command_without_stall.should == "ssh -f -N -L 123:127.0.0.1:456 example.com"
 	end
 
 	it "combines the tunnel command without stall and the stall command into the final command" do
-		@tunnel.should_receive(:ssh_tunnel_command_without_stall).and_return('ssh command')
 		@tunnel.should_receive(:ssh_stall_command).and_return('sleep 123')
+    @tunnel.should_receive(:ssh_tunnel_command_without_stall).and_return('ssh command')
 		@tunnel.ssh_tunnel_command.should == 'ssh command "sleep 123"'
 	end
 

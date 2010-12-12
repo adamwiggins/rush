@@ -48,7 +48,12 @@ class Rush::Process
 	def kill(options={})
 		box.connection.kill_process(pid, options)
 	end
-
+	
+  # Send a signal to the process.
+  def signal(sig)
+    box.connection.signal_process(pid, sig)
+  end
+  
 	def ==(other)       # :nodoc:
 		pid == other.pid and box == other.box
 	end

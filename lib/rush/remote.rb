@@ -1,5 +1,6 @@
 require 'yaml'
 require "socket"
+
 # This class it the mirror of Rush::Connection::Local.  A Rush::Box which is
 # not localhost has a remote connection, which it can use to convert method
 # calls to text suitable for transmission across the wire.
@@ -82,9 +83,14 @@ class Rush::Connection::Remote
 	def kill_process(pid, options={})
 		transmit(:action => 'kill_process', :pid => pid, :payload => YAML.dump(options))
 	end
-
-	def bash(command, user, background, reset_environment)
-		transmit(:action => 'bash', :payload => command, :user => user, :background => background, :reset_environment => reset_environment)
+	
+  def signal_process(pid, signal)
+    transmit(:action => 'signal_process', :pid => pid, :signal => signal)
+  end
+  
+	def bash(command, user=nil, stdin=nil, background, reset_environment)
+    # transmit(:action => 'bash', :payload => command, :user => user, :stdin => stdin)
+    transmit(:action => 'bash', :payload => command, :user => user, :background => background, :reset_environment => reset_environment)
 	end
 
 	# Given a hash of parameters (converted by the method call on the connection
@@ -96,7 +102,14 @@ class Rush::Connection::Remote
 		  ensure_tunnel
 	    
       client = TCPSocket.open(tunnel.host, tunnel.port)
-      client.puts(params.to_yaml)
+      handshake =  client.puts("#{config.credentials_user}:#{config.credentials_password}")
+      conresp = client.recvfrom( 5000 )[0].chomp
+      pubkey = OpenSSL::PKey::RSA.new(conresp)
+    
+      sha1 = Digest::SHA1.hexdigest(params.to_yaml)
+      load = pubkey.public_encrypt("#{sha1}*#{params.to_yaml}")
+      
+      client.puts(load)
       
       response = client.recvfrom( 5000 )[0].chomp
 	  rescue => e
