@@ -14,6 +14,7 @@ class Rush::SshTunnel
 	end
 
 	def ensure_tunnel(options={})
+	  
 		return if @port and tunnel_alive?
 
 		@port = config.tunnels[@real_host]
@@ -22,13 +23,19 @@ class Rush::SshTunnel
 			setup_everything(options)
 		end
 	end
-
+	def ensure_server(options={})
+	  return if options and server_alive?
+  end
 	def setup_everything(options={})
 		display "Connecting to #{@real_host}..."
 		push_credentials
+		launch_rushd
 		establish_tunnel(options)
 	end
-
+  def launch_rushd
+  		display "Launching rushd"
+  		ssh("if [ `ps aux | grep rushd | grep -v grep | wc -l` -ge 1 ]; then exit; fi; rushd > /dev/null 2>&1 &")
+  end
 	def push_credentials
 		display "Pushing credentials"
 		config.ensure_credentials_exist
@@ -67,7 +74,13 @@ class Rush::SshTunnel
 	def tunnel_alive?
 		`#{tunnel_count_command}`.to_i > 0
 	end
-
+	
+	def server_alive?
+	  `#{server_count_command}`.to_i > 0
+  end
+  def server_count_command
+	  "ps aux | grep rushd | grep -v grep | wc -l"
+  end
 	def tunnel_count_command
 		"ps x | grep '#{ssh_tunnel_command_without_stall}' | grep -v grep | wc -l"
 	end
