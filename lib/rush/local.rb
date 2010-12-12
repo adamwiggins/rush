@@ -306,6 +306,10 @@ class Rush::Connection::Local
 	rescue Errno::ESRCH
 		# if it's dead, great - do nothing
 	end
+	
+  def signal_process(pid, signal)
+  		::Process.kill(signal, pid)
+  end
 
 	def bash(command, user=nil, background=false, reset_environment=false)
 		return bash_background(command, user, reset_environment) if background
@@ -319,7 +323,13 @@ class Rush::Connection::Local
 		if user and user != ""
 			out, err = sh.execute "cd /; sudo -H -u #{user} \"#{shell}\"", :stdin => command
 		else
-			out, err = sh.execute shell, :stdin => command
+		  # if !stdin
+		  out, err = sh.execute command
+		  #        
+		  #      else
+        # out, err = sh.execute command, :stdin => stdin
+      # end
+			
 		end
 
 		retval = sh.status
@@ -389,7 +399,7 @@ class Rush::Connection::Local
 			when 'processes'      then YAML.dump(processes)
 			when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'
 			when 'kill_process'   then kill_process(params[:pid].to_i, YAML.load(params[:payload]))
-			when 'bash'           then bash(params[:payload], params[:user], params[:background] == 'true', params[:reset_environment] == 'true')
+			when 'bash'           then bash(params[:payload], params[:user], params[:stdin], params[:background] == 'true', params[:reset_environment] == 'true')
 		else
 			raise UnknownAction
 		end

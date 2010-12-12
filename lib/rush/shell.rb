@@ -126,7 +126,7 @@ module Rush
 				(box[path].methods - Object.methods).select do |e|
 					e.match(/^#{Regexp.escape(partial_name)}/)
 				end.map do |e|
-					(pre || '') + receiver + dot + e.to_s
+					(pre || '') + receiver + dot + e
 				end
 			end
 		end

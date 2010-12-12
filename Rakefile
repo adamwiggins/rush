@@ -1,60 +1,51 @@
+require 'rubygems'
+require 'bundler'
+
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
 require 'rake'
 
 require 'jeweler'
 
-Jeweler::Tasks.new do |s|
-	s.name = "mjording_rush"
-	s.summary = "A Ruby replacement for bash+ssh."
-	s.description = "A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client."
-  s.email = "mjording@opengotham.com"
-  s.homepage = "http://github.com/mjording/rush"
-  s.authors = ["matthew jording","haris amin"]
-	s.homepage = "http://rush.heroku.com/"
-	s.executables = [ "rush"]
-  # s.rubyforge_project = "ruby-shell"
-	s.has_rdoc = true
-	s.add_development_dependency "rspec", "=1.3.1"
-	s.add_dependency 'session'
-	s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
+Jeweler::Tasks.new do |gem|
+  gem.name = "rush"
+  gem.summary = "A Ruby replacement for bash+ssh."
+	gem.description = "A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client."
+  gem.email = "mjording@opengotham.com"
+  gem.homepage = "http://rush.heroku.com/"
+  # gem.rubyforge_project = "ruby-shell"
+	gem.has_rdoc = true
+
+	gem.add_dependency 'session'
+	gem.add_dependency 'rspec'
+	gem.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
+	
+  gem.authors = ["adamwiggins"]
+  gem.executables = %w(rush)
+  gem.default_executable = "rush"
+  # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+end
+Jeweler::RubygemsDotOrgTasks.new
+
+require 'rspec'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-Jeweler::GemcutterTasks.new
-
-######################################################
-
-require 'spec/rake/spectask'
-
- desc "Run all specs"
- Spec::Rake::SpecTask.new('spec') do |t|
-   t.spec_files = FileList['spec/*_spec.rb']
- end
-
- desc "Print specdocs"
- Spec::Rake::SpecTask.new(:doc) do |t|
-   t.spec_opts = ["--format", "specdoc", "--dry-run"]
-   t.spec_files = FileList['spec/*_spec.rb']
- end
-
- desc "Run all examples with RCov"
- Spec::Rake::SpecTask.new('rcov') do |t|
-   t.spec_files = FileList['spec/*_spec.rb']
-   t.rcov = true
-   t.rcov_opts = ['--exclude', 'examples']
- end
- 
- task :default => :spec
-
-######################################################
-
-require 'rake/rdoctask'
-
-Rake::RDocTask.new do |t|
-	t.rdoc_dir = 'rdoc'
-	t.title    = "rush, a Ruby replacement for bash+ssh"
-	t.options << '--line-numbers' << '--inline-source' << '-A cattr_accessor=object'
-	t.options << '--charset' << 'utf-8'
-	t.rdoc_files.include('README.rdoc')
-	t.rdoc_files.include('lib/rush.rb')
-	t.rdoc_files.include('lib/rush/*.rb')
+RSpec::Core::RakeTask.new(:rcov) do |spec|
+  spec.pattern = 'spec/**/*_spec.rb'
+  spec.rcov = true
 end
 
+task :default => :spec
+
+require 'yard'
+YARD::Rake::YardocTask.new
+
+######################################################
