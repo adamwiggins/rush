@@ -155,7 +155,7 @@ module Rush
 			(lvars + gvars + ivars).select do |e|
 				e.match(/^#{Regexp.escape(partial_name)}/)
 			end.map do |e|
-				(pre || '') + e
+				(pre || '') + e.to_s
 			end
 		end
 
