@@ -299,6 +299,12 @@ EOPS
 		@con.kill_process(123)
 	end
 
+	it "kills a process by pid sending a QUIT if options[:signal] is 'QUIT'" do
+		@con.stub!(:process_alive).and_return(false)
+		::Process.should_receive(:kill).with('QUIT', 123).once
+		@con.kill_process(123, :signal => 'QUIT')
+	end
+
 	it "kills a process by pid sending a KILL signal if TERM doesn't work" do
 		@con.stub!(:process_alive).and_return(true)
 		::Process.should_receive(:kill).with('TERM', 123).at_least(:twice)
