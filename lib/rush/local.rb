@@ -193,16 +193,18 @@ class Rush::Connection::Local
 	# Read a single file in /proc and store the parsed values in a hash suitable
 	# for use in the Rush::Process#new.
 	def read_proc_file(file)
-		data = ::File.read(file).split(" ")
+		stat_contents = ::File.read(file)
+		stat_contents.gsub!(/\((.*)\)/, "")
+		command = $1
+		data = stat_contents.split(" ")
 		uid = ::File.stat(file).uid
 		pid = data[0]
-		command = data[1].match(/^\((.*)\)$/)[1]
 		cmdline = ::File.read("/proc/#{pid}/cmdline").gsub(/\0/, ' ')
-		parent_pid = data[3].to_i
-		utime = data[13].to_i
-		ktime = data[14].to_i
-		vss = data[22].to_i / 1024
-		rss = data[23].to_i * 4
+		parent_pid = data[2].to_i
+		utime = data[12].to_i
+		ktime = data[13].to_i
+		vss = data[21].to_i / 1024
+		rss = data[22].to_i * 4
 		time = utime + ktime
 
 		{
