@@ -1,0 +1,312 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+==	lib/rush/box.rb	/^  def ==(other)          # :nodoc:$/;"	f	class:Rush
+==	lib/rush/entry.rb	/^	def ==(other)       # :nodoc:$/;"	f	class:Rush
+==	lib/rush/process.rb	/^	def ==(other)       # :nodoc:$/;"	f	class:Rush
+==	lib/rush/process_set.rb	/^	def ==(other)$/;"	f	class:Rush
+Array	lib/rush/array_ext.rb	/^class Array$/;"	c
+BadAccessSpecifier	lib/rush/exceptions.rb	/^	class BadAccessSpecifier < Exception; end$/;"	c	class:Rush
+BashFailed	lib/rush/exceptions.rb	/^	class BashFailed < Exception; end$/;"	c	class:Rush
+DoesNotExist	lib/rush/exceptions.rb	/^	class DoesNotExist < Exception; end$/;"	c	class:Rush
+EmbeddableShell	lib/rush/embeddable_shell.rb	/^	class EmbeddableShell$/;"	c	class:Rush
+Exception	lib/rush/exceptions.rb	/^	class Exception < ::RuntimeError; end$/;"	c	class:Rush
+Exception	lib/rush/server.rb	/^class Exception$/;"	c
+FailedTransmit	lib/rush/exceptions.rb	/^	class FailedTransmit < Exception; end$/;"	c	class:Rush
+Fixnum	lib/rush/fixnum_ext.rb	/^class Fixnum$/;"	c
+Foo	spec/find_by_spec.rb	/^		class Foo$/;"	c
+NameAlreadyExists	lib/rush/entry.rb	/^	class NameAlreadyExists < Exception; end$/;"	c	class:Rush
+NameAlreadyExists	lib/rush/exceptions.rb	/^	class NameAlreadyExists < Exception; end$/;"	c	class:Rush
+NameCannotContainSlash	lib/rush/entry.rb	/^	class NameCannotContainSlash < Exception; end$/;"	c	class:Rush
+NameCannotContainSlash	lib/rush/exceptions.rb	/^	class NameCannotContainSlash < Exception; end$/;"	c	class:Rush
+NoPortSelectedYet	lib/rush/ssh_tunnel.rb	/^	class NoPortSelectedYet < Exception; end$/;"	c	class:Rush
+NotADir	lib/rush/exceptions.rb	/^	class NotADir < Exception; end$/;"	c	class:Rush
+NotAuthorized	lib/rush/exceptions.rb	/^	class NotAuthorized < Exception; end$/;"	c	class:Rush
+Rush	lib/rush.rb	/^module Rush$/;"	m
+Rush	lib/rush.rb	/^module Rush::Connection; end$/;"	m
+Rush	lib/rush/access.rb	/^class Rush::Access$/;"	c
+Rush	lib/rush/box.rb	/^class Rush::Box$/;"	c
+Rush	lib/rush/commands.rb	/^module Rush::Commands$/;"	m
+Rush	lib/rush/config.rb	/^class Rush::Config$/;"	c
+Rush	lib/rush/dir.rb	/^class Rush::Dir < Rush::Entry$/;"	c
+Rush	lib/rush/embeddable_shell.rb	/^module Rush$/;"	m
+Rush	lib/rush/entry.rb	/^class Rush::Entry$/;"	c
+Rush	lib/rush/exceptions.rb	/^module Rush$/;"	m
+Rush	lib/rush/file.rb	/^class Rush::File < Rush::Entry$/;"	c
+Rush	lib/rush/find_by.rb	/^module Rush::FindBy$/;"	m
+Rush	lib/rush/head_tail.rb	/^module Rush::HeadTail$/;"	m
+Rush	lib/rush/local.rb	/^class Rush::Connection::Local$/;"	c
+Rush	lib/rush/process.rb	/^class Rush::Process$/;"	c
+Rush	lib/rush/process_set.rb	/^class Rush::ProcessSet$/;"	c
+Rush	lib/rush/remote.rb	/^class Rush::Connection::Remote$/;"	c
+Rush	lib/rush/search_results.rb	/^class Rush::SearchResults$/;"	c
+Rush	lib/rush/shell.rb	/^module Rush$/;"	m
+Rush	lib/rush/ssh_tunnel.rb	/^class Rush::SshTunnel$/;"	c
+RushHandler	lib/rush/server.rb	/^class RushHandler < Mongrel::HttpHandler$/;"	c
+RushServer	lib/rush/server.rb	/^class RushServer$/;"	c
+RushdNotRunning	lib/rush/exceptions.rb	/^	class RushdNotRunning < Exception; end$/;"	c	class:Rush
+Shell	lib/rush/shell.rb	/^  class Shell$/;"	c	class:Rush
+SshFailed	lib/rush/ssh_tunnel.rb	/^	class SshFailed < Exception; end$/;"	c	class:Rush
+String	lib/rush/string_ext.rb	/^class String$/;"	c
+UnknownAction	lib/rush/local.rb	/^	class UnknownAction < Exception; end$/;"	c
+[]	lib/rush.rb	/^	def self.[](key)$/;"	F	class:Rush
+[]	lib/rush/box.rb	/^  def [](key)$/;"	f	class:Rush
+[]	lib/rush/dir.rb	/^	def [](key)$/;"	f	class:Rush
+access	lib/rush/entry.rb	/^	def access$/;"	f	class:Rush
+access=	lib/rush/entry.rb	/^	def access=(options)$/;"	f	class:Rush
+add	lib/rush/search_results.rb	/^	def add(entry, lines)$/;"	f	class:Rush
+alive?	lib/rush/box.rb	/^  def alive?$/;"	f	class:Rush
+alive?	lib/rush/local.rb	/^	def alive?$/;"	f
+alive?	lib/rush/process.rb	/^	def alive?$/;"	f	class:Rush
+alive?	lib/rush/process_set.rb	/^	def alive?$/;"	f	class:Rush
+alive?	lib/rush/remote.rb	/^	def alive?$/;"	f	class:Rush
+all	lib/rush/process.rb	/^	def self.all$/;"	F	class:Rush
+append	lib/rush/file.rb	/^	def append(contents)$/;"	f	class:Rush
+append_to_file	lib/rush/local.rb	/^	def append_to_file(full_path, contents)$/;"	f	class:Rush
+append_to_file	lib/rush/remote.rb	/^	def append_to_file(full_path, contents)$/;"	f	class:Rush
+apply	lib/rush/access.rb	/^  def apply(full_path)$/;"	f	class:Rush
+authorize	lib/rush/server.rb	/^	def authorize(auth)$/;"	f
+bash	lib/rush.rb	/^	def self.bash(command, options={})$/;"	F	class:Rush
+bash	lib/rush/box.rb	/^  def bash(command, options={})$/;"	f	class:Rush
+bash	lib/rush/dir.rb	/^	def bash(command, options={})$/;"	f	class:Rush
+bash	lib/rush/local.rb	/^	def bash(command, user=nil, background=false, reset_environment=false)$/;"	f
+bash	lib/rush/remote.rb	/^	def bash(command, user, background, reset_environment)$/;"	f	class:Rush
+bash_background	lib/rush/local.rb	/^	def bash_background(command, user, reset_environment)$/;"	f
+box	lib/rush.rb	/^	def self.box$/;"	F	class:Rush
+box	lib/rush/server.rb	/^	def box$/;"	f
+changed_at	lib/rush/entry.rb	/^	def changed_at$/;"	f	class:Rush
+children	lib/rush/process.rb	/^	def children$/;"	f	class:Rush
+close_all_descriptors	lib/rush/local.rb	/^	def close_all_descriptors(keep_open = [])$/;"	f
+colorize	lib/rush/search_results.rb	/^	def colorize(line)$/;"	f	class:Rush
+command_with_environment	lib/rush/box.rb	/^  def command_with_environment(command, env)   # :nodoc:$/;"	f	class:Rush
+commands_file	lib/rush/config.rb	/^  def commands_file$/;"	f	class:Rush
+compare_or_match	lib/rush/find_by.rb	/^	def compare_or_match(value, against)$/;"	f	class:Rush
+complete_method	lib/rush/shell.rb	/^    def complete_method(receiver, dot, partial_name, pre)$/;"	f	class:Rush.Shell.print_result
+complete_path	lib/rush/shell.rb	/^    def complete_path(possible_var, accessor, quote, partial_path, pre)   # :nodoc:$/;"	f	class:Rush.Shell.print_result.complete_method
+complete_variable	lib/rush/shell.rb	/^    def complete_variable(partial_name, pre)$/;"	f	class:Rush.Shell.print_result.complete_method.complete_path
+completion_proc	lib/rush/shell.rb	/^    def completion_proc$/;"	f	class:Rush.Shell.print_result.complete_method.complete_path.complete_variable
+config	lib/rush/remote.rb	/^	def config$/;"	f	class:Rush
+config	lib/rush/server.rb	/^	def config$/;"	f
+config	lib/rush/ssh_tunnel.rb	/^	def config$/;"	f	class:Rush
+connection	lib/rush/box.rb	/^  def connection         # :nodoc:$/;"	f	class:Rush
+connection	lib/rush/entry.rb	/^	def connection$/;"	f	class:Rush
+contents	lib/rush/dir.rb	/^	def contents$/;"	f	class:Rush
+contents	lib/rush/file.rb	/^	def contents$/;"	f	class:Rush
+contents_or_blank	lib/rush/file.rb	/^	def contents_or_blank$/;"	f	class:Rush
+copy	lib/rush/local.rb	/^	def copy(src, dst)$/;"	f	class:Rush
+copy	lib/rush/remote.rb	/^	def copy(src, dst)$/;"	f	class:Rush
+copy_to	lib/rush/entry.rb	/^	def copy_to(dir)$/;"	f	class:Rush
+create	lib/rush/dir.rb	/^	def create$/;"	f	class:Rush
+create	lib/rush/file.rb	/^	def create$/;"	f	class:Rush
+create_dir	lib/rush/dir.rb	/^	def create_dir(name)$/;"	f	class:Rush
+create_dir	lib/rush/local.rb	/^	def create_dir(full_path)$/;"	f	class:Rush
+create_dir	lib/rush/remote.rb	/^	def create_dir(full_path)$/;"	f	class:Rush
+create_file	lib/rush/dir.rb	/^	def create_file(name)$/;"	f	class:Rush
+credentials	lib/rush/config.rb	/^  def credentials$/;"	f	class:Rush
+credentials_file	lib/rush/config.rb	/^  def credentials_file$/;"	f	class:Rush
+credentials_password	lib/rush/config.rb	/^  def credentials_password$/;"	f	class:Rush
+credentials_user	lib/rush/config.rb	/^  def credentials_user$/;"	f	class:Rush
+destroy	lib/rush/entry.rb	/^	def destroy$/;"	f	class:Rush
+destroy	lib/rush/local.rb	/^	def destroy(full_path)$/;"	f	class:Rush
+destroy	lib/rush/remote.rb	/^	def destroy(full_path)$/;"	f	class:Rush
+dir	lib/rush.rb	/^	def self.dir(filename)$/;"	F	class:Rush
+dir?	lib/rush/dir.rb	/^	def dir?$/;"	f	class:Rush
+dir?	lib/rush/file.rb	/^	def dir?$/;"	f	class:Rush
+dirs	lib/rush/dir.rb	/^	def dirs$/;"	f	class:Rush
+dirs_flattened	lib/rush/dir.rb	/^	def dirs_flattened$/;"	f	class:Rush
+display	lib/rush/ssh_tunnel.rb	/^	def display(msg)$/;"	f	class:Rush
+display_hash	lib/rush/access.rb	/^  def display_hash$/;"	f	class:Rush
+duplicate	lib/rush/entry.rb	/^	def duplicate(new_name)$/;"	f	class:Rush
+each	lib/rush/process_set.rb	/^	def each$/;"	f	class:Rush
+each	lib/rush/search_results.rb	/^	def each(&block)$/;"	f	class:Rush
+ensure_credentials_exist	lib/rush/config.rb	/^  def ensure_credentials_exist$/;"	f	class:Rush
+ensure_tunnel	lib/rush/local.rb	/^	def ensure_tunnel(options={})$/;"	f
+ensure_tunnel	lib/rush/remote.rb	/^	def ensure_tunnel(options={})$/;"	f	class:Rush
+ensure_tunnel	lib/rush/ssh_tunnel.rb	/^	def ensure_tunnel(options={})$/;"	f	class:Rush
+entries	lib/rush/array_ext.rb	/^	def entries$/;"	f	class:Array
+entries	lib/rush/commands.rb	/^  def entries$/;"	f	class:Rush
+entries	lib/rush/dir.rb	/^	def entries$/;"	f	class:Rush
+entries	lib/rush/file.rb	/^	def entries$/;"	f	class:Rush
+entries_tree	lib/rush/dir.rb	/^	def entries_tree$/;"	f	class:Rush
+env_file	lib/rush/config.rb	/^  def env_file$/;"	f	class:Rush
+establish_connection	lib/rush/box.rb	/^  def establish_connection(options={})$/;"	f	class:Rush
+establish_tunnel	lib/rush/ssh_tunnel.rb	/^	def establish_tunnel(options={})$/;"	f	class:Rush
+execute	lib/rush/shell.rb	/^    def execute(cmd)$/;"	f	class:Rush.Shell
+execute_in_shell	lib/rush/embeddable_shell.rb	/^		def execute_in_shell(&block)$/;"	f	class:Rush.EmbeddableShell
+exists?	lib/rush/entry.rb	/^	def exists?$/;"	f	class:Rush
+extract_list	lib/rush/access.rb	/^  def extract_list(type, value, choices)$/;"	f	class:Rush
+factory	lib/rush/entry.rb	/^	def self.factory(full_path, box=nil)$/;"	F	class:Rush
+file_contents	lib/rush/local.rb	/^	def file_contents(full_path)$/;"	f	class:Rush
+file_contents	lib/rush/remote.rb	/^	def file_contents(full_path)$/;"	f	class:Rush
+files	lib/rush/dir.rb	/^	def files$/;"	f	class:Rush
+files_flattened	lib/rush/dir.rb	/^	def files_flattened$/;"	f	class:Rush
+filesystem	lib/rush/box.rb	/^  def filesystem$/;"	f	class:Rush
+filter	lib/rush/process_set.rb	/^	def filter(conditions)$/;"	f	class:Rush
+filtered_backtrace	lib/rush/server.rb	/^	def filtered_backtrace$/;"	f	class:Exception
+find_all_by	lib/rush/find_by.rb	/^	def find_all_by(field, arg)$/;"	f	class:Rush
+find_by	lib/rush/find_by.rb	/^	def find_by(field, arg)$/;"	f	class:Rush
+find_by_glob	lib/rush/dir.rb	/^	def find_by_glob(glob)    # :nodoc:$/;"	f	class:Rush
+find_by_name	lib/rush/dir.rb	/^	def find_by_name(name)    # :nodoc:$/;"	f	class:Rush
+finish	lib/rush/shell.rb	/^    def finish$/;"	f	class:Rush.Shell
+from_hash	lib/rush/access.rb	/^  def from_hash(hash)$/;"	f	class:Rush
+from_hash	lib/rush/access.rb	/^  def self.from_hash(hash)$/;"	F	class:Rush
+from_octal	lib/rush/access.rb	/^  def from_octal(mode)$/;"	f	class:Rush
+full_display	lib/rush/server.rb	/^	def full_display$/;"	f	class:Exception
+full_path	lib/rush/dir.rb	/^	def full_path$/;"	f	class:Rush
+full_path	lib/rush/entry.rb	/^	def full_path$/;"	f	class:Rush
+gb	lib/rush/fixnum_ext.rb	/^	def gb$/;"	f	class:Fixnum
+generate_credentials	lib/rush/config.rb	/^  def generate_credentials$/;"	f	class:Rush
+generate_password	lib/rush/config.rb	/^  def generate_password$/;"	f	class:Rush
+generate_secret	lib/rush/config.rb	/^  def generate_secret(min, max)$/;"	f	class:Rush
+generate_user	lib/rush/config.rb	/^  def generate_user$/;"	f	class:Rush
+git	lib/rush/dir.rb	/^	def git(*args)$/;"	f	class:Rush
+head	lib/rush/head_tail.rb	/^	def head(n)$/;"	f	class:Rush
+hidden?	lib/rush/entry.rb	/^	def hidden?$/;"	f	class:Rush
+hilight	lib/rush/search_results.rb	/^	def hilight$/;"	f	class:Rush
+history_file	lib/rush/config.rb	/^  def history_file$/;"	f	class:Rush
+host	lib/rush/ssh_tunnel.rb	/^	def host$/;"	f	class:Rush
+index	lib/rush/local.rb	/^	def index(base_path, glob)$/;"	f
+index	lib/rush/remote.rb	/^	def index(base_path, glob)$/;"	f	class:Rush
+initialize	lib/rush/box.rb	/^  def initialize(host='localhost')$/;"	f	class:Rush
+initialize	lib/rush/config.rb	/^  def initialize(location=nil)$/;"	f	class:Rush
+initialize	lib/rush/embeddable_shell.rb	/^		def initialize(suppress_output = true)$/;"	f	class:Rush.EmbeddableShell
+initialize	lib/rush/entry.rb	/^	def initialize(full_path, box=nil)$/;"	f	class:Rush
+initialize	lib/rush/process.rb	/^	def initialize(params, box)$/;"	f	class:Rush
+initialize	lib/rush/process_set.rb	/^	def initialize(processes)$/;"	f	class:Rush
+initialize	lib/rush/remote.rb	/^	def initialize(host)$/;"	f	class:Rush
+initialize	lib/rush/search_results.rb	/^	def initialize(pattern)$/;"	f	class:Rush
+initialize	lib/rush/shell.rb	/^    def initialize$/;"	f	class:Rush.Shell
+initialize	lib/rush/ssh_tunnel.rb	/^	def initialize(real_host)$/;"	f	class:Rush
+initialize	spec/find_by_spec.rb	/^			def initialize(bar)$/;"	f	class:Foo
+inspect	lib/rush/box.rb	/^  def inspect     # :nodoc:$/;"	f	class:Rush
+inspect	lib/rush/entry.rb	/^	def inspect   # :nodoc:$/;"	f	class:Rush
+inspect	lib/rush/process.rb	/^	def inspect   # :nodoc:$/;"	f	class:Rush
+kb	lib/rush/fixnum_ext.rb	/^	def kb$/;"	f	class:Fixnum
+kill	lib/rush/process.rb	/^	def kill(options={})$/;"	f	class:Rush
+kill	lib/rush/process_set.rb	/^	def kill(options={})$/;"	f	class:Rush
+kill_process	lib/rush/local.rb	/^	def kill_process(pid, options={})$/;"	f
+kill_process	lib/rush/remote.rb	/^	def kill_process(pid, options={})$/;"	f	class:Rush
+last_accessed	lib/rush/entry.rb	/^	def last_accessed$/;"	f	class:Rush
+last_modified	lib/rush/entry.rb	/^	def last_modified$/;"	f	class:Rush
+launch_dir	lib/rush.rb	/^	def self.launch_dir$/;"	F	class:Rush
+launch_rushd	lib/rush/ssh_tunnel.rb	/^	def launch_rushd$/;"	f	class:Rush
+line_count	lib/rush/commands.rb	/^  def line_count$/;"	f	class:Rush
+line_count	lib/rush/file.rb	/^	def line_count$/;"	f	class:Rush
+lines	lib/rush/file.rb	/^	def lines$/;"	f	class:Rush
+lines_or_empty	lib/rush/file.rb	/^	def lines_or_empty$/;"	f	class:Rush
+linux_processes	lib/rush/local.rb	/^	def linux_processes$/;"	f
+load_commands	lib/rush/config.rb	/^  def load_commands$/;"	f	class:Rush
+load_env	lib/rush/config.rb	/^  def load_env$/;"	f	class:Rush
+load_history	lib/rush/config.rb	/^  def load_history$/;"	f	class:Rush
+log	lib/rush/server.rb	/^	def log(msg)$/;"	f
+lowlight	lib/rush/search_results.rb	/^	def lowlight$/;"	f	class:Rush
+ls	lib/rush/dir.rb	/^	def ls$/;"	f	class:Rush
+make_connection	lib/rush/box.rb	/^  def make_connection    # :nodoc:$/;"	f	class:Rush
+make_entries	lib/rush/dir.rb	/^	def make_entries(filenames)$/;"	f	class:Rush
+make_ssh_tunnel	lib/rush/ssh_tunnel.rb	/^	def make_ssh_tunnel(options={})$/;"	f	class:Rush
+mate	lib/rush/commands.rb	/^  def mate(*args)$/;"	f	class:Rush
+mb	lib/rush/fixnum_ext.rb	/^	def mb$/;"	f	class:Fixnum
+method_missing	lib/rush/embeddable_shell.rb	/^		def method_missing(sym, *args, &block)$/;"	f	class:Rush.EmbeddableShell
+method_missing	lib/rush/find_by.rb	/^	def method_missing(meth, *args)$/;"	f	class:Rush
+method_missing	lib/rush/process_set.rb	/^	def method_missing(meth, *args)$/;"	f	class:Rush
+mimic	lib/rush/entry.rb	/^	def mimic(from)      # :nodoc:$/;"	f	class:Rush
+mock_config	spec/base.rb	/^def mock_config(&block)$/;"	f
+mock_config_cleanup	spec/base.rb	/^def mock_config_cleanup$/;"	f
+mock_config_sandbox_dir	spec/base.rb	/^def mock_config_sandbox_dir$/;"	f
+mock_config_start	spec/base.rb	/^def mock_config_start$/;"	f
+move_to	lib/rush/entry.rb	/^	def move_to(dir)$/;"	f	class:Rush
+my_process	lib/rush.rb	/^	def self.my_process$/;"	F	class:Rush
+next_available_port	lib/rush/ssh_tunnel.rb	/^	def next_available_port$/;"	f	class:Rush
+nonhidden_dirs	lib/rush/dir.rb	/^	def nonhidden_dirs$/;"	f	class:Rush
+nonhidden_files	lib/rush/dir.rb	/^	def nonhidden_files$/;"	f	class:Rush
+normal	lib/rush/search_results.rb	/^	def normal$/;"	f	class:Rush
+octal_integer_array	lib/rush/access.rb	/^  def octal_integer_array(mode)$/;"	f	class:Rush
+octal_permissions	lib/rush/access.rb	/^  def octal_permissions$/;"	f	class:Rush
+os_x_processes	lib/rush/local.rb	/^	def os_x_processes$/;"	f
+os_x_raw_ps	lib/rush/local.rb	/^	def os_x_raw_ps$/;"	f
+parent	lib/rush/entry.rb	/^	def parent$/;"	f	class:Rush
+parent	lib/rush/process.rb	/^	def parent$/;"	f	class:Rush
+parse	lib/rush/access.rb	/^  def parse(options)$/;"	f	class:Rush
+parse	lib/rush/access.rb	/^  def self.parse(options)$/;"	F	class:Rush
+parse_exception	lib/rush/remote.rb	/^	def parse_exception(body)$/;"	f	class:Rush
+parse_oleprocinfo	lib/rush/local.rb	/^	def parse_oleprocinfo(proc_info)$/;"	f
+parse_ps	lib/rush/local.rb	/^	def parse_ps(line)$/;"	f
+parts_from	lib/rush/access.rb	/^  def parts_from(value)$/;"	f	class:Rush
+passwords	lib/rush/config.rb	/^  def passwords$/;"	f	class:Rush
+passwords_file	lib/rush/config.rb	/^  def passwords_file$/;"	f	class:Rush
+path_parts	lib/rush/shell.rb	/^    def path_parts(input)   # :nodoc:$/;"	f	class:Rush.Shell.print_result
+permissions	lib/rush/access.rb	/^  def self.permissions$/;"	F	class:Rush
+port	lib/rush/ssh_tunnel.rb	/^	def port$/;"	f	class:Rush
+print_result	lib/rush/shell.rb	/^    def print_result(res)$/;"	f	class:Rush.Shell
+process	lib/rush/server.rb	/^	def process(request, response)$/;"	f	class:RushHandler
+process_alive	lib/rush/local.rb	/^	def process_alive(pid)$/;"	f
+process_alive	lib/rush/remote.rb	/^	def process_alive(pid)$/;"	f	class:Rush
+process_result	lib/rush/remote.rb	/^	def process_result(code, body)$/;"	f	class:Rush
+processes	lib/rush.rb	/^	def self.processes$/;"	F	class:Rush
+processes	lib/rush/box.rb	/^  def processes$/;"	f	class:Rush
+processes	lib/rush/local.rb	/^	def processes$/;"	f
+processes	lib/rush/remote.rb	/^	def processes$/;"	f	class:Rush
+purge	lib/rush/dir.rb	/^	def purge$/;"	f	class:Rush
+purge	lib/rush/local.rb	/^	def purge(full_path)$/;"	f	class:Rush
+purge	lib/rush/remote.rb	/^	def purge(full_path)$/;"	f	class:Rush
+push_credentials	lib/rush/ssh_tunnel.rb	/^	def push_credentials$/;"	f	class:Rush
+quote	lib/rush.rb	/^	def self.quote(path)$/;"	F	class:Rush
+quoted_path	lib/rush/entry.rb	/^	def quoted_path$/;"	f	class:Rush
+rake	lib/rush/dir.rb	/^	def rake(*args)$/;"	f	class:Rush
+read_archive	lib/rush/local.rb	/^	def read_archive(full_path)$/;"	f	class:Rush
+read_archive	lib/rush/remote.rb	/^	def read_archive(full_path)$/;"	f	class:Rush
+read_proc_file	lib/rush/local.rb	/^	def read_proc_file(file)$/;"	f
+receive	lib/rush/local.rb	/^	def receive(params)$/;"	f
+rename	lib/rush/entry.rb	/^	def rename(new_name)$/;"	f	class:Rush
+rename	lib/rush/local.rb	/^	def rename(path, name, new_name)$/;"	f	class:Rush
+rename	lib/rush/remote.rb	/^	def rename(path, name, new_name)$/;"	f	class:Rush
+replace_contents!	lib/rush/commands.rb	/^  def replace_contents!(pattern, with_text)$/;"	f	class:Rush
+replace_contents!	lib/rush/file.rb	/^	def replace_contents!(pattern, replace_with)$/;"	f	class:Rush
+resolve_unix_uid_to_user	lib/rush/local.rb	/^	def resolve_unix_uid_to_user(uid)$/;"	f
+resolve_unix_uids	lib/rush/local.rb	/^	def resolve_unix_uids(list)$/;"	f
+roles	lib/rush/access.rb	/^  def self.roles$/;"	F	class:Rush
+run	lib/rush/server.rb	/^	def run$/;"	f	class:RushServer
+run	lib/rush/shell.rb	/^    def run$/;"	f	class:Rush.Shell
+save_credentials	lib/rush/config.rb	/^  def save_credentials(user, password)$/;"	f	class:Rush
+save_history	lib/rush/config.rb	/^  def save_history(array)$/;"	f	class:Rush
+save_tunnels	lib/rush/config.rb	/^  def save_tunnels(hash)$/;"	f	class:Rush
+search	lib/rush/commands.rb	/^  def search(pattern)$/;"	f	class:Rush
+search	lib/rush/file.rb	/^	def search(pattern)$/;"	f	class:Rush
+secret_characters	lib/rush/config.rb	/^  def secret_characters$/;"	f	class:Rush
+set_access	lib/rush/local.rb	/^	def set_access(full_path, access)$/;"	f
+set_access	lib/rush/remote.rb	/^	def set_access(full_path, access)$/;"	f	class:Rush
+set_matrix	lib/rush/access.rb	/^  def set_matrix(perms, roles)$/;"	f	class:Rush
+setup_everything	lib/rush/ssh_tunnel.rb	/^	def setup_everything(options={})$/;"	f	class:Rush
+size	lib/rush/dir.rb	/^	def size$/;"	f	class:Rush
+size	lib/rush/file.rb	/^	def size$/;"	f	class:Rush
+size	lib/rush/local.rb	/^	def size(full_path)$/;"	f
+size	lib/rush/remote.rb	/^	def size(full_path)$/;"	f	class:Rush
+ssh	lib/rush/ssh_tunnel.rb	/^	def ssh(command)$/;"	f	class:Rush
+ssh_append_to_credentials	lib/rush/ssh_tunnel.rb	/^	def ssh_append_to_credentials(string)$/;"	f	class:Rush
+ssh_stall_command	lib/rush/ssh_tunnel.rb	/^	def ssh_stall_command(options={})$/;"	f	class:Rush
+ssh_tunnel_command	lib/rush/ssh_tunnel.rb	/^	def ssh_tunnel_command(options={})$/;"	f	class:Rush
+ssh_tunnel_command_without_stall	lib/rush/ssh_tunnel.rb	/^	def ssh_tunnel_command_without_stall$/;"	f	class:Rush
+stat	lib/rush/entry.rb	/^	def stat$/;"	f	class:Rush
+stat	lib/rush/local.rb	/^	def stat(full_path)$/;"	f
+stat	lib/rush/remote.rb	/^	def stat(full_path)$/;"	f	class:Rush
+tail	lib/rush/head_tail.rb	/^	def tail(n)$/;"	f	class:Rush
+to_hash	lib/rush/access.rb	/^  def to_hash$/;"	f	class:Rush
+to_s	lib/rush/box.rb	/^  def to_s        # :nodoc:$/;"	f	class:Rush
+to_s	lib/rush/entry.rb	/^	def to_s      # :nodoc:$/;"	f	class:Rush
+to_s	lib/rush/process.rb	/^	def to_s      # :nodoc:$/;"	f	class:Rush
+transmit	lib/rush/remote.rb	/^	def transmit(params)$/;"	f	class:Rush
+tunnel_alive?	lib/rush/ssh_tunnel.rb	/^	def tunnel_alive?$/;"	f	class:Rush
+tunnel_count_command	lib/rush/ssh_tunnel.rb	/^	def tunnel_count_command$/;"	f	class:Rush
+tunnel_options	lib/rush/ssh_tunnel.rb	/^	def tunnel_options$/;"	f	class:Rush
+tunnels	lib/rush/config.rb	/^  def tunnels$/;"	f	class:Rush
+tunnels_file	lib/rush/config.rb	/^  def tunnels_file$/;"	f	class:Rush
+vi	lib/rush/commands.rb	/^  def vi(*args)$/;"	f	class:Rush
+windows_processes	lib/rush/local.rb	/^	def windows_processes$/;"	f
+write	lib/rush/file.rb	/^	def write(new_contents)$/;"	f	class:Rush
+write_archive	lib/rush/local.rb	/^	def write_archive(archive, dir)$/;"	f	class:Rush
+write_archive	lib/rush/remote.rb	/^	def write_archive(archive, dir)$/;"	f	class:Rush
+write_file	lib/rush/local.rb	/^	def write_file(full_path, contents)$/;"	f	class:Rush
+write_file	lib/rush/remote.rb	/^	def write_file(full_path, contents)$/;"	f	class:Rush

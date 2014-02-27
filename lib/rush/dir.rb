@@ -27,15 +27,15 @@ class Rush::Dir < Rush::Entry
 
 	# Files contained in this dir only.
 	def files
-		contents.select { |entry| !entry.dir? }
+		contents.reject(&:dir?)
 	end
 
 	# Other dirs contained in this dir only.
 	def dirs
-		contents.select { |entry| entry.dir? }
+		contents.select(&:dir?)
 	end
 
-	# Access subentries with square brackets, e.g. dir['subdir/file'] 
+	# Access subentries with square brackets, e.g. dir['subdir/file']
 	def [](key)
 		key = key.to_s
 		if key == '**'
@@ -115,9 +115,7 @@ class Rush::Dir < Rush::Entry
 
 	# Contained files that are not hidden.
 	def nonhidden_files
-		files.select do |file|
-			!file.hidden?
-		end
+		files.reject(&:hidden?)
 	end
 
 	# Run a bash command starting in this directory.  Options are the same as Rush::Box#bash.

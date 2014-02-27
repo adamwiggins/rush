@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + '/../lib/rush'
-require File.dirname(__FILE__) + '/../lib/rush/shell'
+require_relative '../lib/rush'
+require_relative '../lib/rush/shell'
 
 shell = Rush::Shell.new
 
