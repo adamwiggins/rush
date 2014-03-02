@@ -54,6 +54,8 @@ module Rush::Commands
   end
 
   # Open file with xdg-open.
+  # Usage:
+  #   home.locate('mai_failz').open
   def open(*args)
     names = entries.map(&:to_s).join(' ')
     command = "xdg-open #{names} #{args.join(' ')}"
