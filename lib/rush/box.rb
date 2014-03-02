@@ -49,6 +49,24 @@ class Rush::Box
     )
   end
 
+  # FAST HACK!
+  # Guess if method missing then it's bash command.
+  # The logic is the following:
+  #   Ruby has Symbol type for similar things that bash has '-'-keys.
+  #   Ruby also use Symbol for keys like '--key', but bash supports
+  #   sequences like 'ls -lah' and I don't know how to distinguish them.
+  #
+  # Usage:
+  #   ls :lah
+  #   ls '--help'
+  #
+  def method_missing(meth, *args)
+    command = args.map do |c|
+      Symbol === c ? c.to_s.chars.map { |x| '-' << x } : c
+    end.flatten.join(' ')
+    system meth.to_s << ' ' << command
+  end
+
   # Execute a command in the standard unix shell.  Returns the contents of
   # stdout if successful, or raises Rush::BashFailed with the output of stderr
   # if the shell returned a non-zero value.  Options:

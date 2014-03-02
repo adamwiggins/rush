@@ -50,7 +50,8 @@ module Rush
     # Run the interactive shell using readline.
     def run
       loop do
-        cmd = Readline.readline('rush> ')
+        prompt = "#{`whoami`.chomp}@#{`pwd`.chomp}$ "
+        cmd = Readline.readline(prompt)
 
         finish if cmd.nil? or cmd == 'exit'
         next if cmd == ""
