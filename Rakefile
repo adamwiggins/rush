@@ -46,7 +46,7 @@ task :default => :spec
 
 ######################################################
 
-require 'rake/rdoctask'
+require 'rake/rdoc/task'
 
 Rake::RDocTask.new do |t|
 	t.rdoc_dir = 'rdoc'

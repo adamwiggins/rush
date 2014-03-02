@@ -23,6 +23,7 @@ class Rush::File < Rush::Entry
   end
 
   alias :read :contents
+  alias_method :cat, :contents
 
   # Write to the file, overwriting whatever was already in it.
   #

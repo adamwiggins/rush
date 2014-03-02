@@ -45,10 +45,18 @@ module Rush::Commands
     names = entries.map { |f| f.quoted_path }.join(' ')
     system "vim #{names} #{args.join(' ')}"
   end
+  alias_method :vim, :vi
 
   # Invoke TextMate on one or more files - only works locally.
   def mate(*args)
     names = entries.map { |f| f.quoted_path }.join(' ')
     system "mate #{names} #{args.join(' ')}"
+  end
+
+  # Open file with xdg-open.
+  def open(*args)
+    names = entries.map(&:to_s).join(' ')
+    command = "xdg-open #{names} #{args.join(' ')}"
+    system command
   end
 end

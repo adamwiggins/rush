@@ -90,6 +90,7 @@ class Rush::Entry
     @name = new_name
     self
   end
+  alias_method :mv, :rename
 
   # Rename an entry to another name within the same dir.  The existing object
   # will not be affected, but a new object representing the newly-created

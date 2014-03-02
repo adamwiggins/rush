@@ -49,6 +49,22 @@ class Rush::Dir < Rush::Entry
 	# Slashes work as well, e.g. dir/'subdir/file'
 	alias_method :/, :[]
 
+  def locate(path)
+    located = `locate #{path}`.split("\n").
+      map { |x| dir?(x) ? Rush::Dir.new(x) : Rush::File.new(x) }
+    located.size == 1 ? located.first : located
+  end
+
+  def locate_dir(path)
+    located = `locate -r #{path}$`.split("\n").
+      map { |x| Dir.new x }
+    located.size == 1 ? located.first : located
+  end
+
+  def dir?(path)
+    ::Dir.exists? path
+  end
+
 	def find_by_name(name)    # :nodoc:
 		Rush::Entry.factory("#{full_path}/#{name}", box)
 	end
