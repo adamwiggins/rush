@@ -17,13 +17,12 @@ module Rush::Commands
   # Search file contents for a regular expression.  A Rush::SearchResults
   # object is returned.
   def search(pattern)
-    results = Rush::SearchResults.new(pattern)
-    entries.each do |entry|
+    entries.inject(Rush::SearchResults.new(pattern)) do |results, entry|
       if !entry.dir? and matches = entry.search(pattern)
         results.add(entry, matches)
       end
+      results
     end
-    results
   end
 
   # Search and replace file contents.
@@ -42,23 +41,27 @@ module Rush::Commands
 
   # Invoke vi on one or more files - only works locally.
   def vi(*args)
-    names = entries.map { |f| f.quoted_path }.join(' ')
-    system "vim #{names} #{args.join(' ')}"
+    open_with('vim', *args)
   end
   alias_method :vim, :vi
 
   # Invoke TextMate on one or more files - only works locally.
   def mate(*args)
-    names = entries.map { |f| f.quoted_path }.join(' ')
-    system "mate #{names} #{args.join(' ')}"
+    open_with('mate', *args)
   end
 
   # Open file with xdg-open.
   # Usage:
   #   home.locate('mai_failz').open
   def open(*args)
+    open_with('xdg-open', *args)
+  end
+
+  # Open file with any application you like.
+  # Usage:
+  #   home.locate('timetable').open_witn :vim
+  def open_with(app, *args)
     names = entries.map(&:to_s).join(' ')
-    command = "xdg-open #{names} #{args.join(' ')}"
-    system command
+    system "#{app.to_s} #{names} #{args.join(' ')}"
   end
 end

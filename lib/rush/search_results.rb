@@ -11,6 +11,9 @@
 #   myproj['**/*.rb'].search(/class/).lines.size
 #   myproj['**/*.rb'].search(/class/).copy_to other_dir
 class Rush::SearchResults
+  include Rush::Commands
+  include Enumerable
+
   attr_reader :entries, :lines, :entries_with_lines, :pattern
 
   # Make a blank container.  Track the pattern so that we can colorize the
@@ -30,15 +33,13 @@ class Rush::SearchResults
     @entries << entry
     @entries_with_lines[entry] = lines
     @lines += lines
+    self
   end
-
-  include Rush::Commands
+  alias_method :<<, :add
 
   def each(&block)
     @entries.each(&block)
   end
-
-  include Enumerable
 
   def colorize(line)
     lowlight + line.gsub(/(#{pattern.source})/, "#{hilight}\\1#{lowlight}") + normal
