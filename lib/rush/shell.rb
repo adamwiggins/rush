@@ -30,14 +30,24 @@ module Rush
       commands = @config.load_commands
       Rush::Dir.class_eval commands
       Array.class_eval commands
+
+      # Multiline commands should be stored somewhere'
+      @multiline_cmd = ''
     end
 
     # Run a single command.
     def execute(cmd)
-      res = eval(cmd, @pure_binding)
+      res = eval(@multiline_cmd << "\n" << cmd, @pure_binding)
       $last_res = res
       eval("_ = $last_res", @pure_binding)
+      @multiline_cmd = ''
       print_result res
+    rescue SyntaxError => e
+      unless e.message.include? 'unexpected end-of-input'
+        @multiline_cmd = ''
+        puts "Exception #{e.class} -> #{e.message}"
+      end
+      # Else it should be multiline command.
     rescue Rush::Exception => e
       puts "Exception #{e.class} -> #{e.message}"
     rescue ::Exception => e
@@ -88,11 +98,10 @@ module Rush
         end
         puts "#{res.entries.size} matching files with #{res.lines.size} matching lines"
       elsif res.respond_to? :each
-        counts = {}
-        res.each do |item|
+        counts = res.inject(Hash.new(0)) do |result, item|
           puts item
-          counts[item.class] ||= 0
-          counts[item.class] += 1
+          result[item.class] += 1
+          result
         end
         if counts == {}
           puts "=> (empty set)"

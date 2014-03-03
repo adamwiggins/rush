@@ -51,7 +51,7 @@ class Rush::Dir < Rush::Entry
 
   def locate(path)
     located = `locate #{path}`.split("\n").
-      map { |x| dir?(x) ? Rush::Dir.new(x) : Rush::File.new(x) }
+      map { |x| x.dir? ? Rush::Dir.new(x) : Rush::File.new(x) }
     located.size == 1 ? located.first : located
   end
 
@@ -59,10 +59,6 @@ class Rush::Dir < Rush::Entry
     located = `locate -r #{path}$`.split("\n").
       map { |x| Dir.new x }
     located.size == 1 ? located.first : located
-  end
-
-  def dir?(path)
-    ::Dir.exists? path
   end
 
 	def find_by_name(name)    # :nodoc:
