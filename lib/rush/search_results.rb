@@ -37,6 +37,18 @@ class Rush::SearchResults
   end
   alias_method :<<, :add
 
+  def to_s
+    widest = entries.map { |k| k.full_path.length }.max
+    entries_with_lines.inject('') do |result, (entry, lines)|
+      result << entry.full_path
+      result << ' ' * (widest - entry.full_path.length + 2)
+      result << "=> "
+      result << colorize(lines.first.strip.head(30))
+      lines.each { |line| result << "\t" << line << "\n" }
+      result << "\n"
+    end
+  end
+
   def each(&block)
     @entries.each(&block)
   end

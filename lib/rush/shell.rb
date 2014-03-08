@@ -50,11 +50,11 @@ module Rush
       # Else it should be multiline command.
     rescue Rush::Exception => e
       puts "Exception #{e.class} -> #{e.message}"
+      @multiline_cmd = ''
     rescue ::Exception => e
       puts "Exception #{e.class} -> #{e.message}"
-      e.backtrace.each do |t|
-        puts "   #{::File.expand_path(t)}"
-      end
+      e.backtrace.each { |t| puts "\t#{::File.expand_path(t)}" }
+      @multiline_cmd = ''
     end
 
     # Run the interactive shell using readline.
@@ -82,38 +82,30 @@ module Rush
     def print_result(res)
       return if self.suppress_output
       if res.kind_of? String
-        puts res
+        output = res
       elsif res.kind_of? Rush::SearchResults
-        widest = res.entries.map { |k| k.full_path.length }.max
-        res.entries_with_lines.each do |entry, lines|
-          print entry.full_path
-          print ' ' * (widest - entry.full_path.length + 2)
-          print "=> "
-          print res.colorize(lines.first.strip.head(30))
-          print "..." if lines.first.strip.length > 30
-          if lines.size > 1
-            print " (plus #{lines.size - 1} more matches)"
-          end
-          print "\n"
-        end
-        puts "#{res.entries.size} matching files with #{res.lines.size} matching lines"
+        widest = res.entries.max_by { |k| k.full_path.length }
+        output = res.to_s <<
+          "#{res.entries.size} matching files with #{res.lines.size} matching lines"
       elsif res.respond_to? :each
+        output = ''
         counts = res.inject(Hash.new(0)) do |result, item|
-          puts item
+          output << item.to_s << "\n"
           result[item.class] += 1
           result
         end
         if counts == {}
-          puts "=> (empty set)"
+          output = "=> (empty set)"
         else
           count_s = counts.map do |klass, count|
             "#{count} x #{klass}"
           end.join(', ')
-          puts "=> #{count_s}"
+          output << "=> #{count_s}"
         end
       else
-        puts "=> #{res.inspect}"
+        output = "=> #{res.inspect}"
       end
+      output.lines.size > 5 ? output.less : puts(output)
     end
 
     def path_parts(input)   # :nodoc:
