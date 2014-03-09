@@ -84,7 +84,6 @@ module Rush
       if res.kind_of? String
         output = res
       elsif res.kind_of? Rush::SearchResults
-        widest = res.entries.max_by { |k| k.full_path.length }
         output = res.to_s <<
           "#{res.entries.size} matching files with #{res.lines.size} matching lines"
       elsif res.respond_to? :each
@@ -128,7 +127,7 @@ module Rush
         (box[path].methods - Object.methods).select do |e|
           e.match(/^#{Regexp.escape(partial_name)}/)
         end.map do |e|
-          (pre || '') + receiver + dot + e
+          (pre || '') + receiver + dot + e.to_s
         end
       end
     end
@@ -154,11 +153,10 @@ module Rush
       lvars = eval('local_variables', @pure_binding)
       gvars = eval('global_variables', @pure_binding)
       ivars = eval('instance_variables', @pure_binding)
-      (lvars + gvars + ivars).select do |e|
-        e.match(/^#{Regexp.escape(partial_name)}/)
-      end.map do |e|
-        (pre || '') + e
-      end
+      constants = eval('Object.constants', @pure_binding)
+      (lvars + gvars + ivars + constants).
+        select { |e| e.match(/^#{Regexp.escape(partial_name)}/) }.
+        map    { |e| (pre || '') + e.to_s }
     end
 
     # Try to do tab completion on dir square brackets and slash accessors.
