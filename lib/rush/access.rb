@@ -101,7 +101,10 @@ class Rush::Access
   end
 
   def set_matrix(perms, roles)
-    ACCESS_UNITS.each { |unit| send unit, true }
+    ROLES.product(PERMISSIONS).
+      select { |r, p| perms.include?(p) && roles.include?(r) }.
+      map    { |r, p| "#{r}_can_#{p}".to_sym }.
+      each   { |unit| send unit, true }
   end
 
   def extract_list(type, value, choices)

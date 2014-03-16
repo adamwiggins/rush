@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/base'
+require __dir__ + '/base'
 require 'rush/shell'
 
 describe Rush::Shell do

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/base'
+require __dir__ + '/base'
 
 describe Rush::EmbeddableShell do
 	before do
@@ -8,7 +8,7 @@ describe Rush::EmbeddableShell do
 	it "should execute unknown methods against a Rush::Shell instance" do
 		@shell.root.class.should == Rush::Dir
 	end
-	
+
 	it "should executes a block as if it were inside the shell" do
 		@shell.execute_in_shell {
 			root.class.should == Rush::Dir

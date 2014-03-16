@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/base'
+require __dir__ + '/base'
 
 describe Rush do
 	it "fetches a local file path" do

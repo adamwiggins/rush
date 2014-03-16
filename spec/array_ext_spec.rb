@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/base'
+require __dir__ + '/base'
 
 describe Array do
 	it "mixes commands into array" do
