@@ -163,23 +163,19 @@ module Rush
     #
     # Example:
     #
-    # dir['subd    # presing tab here will produce dir['subdir/ if subdir exists
-    # dir/'subd    # presing tab here will produce dir/'subdir/ if subdir exists
+    # dir['subd  # presing tab here will produce dir['subdir/ if subdir exists
+    # dir/'subd  # presing tab here will produce dir/'subdir/ if subdir exists
     #
     # This isn't that cool yet, because it can't do multiple levels of subdirs.
     # It does work remotely, though, which is pretty sweet.
     def completion_proc
       proc do |input|
         receiver, accessor, *rest = path_parts(input)
-        if receiver
-          case accessor
-          when /^[\[\/]$/
-            complete_path(receiver, accessor, *rest)
-          when /^\.$/
-            complete_method(receiver, accessor, *rest)
-          when nil
-            complete_variable(receiver, *rest)
-          end
+        return unless receiver
+        case accessor
+        when /^[\[\/]$/ then complete_path(receiver, accessor, *rest)
+        when /^\.$/     then complete_method(receiver, accessor, *rest)
+        when nil        then complete_variable(receiver, *rest)
         end
       end
     end

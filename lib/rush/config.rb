@@ -66,12 +66,10 @@ class Rush::Config
   end
 
   def passwords
-    hash = {}
-    passwords_file.lines_or_empty.each do |line|
+    passwords_file.lines_or_empty.inject({}) do |result, line|
       user, password = line.split(":", 2)
-      hash[user] = password
+      result.merge user => password
     end
-    hash
   end
 
   # Credentials is the client-side equivalent of passwords.  It contains only
@@ -116,11 +114,7 @@ class Rush::Config
   def generate_secret(min, max)
     chars = self.secret_characters
     len = rand(max - min + 1) + min
-    password = ""
-    len.times do |index|
-      password += chars[rand(chars.length)]
-    end
-    password
+    len.times.inject { |r| r += chars[rand(chars.length)] }
   end
 
   def secret_characters
@@ -139,8 +133,7 @@ class Rush::Config
   def tunnels
     tunnels_file.lines_or_empty.inject({}) do |hash, line|
       host, port = line.split(':', 2)
-      hash[host] = port.to_i
-      hash
+      hash.merge host => port.to_i
     end
   end
 

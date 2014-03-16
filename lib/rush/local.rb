@@ -153,10 +153,8 @@ class Rush::Connection::Local
   # Process list on Linux using /proc.
   def linux_processes
     ::Dir["/proc/*/stat"].
-      select { |file| file =~ /\/proc\/\d+\// }.
-      inject([]) do |list, file|
-        list << read_proc_file rescue list
-      end
+      select     { |file| file =~ /\/proc\/\d+\// }.
+      inject([]) { |list, file| list << read_proc_file rescue list }
   end
 
   def resolve_unix_uids(list)
@@ -170,20 +168,10 @@ class Rush::Connection::Local
   # resolve uid to user
   def resolve_unix_uid_to_user(uid)
     require 'etc'
-
     @uid_map ||= {}
-    uid = uid.to_i
-
-    return @uid_map[uid] if !@uid_map[uid].nil?
-
-    begin
-      record = Etc.getpwuid(uid)
-    rescue ArgumentError
-      return nil
-    end
-
-    @uid_map[uid] = record.name
-    @uid_map[uid]
+    return @uid_map[uid] if @uid_map[uid]
+    record = Etc.getpwuid(uid) rescue (return nil)
+    @uid_map.merge uid.to_i => record.name
   end
 
   # Read a single file in /proc and store the parsed values in a hash suitable
@@ -231,15 +219,15 @@ class Rush::Connection::Local
   # suitable for use in the Rush::Process#new.
   def parse_ps(line)
     m = line.split(" ", 6)
-    params = {}
-    params[:pid] = m[0]
-    params[:uid] = m[1]
-    params[:parent_pid] = m[2].to_i
-    params[:mem] = m[3].to_i
-    params[:cpu] = m[4].to_i
-    params[:cmdline] = m[5]
-    params[:command] = params[:cmdline].split(" ").first
-    params
+    {
+      pid: m[0],
+      uid: m[1],
+      parent_pid: m[2].to_i,
+      mem: m[3].to_i,
+      cpu: m[4].to_i,
+      cmdline: m[5],
+      command: m[5].split(' ').first
+    }
   end
 
   # Process list on Windows.

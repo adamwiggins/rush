@@ -41,7 +41,11 @@ module Rush::Commands
 
   # Invoke vi on one or more files - only works locally.
   def vi(*args)
-    open_with('vim', *args)
+    if self.class == Rush::Dir
+      system "cd #{full_path}; vim"
+    else
+      open_with('vim', *args)
+    end
   end
   alias_method :vim, :vi
 
