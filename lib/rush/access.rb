@@ -45,7 +45,7 @@ class Rush::Access
 
   def display_hash
     to_hash.select { |_, v| v == 1 }.
-      inject({}) { |r, k, _| r.merge k => true }
+      inject({}) { |r, (k, _)| r.merge k => true }
   end
 
   def from_hash(hash)
