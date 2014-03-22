@@ -72,12 +72,10 @@ class Rush::Connection::Local
 
   # Copy ane entry from one path to another.
   def copy(src, dst)
+    raise(Rush::DoesNotExist, src) unless File.exists?(src)
+    raise(Rush::DoesNotExist, File.dirname(dst)) unless File.exists?(File.dirname(dst))
     FileUtils.cp_r(src, dst)
     true
-  rescue Errno::ENOENT
-    raise Rush::DoesNotExist, File.dirname(dst)
-  rescue RuntimeError
-    raise Rush::DoesNotExist, src
   end
 
   # Create an in-memory archive (tgz) of a file or dir, which can be
@@ -154,7 +152,7 @@ class Rush::Connection::Local
   def linux_processes
     ::Dir["/proc/*/stat"].
       select     { |file| file =~ /\/proc\/\d+\// }.
-      inject([]) { |list, file| list << read_proc_file rescue list }
+      inject([]) { |list, file| (list << read_proc_file(file)) rescue list }
   end
 
   def resolve_unix_uids(list)
@@ -167,11 +165,13 @@ class Rush::Connection::Local
 
   # resolve uid to user
   def resolve_unix_uid_to_user(uid)
+    uid = uid.to_i
     require 'etc'
     @uid_map ||= {}
     return @uid_map[uid] if @uid_map[uid]
     record = Etc.getpwuid(uid) rescue (return nil)
-    @uid_map.merge uid.to_i => record.name
+    @uid_map.merge uid => record.name
+    record.name
   end
 
   # Read a single file in /proc and store the parsed values in a hash suitable
@@ -198,7 +198,7 @@ class Rush::Connection::Local
       :cmdline => cmdline,
       :parent_pid => parent_pid,
       :mem => rss,
-      :cpu => time,
+      :cpu => time
     }
   end
 

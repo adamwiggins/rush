@@ -35,7 +35,7 @@ module Rush::Commands
   # Count the number of lines in the contained files.
   def line_count
     entries.inject(0) do |count, entry|
-      count + entry.dir? ? 0 : entry.lines.size
+      count + (entry.dir? ? 0 : entry.lines.size)
     end
   end
 

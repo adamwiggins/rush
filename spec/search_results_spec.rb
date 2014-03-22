@@ -34,7 +34,7 @@ describe Rush::SearchResults do
 	end
 
 	it "mixes in Commands to operate like a dir or entry array" do
-		@results.methods.include?("search").should be_true
+		@results.methods.include?(:search).should be_true
 	end
 
 	it "mixes in Enumerable to behave like an array" do

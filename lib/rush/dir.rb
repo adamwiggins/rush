@@ -89,7 +89,7 @@ class Rush::Dir < Rush::Entry
 	# Given a list of flat filenames, product a list of entries under this dir.
 	# Mostly for internal use.
 	def make_entries(filenames)
-		filenames.map do |fname|
+		Array(filenames).map do |fname|
 			Rush::Entry.factory("#{full_path}/#{fname}")
 		end
 	end

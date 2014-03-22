@@ -114,7 +114,7 @@ class Rush::Config
   def generate_secret(min, max)
     chars = self.secret_characters
     len = rand(max - min + 1) + min
-    len.times.inject { |r| r += chars[rand(chars.length)] }
+    len.times.inject('') { |r| r += chars[rand(chars.length)] }
   end
 
   def secret_characters
