@@ -60,7 +60,7 @@ module Rush
     # Run the interactive shell using readline.
     def run
       loop do
-        prompt = "#{`whoami`.chomp}@#{`pwd`.chomp}$ "
+        prompt = self.class.prompt || "#{`whoami`.chomp}@#{`pwd`.chomp}$ "
         cmd = Readline.readline(prompt)
 
         finish if cmd.nil? or cmd == 'exit'
@@ -69,6 +69,12 @@ module Rush
 
         execute(cmd)
       end
+    end
+
+    # Tune the prompt with
+    #   Rush::Shell.prompt = 'hey there! > '
+    class << self
+      attr_accessor :prompt
     end
 
     # Save history to ~/.rush/history when the shell exists.
