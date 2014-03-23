@@ -147,11 +147,10 @@ module Rush
       full_path = eval("#{possible_var}.full_path", @pure_binding) rescue nil
       box = eval("#{possible_var}.box", @pure_binding) rescue nil
       if full_path and box
-        Rush::Dir.new(full_path, box).entries.select do |e|
-          e.name.match(/^#{Regexp.escape(partial_path)}/)
-        end.map do |e|
-          (pre || '') + original_var + accessor + quote + fixed_path + e.name + (e.dir? ? "/" : "")
-        end
+        Rush::Dir.new(full_path, box).entries.
+          select { |e| e.name.match(/^#{Regexp.escape(partial_path)}/) }.
+          map    { |e| (pre || '') + original_var + accessor + quote +
+            fixed_path + e.name + (e.dir? ? "/" : "") }
       end
     end
 

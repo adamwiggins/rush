@@ -2,3 +2,4 @@ rdoc
 pkg
 .rbenv-version
 *.swp
+tags
