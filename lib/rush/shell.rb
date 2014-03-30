@@ -110,7 +110,7 @@ module Rush
       else
         output = "=> #{res.inspect}"
       end
-      output.lines.size > 5 ? output.less : puts(output)
+      output.lines.count > 5 ? output.less : puts(output)
     end
 
     def path_parts(input)   # :nodoc:

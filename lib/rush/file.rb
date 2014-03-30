@@ -5,11 +5,16 @@ class Rush::File < Rush::Entry
     false
   end
 
+  def dirname
+    ::File.dirname full_path
+  end
+
   # Create a blank file.
   def create
     write('')
     self
   end
+  alias_method :touch, :create
 
   # Size in bytes on disk.
   def size
@@ -22,7 +27,7 @@ class Rush::File < Rush::Entry
     connection.file_contents(full_path)
   end
 
-  alias :read :contents
+  alias_method :read, :contents
   alias_method :cat, :contents
 
   # Write to the file, overwriting whatever was already in it.
@@ -58,6 +63,9 @@ class Rush::File < Rush::Entry
   def replace_contents!(pattern, replace_with)
     write contents.gsub(pattern, replace_with)
   end
+  alias_method :gsub, :replace_contents!
+  # Because I like vim.
+  alias_method :s, :replace_contents!
 
   # Return the file's contents, or if it doesn't exist, a blank string.
   def contents_or_blank

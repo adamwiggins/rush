@@ -16,17 +16,13 @@ require 'timeout'
 class Rush::Connection::Local
   # Write raw bytes to a file.
   def write_file(full_path, contents)
-    ::File.open(full_path, 'w') do |f|
-      f.write contents
-    end
+    ::File.open(full_path, 'w') { |f| f.write contents }
     true
   end
 
   # Append contents to a file
   def append_to_file(full_path, contents)
-    ::File.open(full_path, 'a') do |f|
-      f.write contents
-    end
+    ::File.open(full_path, 'a') { |f| f.write contents }
     true
   end
 
@@ -48,7 +44,8 @@ class Rush::Connection::Local
   def purge(full_path)
     raise "No." if full_path == '/'
     Dir.chdir(full_path) do
-      all = Dir.glob("*", File::FNM_DOTMATCH).reject { |f| f == '.' or f == '..' }
+      all = Dir.glob("*", File::FNM_DOTMATCH).
+        reject { |f| f == '.' or f == '..' }
       FileUtils.rm_rf all
     end
     true
@@ -288,49 +285,33 @@ class Rush::Connection::Local
 
   def bash(command, user=nil, background=false, reset_environment=false)
     return bash_background(command, user, reset_environment) if background
-
     require 'session'
-
     sh = Session::Bash.new
-
     shell = reset_environment ? "env -i bash" : "bash"
-
-    if user and user != ""
-      out, err = sh.execute "cd /; sudo -H -u #{user} \"#{shell}\"", :stdin => command
-    else
-      out, err = sh.execute shell, :stdin => command
-    end
-
+    out, err = sh.execute sudo(user, shell), :stdin => command
     retval = sh.status
     sh.close!
-
     raise(Rush::BashFailed, err) if retval != 0
-
     out
   end
 
   def bash_background(command, user, reset_environment)
     pid = fork do
       inpipe, outpipe = IO.pipe
-
       outpipe.write command
       outpipe.close
       STDIN.reopen(inpipe)
-
       close_all_descriptors([inpipe.to_i])
-
       shell = reset_environment ? "env -i bash" : "bash"
-
-      if user and user != ''
-        exec "cd /; sudo -H -u #{user} \"#{shell}\""
-      else
-        exec shell
-      end
+      exec sudo(user, shell)
     end
-
     Process::detach pid
-
     pid
+  end
+
+  def sudo(user, shell)
+    return shell if user.nil? || user.empty?
+    "cd /; sudo -H -u #{user} \"#{shell}\""
   end
 
   def close_all_descriptors(keep_open = [])

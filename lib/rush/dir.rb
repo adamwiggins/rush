@@ -19,6 +19,7 @@ class Rush::Dir < Rush::Entry
 	def full_path
 		"#{super}/"
 	end
+  alias_method :dirname, :full_path
 
 	# Entries contained within this dir - not recursive.
 	def contents
@@ -38,25 +39,23 @@ class Rush::Dir < Rush::Entry
 	# Access subentries with square brackets, e.g. dir['subdir/file']
 	def [](key)
 		key = key.to_s
-		if key == '**'
-			files_flattened
-		elsif key.match(/\*/)
-			find_by_glob(key)
-		else
-			find_by_name(key)
+    case
+    when key == '**'     then files_flattened
+    when key.match(/\*/) then find_by_glob(key)
+		else find_by_name(key)
 		end
 	end
 	# Slashes work as well, e.g. dir/'subdir/file'
 	alias_method :/, :[]
 
   def locate(path)
-    located = `locate #{path}`.split("\n").
+    located = bash("locate #{path}").split("\n").
       map { |x| x.dir? ? Rush::Dir.new(x) : Rush::File.new(x) }
     located.size == 1 ? located.first : located
   end
 
   def locate_dir(path)
-    located = `locate -r #{path}$`.split("\n").
+    located = bash("locate -r #{path}$").split("\n").
       map { |x| Dir.new x }
     located.size == 1 ? located.first : located
   end
@@ -78,20 +77,19 @@ class Rush::Dir < Rush::Entry
 
 	# Recursively contained files.
 	def files_flattened
-		entries_tree.select { |e| !e.dir? }
+		entries_tree.reject(&:dir?)
 	end
 
 	# Recursively contained dirs.
 	def dirs_flattened
-		entries_tree.select { |e| e.dir? }
+		entries_tree.select(&:dir?)
 	end
 
 	# Given a list of flat filenames, product a list of entries under this dir.
 	# Mostly for internal use.
 	def make_entries(filenames)
-		Array(filenames).map do |fname|
-			Rush::Entry.factory("#{full_path}/#{fname}")
-		end
+		Array(filenames).
+      map { |fname| Rush::Entry.factory("#{full_path}/#{fname}") }
 	end
 
 	# Create a blank file within this dir.
@@ -103,7 +101,7 @@ class Rush::Dir < Rush::Entry
 
 	# Create an empty subdir within this dir.
 	def create_dir(name)
-		name += '/' unless name.tail(1) == '/'
+		name += '/' unless name[-1] == '/'
 		self[name].create
 	end
 
@@ -120,9 +118,7 @@ class Rush::Dir < Rush::Entry
 
 	# Contained dirs that are not hidden.
 	def nonhidden_dirs
-		dirs.select do |dir|
-			!dir.hidden?
-		end
+		dirs.reject(&:hidden?)
 	end
 
 	# Contained files that are not hidden.

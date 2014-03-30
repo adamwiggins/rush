@@ -82,7 +82,7 @@ class Rush::Box
   #   box.bash 'mongrel_rails start', :background => true
   #   box.bash 'rake db:migrate', :user => 'www', :env => { :RAILS_ENV => 'production' }, :reset_environment => true
   #
-  def bash(command, options={})
+  def bash(command, options = {})
     cmd_with_env = command_with_environment(command, options[:env])
     options[:reset_environment] ||= false
 
@@ -96,12 +96,10 @@ class Rush::Box
 
   def command_with_environment(command, env)   # :nodoc:
     return command unless env
-
-    vars = env.map do |key, value|
+    env.map do |key, value|
       escaped = value.to_s.gsub('"', '\\"').gsub('`', '\\\`')
       "export #{key}=\"#{escaped}\""
-    end
-    vars.push(command).join("\n")
+    end.push(command).join("\n")
   end
 
   # Returns true if the box is responding to commands.
