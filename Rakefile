@@ -1,5 +1,4 @@
 require 'rake'
-
 require 'jeweler'
 
 Jeweler::Tasks.new do |s|
@@ -14,6 +13,7 @@ Jeweler::Tasks.new do |s|
 	s.has_rdoc = true
 
 	s.add_dependency 'session'
+  s.add_dependency 'rake'
 	
 	s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
 end
