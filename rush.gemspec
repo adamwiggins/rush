@@ -85,6 +85,8 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, [">= 1.8.3"])
       s.add_development_dependency(%q<rspec>, ["~> 1.2.0"])
       s.add_runtime_dependency(%q<session>, [">= 0"])
+      s.add_runtime_dependency(%q<coolline>, [">= 0"])
+      s.add_runtime_dependency(%q<coderay>, [">= 0"])
     else
       s.add_dependency(%q<rush>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0.9.0"])
