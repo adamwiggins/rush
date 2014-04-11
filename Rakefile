@@ -13,6 +13,8 @@ Jeweler::Tasks.new do |s|
   s.has_rdoc = true
 
   s.add_dependency 'session'
+  s.add_dependency 'coolline'
+  s.add_dependency 'coderay'
 
   s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
 end

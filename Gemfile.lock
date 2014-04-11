@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     rush (0.6.8)
+      coderay
+      coolline
       rush
       session
 
@@ -11,6 +13,8 @@ GEM
     addressable (2.3.6)
     atomic (1.1.16)
     builder (3.2.2)
+    coderay (1.1.0)
+    coolline (0.4.3)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     faraday (0.9.0)
@@ -55,7 +59,7 @@ GEM
     rdoc (4.1.1)
       json (~> 1.4)
     rspec (1.2.9)
-    session (3.1.2)
+    session (3.2.0)
     thread_safe (0.3.1)
       atomic (>= 1.1.7, < 2)
 

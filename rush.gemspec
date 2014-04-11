@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Adam Wiggins"]
-  s.date = "2014-03-31"
+  s.date = "2014-04-11"
   s.description = "A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client."
   s.email = "adam@heroku.com"
   s.executables = ["rush", "rushd"]
@@ -93,6 +93,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<jeweler>, [">= 1.8.3"])
       s.add_dependency(%q<rspec>, ["~> 1.2.0"])
       s.add_dependency(%q<session>, [">= 0"])
+      s.add_dependency(%q<coolline>, [">= 0"])
+      s.add_dependency(%q<coderay>, [">= 0"])
     end
   else
     s.add_dependency(%q<rush>, [">= 0"])
@@ -100,6 +102,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<jeweler>, [">= 1.8.3"])
     s.add_dependency(%q<rspec>, ["~> 1.2.0"])
     s.add_dependency(%q<session>, [">= 0"])
+    s.add_dependency(%q<coolline>, [">= 0"])
+    s.add_dependency(%q<coderay>, [">= 0"])
   end
 end
 
