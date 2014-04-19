@@ -9,4 +9,8 @@ class String
   def dir?
     ::Dir.exists? self
   end
+
+  def locate
+    Rush::Dir.new(ENV['HOME']).locate self
+  end
 end

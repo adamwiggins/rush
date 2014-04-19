@@ -65,7 +65,7 @@ module Rush::Commands
   # Usage:
   #   home.locate('timetable').open_witn :vim
   def open_with(app, *args)
-    names = entries.map(&:to_s).join(' ')
+    names = dir? ? '' : entries.map(&:to_s).join(' ')
     system "cd #{dirname}; #{app.to_s} #{names} #{args.join(' ')}"
   end
 
