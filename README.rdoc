@@ -25,6 +25,11 @@ If you want the development version that last command would be:
   sudo gem install --dev *.gem
 
 
+To uninstall
+
+  sudo gem uninstall rush
+
+
 == Usage
 
 Count the number of classes in your project using bash:
