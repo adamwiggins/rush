@@ -20,7 +20,7 @@ Or for the bleeding edge:
   sudo gem install *.gem
 
 
-If you want the development version that last command would be:
+If you want the development version, you will need the development headers for ruby (eg. ruby-dev in most package managers) and change that last command to:
 
   sudo gem install --dev *.gem
 
