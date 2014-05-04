@@ -3,8 +3,8 @@ require_relative 'base'
 describe Rush::SshTunnel do
 	before do
 		@tunnel = Rush::SshTunnel.new('spec.example.com')
-		@tunnel.stub!(:config).and_return(mock_config_start)
-		@tunnel.stub!(:display)
+		@tunnel.stub(:config).and_return(mock_config_start)
+		@tunnel.stub(:display)
 	end
 
 	after do

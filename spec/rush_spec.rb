@@ -10,7 +10,7 @@ describe Rush do
 	end
 
 	it "fetches the launch dir (aka current working directory or pwd)" do
-		Dir.stub!(:pwd).and_return('/tmp')
+		Dir.stub(:pwd).and_return('/tmp')
 		Rush.launch_dir.should == Rush::Box.new['/tmp/']
 	end
 

@@ -294,13 +294,13 @@ EOPS
 	end
 
 	it "kills a process by pid sending a TERM" do
-		@con.stub!(:process_alive).and_return(false)
+		@con.stub(:process_alive).and_return(false)
 		::Process.should_receive(:kill).with('TERM', 123).once
 		@con.kill_process(123)
 	end
 
 	it "kills a process by pid sending a KILL signal if TERM doesn't work" do
-		@con.stub!(:process_alive).and_return(true)
+		@con.stub(:process_alive).and_return(true)
 		::Process.should_receive(:kill).with('TERM', 123).at_least(:twice)
 		::Process.should_receive(:kill).with('KILL', 123)
 		@con.kill_process(123)

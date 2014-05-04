@@ -33,7 +33,7 @@ describe Rush::Box do
 
 	it "executes bash commands in the background, returning a Rush::Process" do
 		@box.connection.should_receive(:bash).with('cmd', nil, true, false).and_return(123)
-		@box.stub!(:processes).and_return([ mock('ps', :pid => 123) ])
+		@box.stub(:processes).and_return([ double('ps', :pid => 123) ])
 		@box.bash('cmd', :background => true).pid.should == 123
 	end
 
@@ -54,7 +54,7 @@ describe Rush::Box do
 	end
 
 	it "sets the environment variables from the provided hash" do
-		@box.connection.stub!(:bash)
+		@box.connection.stub(:bash)
 		@box.should_receive(:command_with_environment).with('cmd', { 1 => 2 })
 		@box.bash('cmd', :env => { 1 => 2 })
 	end

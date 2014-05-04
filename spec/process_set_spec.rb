@@ -37,13 +37,13 @@ describe Rush::ProcessSet do
 	end
 
 	it "filters the set from a conditions hash and returns the filtered set" do
-		@process.stub!(:pid).and_return(123)
+		@process.stub(:pid).and_return(123)
 		@set.filter(:pid => 123).first.should == @process
 		@set.filter(:pid => 456).size.should == 0
 	end
 
 	it "filters with regexps if provided in the conditions" do
-		@process.stub!(:command).and_return('foobaz')
+		@process.stub(:command).and_return('foobaz')
 		@set.filter(:command => /baz/).first.should == @process
 		@set.filter(:command => /blerg/).size.should == 0
 	end
