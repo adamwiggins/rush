@@ -1,5 +1,5 @@
-require __dir__ + '/base'
-require 'rush/shell'
+require_relative 'base'
+require_relative '../lib/rush/shell'
 
 describe Rush::Shell do
 	before do

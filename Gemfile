@@ -1,3 +1,5 @@
 source "http://rubygems.org"
 
-gemspec
+gem 'session'
+gem 'coolline'
+gem 'coderay'

@@ -1,4 +1,4 @@
-require __dir__ + '/base'
+require_relative 'base'
 
 describe Rush::SearchResults do
 	before do

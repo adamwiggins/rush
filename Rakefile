@@ -8,13 +8,10 @@ Jeweler::Tasks.new do |s|
   s.author = "Adam Wiggins"
   s.email = "adam@heroku.com"
   s.homepage = "http://rush.heroku.com/"
+  s.licenses = ['MIT']
   s.executables = [ "rush", "rushd" ]
   s.rubyforge_project = "ruby-shell"
   s.has_rdoc = true
-
-  s.add_dependency 'session'
-  s.add_dependency 'coolline'
-  s.add_dependency 'coderay'
 
   s.files = FileList["[A-Z]*", "{bin,lib,spec}/**/*"]
 end

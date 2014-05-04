@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'mongrel'
 require 'base64'
 
