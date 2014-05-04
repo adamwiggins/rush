@@ -75,6 +75,10 @@ For more details on syntax and commands, see:
 
 == Meta
 
+What follows is the meta from the original project, which is no longer maintained.
+The mailinglist is still functional and the new website for this fork is:
+https://github.com/s-mage/rush
+
 Created by Adam Wiggins
 
 Patches contributed by Chihiro Ito, Gabriel Ware, Michael Schutte, Ricardo Chimal Jr., and Nicholas Schlueter, Pedro Belo, and Martin Kuehl
