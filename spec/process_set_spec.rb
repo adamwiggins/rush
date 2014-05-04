@@ -2,7 +2,7 @@ require_relative 'base'
 
 describe Rush::ProcessSet do
 	before do
-		@process = mock('process')
+		@process = double('process')
 		@set = Rush::ProcessSet.new([ @process ])
 	end
 

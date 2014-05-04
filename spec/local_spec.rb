@@ -73,7 +73,7 @@ describe Rush::Connection::Local do
 	end
 
 	it "receive -> set_access(full_path, user, group, permissions)" do
-		access = mock("access")
+		access = double("access")
 		Rush::Access.should_receive(:from_hash).with(:action => 'set_access', :full_path => 'full_path', :user => 'joe').and_return(access)
 
 		@con.should_receive(:set_access).with('full_path', access)
@@ -249,7 +249,7 @@ describe Rush::Connection::Local do
 	end
 
 	it "set_access invokes the access object" do
-		access = mock("access")
+		access = double("access")
 		access.should_receive(:apply).with('/some/path')
 		@con.set_access('/some/path', access)
 	end
