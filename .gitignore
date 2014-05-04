@@ -2,4 +2,7 @@ rdoc
 pkg
 .rbenv-version
 *.swp
+*.gem
+doc/
+.yardoc/
 tags
