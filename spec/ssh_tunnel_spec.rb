@@ -48,7 +48,7 @@ describe Rush::SshTunnel do
 
 	it "establishes a tunnel and saves it to ~/.rush/tunnels" do
 		@tunnel.should_receive(:make_ssh_tunnel)
-		@tunnel.should_receive(:port).exactly(0).times.and_return('7771')   # avoid infinite loop
+		@tunnel.should_receive(:port).exactly(0).times
 		@tunnel.establish_tunnel
 		@tunnel.config.tunnels_file.contents.should == "spec.example.com:7771\n"
 	end
