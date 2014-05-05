@@ -4,6 +4,32 @@ rush is a unix integration library and an interactive shell which uses pure Ruby
 
 {<img src="https://travis-ci.org/s-mage/rush.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/s-mage/rush]
 
+
+== Install
+
+Install v.0.6.8 from rubygems.org ~ no longer maintained
+
+  sudo gem install rush
+
+
+Or for the bleeding edge:
+
+  git clone git://github.com/s-mage/rush.git
+  cd rush
+  gem build *.gemspec
+  sudo gem install *.gem
+
+
+If you want the development version, you will need the development headers for ruby (eg. ruby-dev in most package managers) and change that last command to:
+
+  sudo gem install --dev *.gem
+
+
+To uninstall
+
+  sudo gem uninstall rush
+
+
 == Usage
 
 Count the number of classes in your project using bash:
