@@ -107,7 +107,7 @@ describe Rush::Connection::Local do
 	end
 
 	it "an http result code of 400 raises the exception passed in the result body" do
-		@con.stub!(:parse_exception).and_return(Rush::DoesNotExist, "message")
+		@con.stub(:parse_exception).and_return(Rush::DoesNotExist, "message")
 		lambda { @con.process_result("400", "") }.should raise_error(Rush::DoesNotExist)
 	end
 
