@@ -1,4 +1,4 @@
-require 'rush/shell'
+require_relative 'shell'
 
 module Rush
   # This is a class that can be embedded in other applications

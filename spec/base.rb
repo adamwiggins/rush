@@ -1,8 +1,7 @@
-require 'rubygems'
 require 'spec'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
-require 'rush'
+require_relative '../lib/rush'
 
 def mock_config(&block)
 	mock_config_start
