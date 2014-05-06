@@ -61,8 +61,6 @@ end
 
 module Rush::Connection; end
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-
 require_relative 'rush/exceptions'
 require_relative 'rush/config'
 require_relative 'rush/commands'
