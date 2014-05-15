@@ -77,12 +77,6 @@ class Rush::Entry
     stat[:atime]
   end
 
-  # Attempts to rename, copy, or otherwise place an entry into a dir that already contains an entry by that name will fail with this exception.
-  class NameAlreadyExists < Exception; end
-
-  # Do not use rename or duplicate with a slash; use copy_to or move_to instead.
-  class NameCannotContainSlash < Exception; end
-
   # Rename an entry to another name within the same dir.  The object's name
   # will be updated to match the change on the filesystem.
   def rename(new_name)

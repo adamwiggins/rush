@@ -17,10 +17,11 @@ module Rush
   # The bash command had a non-zero return value.  Message is stderr.
   class BashFailed < Exception; end
 
-  # There's already an entry by the given name in the given dir.
+  # Attempts to rename, copy, or otherwise place an entry into a dir that
+  # already contains an entry by that name will fail with this exception.
   class NameAlreadyExists < Exception; end
 
-  # The name cannot contain a slash; use two operations, rename and then move, instead.
+  # Do not use rename or duplicate with a slash; use copy_to or move_to instead.
   class NameCannotContainSlash < Exception; end
 
   # You cannot move or copy entries to a path that is not a dir (should end with trailing slash).
