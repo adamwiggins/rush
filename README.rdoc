@@ -24,12 +24,11 @@ If you want the development version, you will need the development headers for r
 
   git clone git://github.com/s-mage/rush.git
   cd rush
-  bundle install # to get the dependencies
-  rake spec      # to run the tests
-  rake rdoc      # to generate a local copy of the docs from your sourcetree (optional)
-  rake gemspec
-  gem build *.gemspec
-  sudo gem install --development *.gem
+  bundle install     # to get the dependencies
+  rake spec          # to run the tests
+  rake rdoc          # to generate a local copy of the docs from your sourcetree (optional)
+
+  sudo rake install  # install your default gem location
 
 
 To uninstall
