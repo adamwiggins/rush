@@ -7,3 +7,4 @@ doc/
 .yardoc/
 tags
 .bundle
+vendor/bundle/
