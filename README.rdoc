@@ -22,7 +22,13 @@ Or for the bleeding edge:
 
 If you want the development version, you will need the development headers for ruby (eg. ruby-dev in most package managers) and change that last command to:
 
-  sudo gem install --dev *.gem
+  git clone git://github.com/s-mage/rush.git
+  cd rush
+  bundle install     # to get the dependencies
+  rake spec          # to run the tests
+  rake rdoc          # to generate a local copy of the docs from your sourcetree (optional)
+
+  sudo rake install  # install your default gem location
 
 
 To uninstall
