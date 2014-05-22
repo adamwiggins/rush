@@ -128,6 +128,24 @@ class Rush::Connection::Local
     access.apply(full_path)
   end
 
+
+  # A frontend for FileUtils::chown
+  #
+  def chown( full_path, user=nil, group=nil, options={} )
+
+    if options[ :recursive ]
+
+      FileUtils.chown_R( user, group, full_path, options )
+
+    else
+
+      FileUtils.chown( user, group, full_path, options )
+
+    end
+
+  end
+
+
   # Fetch the size of a dir, since a standard file stat does not include the
   # size of the contents.
   def size(full_path)
@@ -345,6 +363,7 @@ class Rush::Connection::Local
       when 'index'          then index(params[:base_path], params[:glob]).join("\n") + "\n"
       when 'stat'           then YAML.dump(stat(params[:full_path]))
       when 'set_access'     then set_access(params[:full_path], Rush::Access.from_hash(params))
+      when 'chown'          then chown( params[:full_path], params[:user], params[:group], params[:options])
       when 'size'           then size(params[:full_path])
       when 'processes'      then YAML.dump(processes)
       when 'process_alive'  then process_alive(params[:pid]) ? '1' : '0'

@@ -66,6 +66,10 @@ class Rush::Connection::Remote
 		transmit access.to_hash.merge(:action => 'set_access', :full_path => full_path)
 	end
 
+	def chown( full_path, user = nil, group = nil, options = {} )
+		transmit( :action => 'chown', :full_path => full_path, :user => user, :group => group, :options => options )
+	end
+
 	def size(full_path)
 		transmit(:action => 'size', :full_path => full_path).to_i
 	end
