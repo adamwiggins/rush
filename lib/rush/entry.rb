@@ -163,7 +163,6 @@ class Rush::Entry
     Rush::Access.new.from_octal(stat[:mode]).display_hash
   end
 
-
   # Change entry ownership
   #
   # Changes owner and group on the named files (in list) to the user user and the group group. user and group may be an ID (Integer/String) or a name (String). If user or group is nil, this method does not change the attribute.
@@ -172,25 +171,17 @@ class Rush::Entry
   # @param group [string/integer] The group to own the file
   # @param options [hash] the options to pass to FileUtils.chown (eg. 'noop', 'verbose' or 'recursive' )
   #
-  def chown( user = nil, group = nil, options = {} )
-
-    connection.chown( full_path, user, group, options )
+  def chown(user = nil, group = nil, options = {})
+    connection.chown(full_path, user, group, options)
     self
-
   end
-
 
   # Shortcut to Entry::chown to pass the 'recursive' option by default
   #
-  def chown_R( user = nil, group = nil, options = {} )
-
-    options[ :recursive ] = true
-    chown( user, group, options )
-
+  def chown_R(user = nil, group = nil, options = {})
+    options[:recursive] = true
+    chown(user, group, options)
   end
-
-
-
 
   # Destroy the entry.  If it is a dir, everything inside it will also be destroyed.
   def destroy
