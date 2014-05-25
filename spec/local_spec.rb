@@ -85,6 +85,12 @@ describe Rush::Connection::Local do
 		@con.receive(:action => 'size', :full_path => 'full_path').should == "1024"
 	end
 
+	it "receive -> chown( full_path, user, group, options )" do
+		options = { noop: true }
+		@con.should_receive(:chown).with('full_path', 'username', 'groupname', options )
+		@con.receive(:action => 'chown', :full_path => 'full_path', user: 'username', group: 'groupname', options: options)
+	end
+
 	it "receive -> processes" do
 		@con.should_receive(:processes).with().and_return([ { :pid => 1 } ])
 		@con.receive(:action => 'processes').should == YAML.dump([ { :pid => 1 } ])
@@ -253,6 +259,8 @@ describe Rush::Connection::Local do
 		access.should_receive(:apply).with('/some/path')
 		@con.set_access('/some/path', access)
 	end
+
+	it "chown should change the ownership of a file"
 
 	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
 		it "size gives size of a directory and all its contents recursively" do
