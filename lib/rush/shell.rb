@@ -172,7 +172,7 @@ module Rush
     end
 
     def complete_variable(partial_name, pre)
-      pre = eval(pre, @pure_binding)
+      pre = eval(pre, @pure_binding) rescue nil
       the_binding = pre ? pre.instance_eval('binding') : @pure_binding
       lvars = eval('local_variables', the_binding)
       gvars = eval('global_variables', the_binding)

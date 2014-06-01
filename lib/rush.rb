@@ -1,3 +1,5 @@
+require 'etc' # get info from /etc
+
 # The top-level Rush module has some convenience methods for accessing the
 # local box.
 module Rush

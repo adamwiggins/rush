@@ -183,6 +183,21 @@ class Rush::Entry
     chown(user, group, options)
   end
 
+  # Chown in ruby way. Ruby way is creating accessors.
+  def owner
+    stat = ::File.stat(full_path)
+    { user: Etc.getpwuid(stat.uid).name, group: Etc.getgrgid(stat.gid).name }
+  end
+
+  def owner=(params)
+    case params
+    when Hash then chown(params.delete(:user), params.delete(:group), params)
+    when String then chown(params)
+    when Numeric then chown(Etc.getpwuid(params).name)
+    else raise 'Something wrong with params for chown'
+    end
+  end
+
   # Destroy the entry.  If it is a dir, everything inside it will also be destroyed.
   def destroy
     connection.destroy(full_path)
