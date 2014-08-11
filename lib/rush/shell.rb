@@ -172,6 +172,7 @@ module Rush
     end
 
     def complete_variable(partial_name, pre)
+      return [] if pre.gsub(/\W/, '').empty?
       pre = eval(pre, @pure_binding) rescue nil
       the_binding = pre ? pre.instance_eval('binding') : @pure_binding
       lvars = eval('local_variables', the_binding)

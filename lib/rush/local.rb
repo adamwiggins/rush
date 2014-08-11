@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'yaml'
 require 'timeout'
+require 'session'
 
 # Rush::Box uses a connection object to execute all rush commands.  If the box
 # is local, Rush::Connection::Local is created.  The local connection is the
@@ -295,7 +296,6 @@ class Rush::Connection::Local
 
   def bash(command, user=nil, background=false, reset_environment=false)
     return bash_background(command, user, reset_environment) if background
-    require 'session'
     sh = Session::Bash.new
     shell = reset_environment ? "env -i bash" : "bash"
     out, err = sh.execute sudo(user, shell), :stdin => command
