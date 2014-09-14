@@ -1,5 +1,6 @@
 # A class to hold permissions (read, write, execute) for files and dirs.
 # See Rush::Entry#access= for information on the public-facing interface.
+#
 class Rush::Access
   ROLES = %w(user group other)
   PERMISSIONS = %w(read write execute)

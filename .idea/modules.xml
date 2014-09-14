@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/work/fundsex/.idea/fundsex.iml" filepath="$USER_HOME$/work/fundsex/.idea/fundsex.iml" />
+      <module fileurl="file://$USER_HOME$/work/gtflix-api/.idea/gtflix-api.iml" filepath="$USER_HOME$/work/gtflix-api/.idea/gtflix-api.iml" />
+      <module fileurl="file://$USER_HOME$/work/idcert_auth/.idea/idcert_auth.iml" filepath="$USER_HOME$/work/idcert_auth/.idea/idcert_auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/rush.iml" filepath="$PROJECT_DIR$/.idea/rush.iml" />
+      <module fileurl="file://$USER_HOME$/work/savage/.idea/savage.iml" filepath="$USER_HOME$/work/savage/.idea/savage.iml" />
+      <module fileurl="file://$USER_HOME$/work/timesheet/.idea/timesheet.iml" filepath="$USER_HOME$/work/timesheet/.idea/timesheet.iml" />
+    </modules>
+  </component>
+</project>
+

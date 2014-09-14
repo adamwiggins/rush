@@ -9,9 +9,9 @@ require 'yaml'
 class Rush::Connection::Remote
   attr_reader :host, :tunnel
 
-  def initialize(host)
+  def initialize(host, user)
     @host = host
-    @tunnel = Rush::SshTunnel.new(host)
+    @tunnel = Rush::SshTunnel.new(host, user)
   end
 
   def write_file(full_path, contents)
