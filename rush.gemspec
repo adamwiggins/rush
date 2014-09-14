@@ -9,8 +9,9 @@ Gem::Specification.new do |s|
   s.version = "0.6.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.require_paths = ["lib"]
   s.authors = ["Adam Wiggins"]
-  s.date = "2014-05-04"
+  s.date = "2014-09-14"
   s.description = "A Ruby replacement for bash+ssh, providing both an interactive shell and a library.  Manage both local and remote unix systems from a single client."
   s.email = "adam@heroku.com"
   s.executables = ["rush", "rushd"]
@@ -44,7 +45,6 @@ Gem::Specification.new do |s|
     "lib/rush/process_set.rb",
     "lib/rush/remote.rb",
     "lib/rush/search_results.rb",
-    "lib/rush/server.rb",
     "lib/rush/shell.rb",
     "lib/rush/ssh_tunnel.rb",
     "lib/rush/string_ext.rb",
@@ -72,9 +72,8 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://rush.heroku.com/"
   s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
   s.rubyforge_project = "ruby-shell"
-  s.rubygems_version = "2.1.9"
+  s.rubygems_version = "2.2.2"
   s.summary = "A Ruby replacement for bash+ssh."
 
   if s.respond_to? :specification_version then
@@ -84,15 +83,27 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<session>, [">= 0"])
       s.add_runtime_dependency(%q<coolline>, [">= 0"])
       s.add_runtime_dependency(%q<coderay>, [">= 0"])
+      s.add_runtime_dependency(%q<net-ssh>, [">= 0"])
+      s.add_development_dependency(%q<rake>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
     else
       s.add_dependency(%q<session>, [">= 0"])
       s.add_dependency(%q<coolline>, [">= 0"])
       s.add_dependency(%q<coderay>, [">= 0"])
+      s.add_dependency(%q<net-ssh>, [">= 0"])
+      s.add_dependency(%q<rake>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
     end
   else
     s.add_dependency(%q<session>, [">= 0"])
     s.add_dependency(%q<coolline>, [">= 0"])
     s.add_dependency(%q<coderay>, [">= 0"])
+    s.add_dependency(%q<net-ssh>, [">= 0"])
+    s.add_dependency(%q<rake>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
   end
 end
 

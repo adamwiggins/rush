@@ -12,97 +12,97 @@ describe Rush::Config do
 	end
 
 	it "creates the dir" do
-		File.directory?(@sandbox_dir).should be_true
+		expect(File.directory?(@sandbox_dir)).to eq(true)
 	end
 
 	it "can access the history file" do
-		@config.history_file.class.should == Rush::File
+		expect(@config.history_file).to be_kind_of(Rush::File)
 	end
 
 	it "saves the shell command history" do
 		@config.save_history(%w(1 2 3))
-		@config.history_file.contents.should == "1\n2\n3\n"
+		expect(@config.history_file.contents).to eq("1\n2\n3\n")
 	end
 
 	it "loads the shell command history" do
 		@config.save_history(%w(1 2 3))
-		@config.load_history.should == %w(1 2 3)
+		expect(@config.load_history).to eq(%w(1 2 3))
 	end
 
 	it "loads a blank history if no history file" do
-		@config.load_history.should == []
+		expect(@config.load_history).to eq([])
 	end
 
 	it "loads the env file" do
 		@config.env_file.write('abc')
-		@config.load_env.should == 'abc'
+		expect(@config.load_env).to eq('abc')
 	end
 
 	it "loads nothing if env file does not exist" do
-		@config.load_env.should == ""
+		expect(@config.load_env).to eq('')
 	end
 
 	it "loads the commands file" do
 		@config.commands_file.write('abc')
-		@config.load_commands.should == 'abc'
+		expect(@config.load_commands).to eq('abc')
 	end
 
 	it "loads nothing if commands file does not exist" do
-		@config.load_commands.should == ""
+		expect(@config.load_commands).to eq('')
 	end
 
 	it "loads usernames and password for rushd" do
 		system "echo 1:2 > #{@sandbox_dir}/passwords"
 		system "echo a:b >> #{@sandbox_dir}/passwords"
-		@config.passwords.should == { '1' => '2', 'a' => 'b' }
+		expect(@config.passwords).to eq({ '1' => '2', 'a' => 'b' })
 	end
 
 	it "loads blank hash if no passwords file" do
-		@config.passwords.should == { }
+		expect(@config.passwords).to eq({})
 	end
 
 	it "loads credentials for client connecting to server" do
 		system "echo user:pass > #{@sandbox_dir}/credentials"
-		@config.credentials_user.should == 'user'
-		@config.credentials_password.should == 'pass'
+		expect(@config.credentials_user).to eq 'user'
+		expect(@config.credentials_password).to eq 'pass'
 	end
 
 	it "loads list of ssh tunnels" do
 		system "echo host.example.com:123 > #{@sandbox_dir}/tunnels"
-		@config.tunnels.should == { 'host.example.com' => 123 }
+		expect(@config.tunnels).to eq({ 'host.example.com' => 123 })
 	end
 
 	it "returns an empty hash if tunnels file is blank" do
-		@config.tunnels.should == { }
+		expect(@config.tunnels).to eq({})
 	end
 
 	it "saves a list of ssh tunnels" do
 		@config.save_tunnels({ 'my.example.com' => 4000 })
-		@config.tunnels_file.contents.should == "my.example.com:4000\n"
+		expect(@config.tunnels_file.contents).to eq "my.example.com:4000\n"
 	end
 
 	it "ensure_credentials_exist doesn't do anything if credentials already exist" do
 		@config.credentials_file.write "dummy"
-		@config.should_receive(:generate_credentials).exactly(0).times
+		expect(@config).to receive(:generate_credentials).exactly(0).times
 		@config.ensure_credentials_exist
 	end
 
 	it "ensure_credentials_exist generates credentials file if they don't exist" do
-		@config.should_receive(:generate_credentials)
+		expect(@config).to receive(:generate_credentials)
 		@config.ensure_credentials_exist
 	end
 
 	it "secret_characters returns valid characters for username or password" do
-		@config.secret_characters.should be_kind_of(Array)
+		expect(@config.secret_characters).to be_kind_of(Array)
 	end
 
 	it "generate_secret products a random string for use in username and password" do
-		@config.should_receive(:secret_characters).and_return(%w(a))
-		@config.generate_secret(2, 2).should == "aa"
+		expect(@config).to receive(:secret_characters).and_return(%w(a))
+		expect(@config.generate_secret(2, 2)).to eq "aa"
 	end
 
 	it "generate_credentials saves credentials" do
 		@config.generate_credentials
-		@config.credentials_file.contents.should match(/^.+:.+$/)
+		expect(@config.credentials_file.contents).to match(/^.+:.+$/)
 	end
 end
