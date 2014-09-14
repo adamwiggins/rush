@@ -6,18 +6,18 @@ describe String do
 	end
 
 	it "heads from the front of the string" do
-		@string.head(1).should == 'a'
+		expect(@string.head(1)).to eq 'a'
 	end
 
 	it "tails from the back of the string" do
-		@string.tail(1).should == 'c'
+		expect(@string.tail(1)).to eq 'c'
 	end
 
 	it "gives the whole string when head exceeds length" do
-		@string.head(999).should == @string
+		expect(@string.head(999)).to eq @string
 	end
 
 	it "gives the whole string when tail exceeds length" do
-		@string.tail(999).should == @string
+		expect(@string.tail(999)).to eq @string
 	end
 end
