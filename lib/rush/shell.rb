@@ -1,5 +1,6 @@
 require 'coolline'
 require 'coderay'
+require 'pp'
 
 # Rush::Shell is used to create an interactive shell.  It is invoked by the rush binary.
 module Rush
@@ -78,7 +79,6 @@ module Rush
 
     # Save history to ~/.rush/history when the shell exists.
     def finish
-      @config.save_history(@history.to_a)
       puts
       exit
     end
@@ -92,20 +92,7 @@ module Rush
         output = res.to_s <<
           "#{res.entries.size} matching files with #{res.lines.size} matching lines"
       elsif res.respond_to? :each
-        output = ''
-        counts = res.inject(Hash.new(0)) do |result, item|
-          output << item.to_s << "\n"
-          result[item.class] += 1
-          result
-        end
-        if counts == {}
-          output = "=> (empty set)"
-        else
-          count_s = counts.map do |klass, count|
-            "#{count} x #{klass}"
-          end.join(', ')
-          output << "=> #{count_s}"
-        end
+        pp res
       else
         output = "=> #{res.inspect}"
       end
@@ -121,6 +108,11 @@ module Rush
     #
     # This isn't that cool yet, because it can't do multiple levels of subdirs.
     # It does work remotely, though, which is pretty sweet.
+    #
+    # TODO:
+    #   1. move to separate module
+    #   2. agressive refactor it
+    #
     def complete(input)
       receiver, accessor, *rest = path_parts(input)
       return [] unless receiver
@@ -179,9 +171,15 @@ module Rush
       ivars = eval('instance_variables', the_binding)
       mets = eval('methods', the_binding) || eval('Kernel.methods')
       consts = eval('Object.constants', the_binding)
-      (lvars + gvars + ivars + mets + consts).
+      (executables + lvars + gvars + ivars + mets + consts).
         select { |e| e.match(/^#{Regexp.escape(partial_name)}/) }.
         map    { |e| (pre || '') + e.to_s }
+    end
+
+    def executables
+      ENV['PATH'].split(':').
+        map { |x| Rush::Dir.new(x).entries.map(&:name) }.
+        flatten
     end
 
     def syntax_highlight(input)

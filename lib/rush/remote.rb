@@ -9,7 +9,7 @@ require 'yaml'
 class Rush::Connection::Remote
   attr_reader :host, :tunnel
 
-  def initialize(host, user)
+  def initialize(host, user = nil)
     @host = host
     @tunnel = Rush::SshTunnel.new(host, user)
   end
