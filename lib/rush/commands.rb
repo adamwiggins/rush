@@ -63,7 +63,7 @@ module Rush::Commands
 
   # Open file with any application you like.
   # Usage:
-  #   home.locate('timetable').open_witn :vim
+  #   home.locate('timetable').open_with :vim
   def open_with(app, *args)
     names = dir? ? '' : entries.map(&:to_s).join(' ')
     system "cd #{dirname}; #{app.to_s} #{names} #{args.join(' ')}"

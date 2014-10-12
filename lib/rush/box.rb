@@ -11,14 +11,15 @@
 #   local.processes
 #
 class Rush::Box
-  attr_reader :host
+  attr_reader :host, :local_path
 
   # Instantiate a box.  No action is taken to make a connection until you try
   # to perform an action.  If the box is remote, an ssh tunnel will be opened.
   # Specify a username with the host if the remote ssh user is different from
   # the local one (e.g. Rush::Box.new('user@host')).
-  def initialize(host='localhost')
+  def initialize(host='localhost', local_path = nil)
     @host = host
+    @local_path = local_path
   end
 
   def to_s        # :nodoc:
@@ -31,7 +32,11 @@ class Rush::Box
 
   # Access / on the box.
   def filesystem
-    Rush::Entry.factory('/', self)
+    if host == 'localhost'
+      Rush::Entry.factory('/', self)
+    else
+      connection.local_path
+    end
   end
 
   # Look up an entry on the filesystem, e.g. box['/path/to/some/file'].
@@ -49,22 +54,10 @@ class Rush::Box
     )
   end
 
-  # FAST HACK!
-  # Guess if method missing then it's bash command.
-  # The logic is the following:
-  #   Ruby has Symbol type for similar things that bash has '-'-keys.
-  #   Ruby also use Symbol for keys like '--key', but bash supports
-  #   sequences like 'ls -lah' and I don't know how to distinguish them.
+  # Guess if method missing then it's command for folder binded to that box.
   #
-  # Usage:
-  #   ls :lah
-  #   ls '--help'
-  #
-  def method_missing(meth, *args)
-    command = args.map do |c|
-      Symbol === c ? c.to_s.chars.map { |x| '-' << x } : c
-    end.flatten.join(' ')
-    system meth.to_s << ' ' << command
+  def method_missing(meth, *args, &block)
+    filesystem.send(meth, *args, &block)
   end
 
   # Execute a command in the standard unix shell.  Returns the contents of
@@ -122,7 +115,7 @@ class Rush::Box
   def make_connection    # :nodoc:
     host == 'localhost' ?
       Rush::Connection::Local.new :
-      Rush::Connection::Remote.new(host)
+      Rush::Connection::Remote.new(host, local_path)
   end
 
   def ==(other)          # :nodoc:
