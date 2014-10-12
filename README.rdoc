@@ -11,6 +11,10 @@ Install v.0.6.8 from rubygems.org ~ no longer maintained
 
   sudo gem install rush
 
+Install last stable version (yes, it named rush2 and I know that it's ugly, but still):
+
+  sudo gem install rush2
+
 
 Or for the bleeding edge:
 
@@ -117,9 +121,9 @@ Patches contributed by Chihiro Ito, Gabriel Ware, Michael Schutte, Ricardo Chima
 
 Logo by James Lindenbaum
 
-Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
+Now maintained by Sergey Smagin. Ask me if something is unclear: smaginsergey1310@gmail.com
 
-http://rush.heroku.com
+Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 http://groups.google.com/group/ruby-shell
 
