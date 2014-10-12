@@ -13,6 +13,20 @@ class Rush::Entry
     @box = box || Rush::Box.new('localhost')
   end
 
+  def method_missing(meth, *args, &block)
+    if executables.include? meth.to_s
+      open_with meth, *args
+    else
+      super
+    end
+  end
+
+  def executables
+    ENV['PATH'].split(':')
+      .map { |x| Rush::Dir.new(x).entries.map(&:name) }
+      .flatten
+  end
+
   # The factory checks to see if the full path has a trailing slash for
   # creating a Rush::Dir rather than the default Rush::File.
   def self.factory(full_path, box=nil)
