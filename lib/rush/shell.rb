@@ -32,6 +32,7 @@ module Rush
       eval config.load_env, @pure_binding
       commands = config.load_commands
       Rush::Dir.class_eval commands
+      Rush::File.class_eval commands
       Array.class_eval     commands
 
       # Multiline commands should be stored somewhere
@@ -94,12 +95,11 @@ module Rush
         output = res.to_s <<
           "#{res.entries.size} matching files with #{res.lines.size} lines"
       elsif res.respond_to? :each
-        print '   = '
-        output = pp(res)
+        output = res.pretty_inspect
       else
         output = "   = #{res.inspect}"
       end
-      output.to_s.lines.count > 5 ? output.less : puts(output)
+      output.lines.count > 5 ? output.less : puts(output)
     end
 
     # Syntax highlighting with coderay.
