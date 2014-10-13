@@ -20,6 +20,8 @@ module Rush
 
       @config = Rush::Config.new
       @history = Coolline::History.new config.history_file.full_path
+      Coolline::Settings[:word_boundaries] = [' ', "\t"]
+      Coolline::Settings[:completion_word_boundaries] = [' ', "\t"]
       @readline = Coolline.new do |c|
         c.transform_proc  = proc { syntax_highlight c.line }
         c.completion_proc = proc { complete c.completed_word }
