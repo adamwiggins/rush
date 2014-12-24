@@ -19,6 +19,15 @@ module Rush
       pwd = Rush::Dir.new(ENV['PWD']) if ENV['PWD']
 
       @config = Rush::Config.new
+      @box = Rush::Box.new
+      @pure_binding = @box.instance_eval 'binding'
+      $last_res = nil
+      load_custom_commands
+      set_readline
+      @multiline_cmd = '' # Multiline commands should be stored somewhere
+    end
+
+    def set_readline
       @history = Coolline::History.new config.history_file.full_path
       Coolline::Settings[:word_boundaries] = [' ', "\t"]
       Coolline::Settings[:completion_word_boundaries] = [' ', "\t"]
@@ -26,19 +35,14 @@ module Rush
         c.transform_proc  = proc { syntax_highlight c.line }
         c.completion_proc = proc { complete c.completed_word }
       end
+    end
 
-      @box = Rush::Box.new
-      @pure_binding = @box.instance_eval 'binding'
-      $last_res = nil
-
+    def load_custom_commands
       eval config.load_env, @pure_binding
       commands = config.load_commands
       Rush::Dir.class_eval commands
       Rush::File.class_eval commands
       Array.class_eval     commands
-
-      # Multiline commands should be stored somewhere
-      @multiline_cmd = ''
     end
 
     # Run a single command.
