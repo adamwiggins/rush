@@ -45,6 +45,18 @@ module Rush
       Array.class_eval     commands
     end
 
+    # Run the interactive shell using coolline.
+    def run
+      loop do
+        prompt = self.class.prompt || "#{`whoami`.chomp} $ "
+        cmd = @readline.readline prompt
+        finish if cmd.nil? || cmd == 'exit'
+        next   if cmd.empty?
+        @history << cmd
+        execute cmd
+      end
+    end
+
     # Run a single command.
     def execute(cmd)
       res = eval(@multiline_cmd << "\n" << cmd, @pure_binding)
@@ -65,18 +77,6 @@ module Rush
       puts "Exception #{e.class} -> #{e.message}"
       e.backtrace.each { |t| puts "\t#{::File.expand_path(t)}" }
       @multiline_cmd = ''
-    end
-
-    # Run the interactive shell using coolline.
-    def run
-      loop do
-        prompt = self.class.prompt || "#{`whoami`.chomp} $ "
-        cmd = @readline.readline prompt
-        finish if cmd.nil? || cmd == 'exit'
-        next   if cmd.empty?
-        @history << cmd
-        execute cmd
-      end
     end
 
     # Tune the prompt with

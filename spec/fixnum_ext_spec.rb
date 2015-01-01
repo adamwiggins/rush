@@ -6,14 +6,14 @@ describe Fixnum do
 	end
 
 	it "counts kb" do
-		@num.kb.should == 2*1024
+		expect(@num.kb).to eq 2*1024
 	end
 
 	it "counts mb" do
-		@num.mb.should == 2*1024*1024
+		expect(@num.mb).to eq 2*1024*1024
 	end
 
 	it "counts gb" do
-		@num.gb.should == 2*1024*1024*1024
+		expect(@num.gb).to eq 2*1024*1024*1024
 	end
 end
