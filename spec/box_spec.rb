@@ -33,7 +33,7 @@ describe Rush::Box do
 
   it "executes bash commands in the background, returning a Rush::Process" do
     expect(@box.connection).to receive(:bash).with('cmd', nil, true, false).and_return(123)
-    allow(@box).to receive(:processes).and_return([ double('ps', :pid => 123) ])
+    allow(@box).to receive(:processes).and_return([double('ps', :pid => 123)])
     expect(@box.bash('cmd', :background => true).pid).to eq 123
   end
 
