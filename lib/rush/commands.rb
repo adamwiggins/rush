@@ -64,13 +64,23 @@ module Rush::Commands
   # Open file with any application you like.
   # Usage:
   #   home.locate('timetable').open_with :vim
-  def open_with(app, *args)
-    names = dir? ? '' : entries.map(&:to_s).join(' ')
-    system "cd #{dirname}; #{app.to_s} #{names} #{args.join(' ')}"
+  def open_with(app, *args, **opts)
+    system open_command(app, *args, opts)
   end
 
-  def output_of(app, *args)
-    names = entries.map(&:to_s).join(' ')
-    `cd #{dirname}; #{app.to_s} #{names} #{args.join(' ')}`
+  def output_of(app, *args, **opts)
+    `#{open_command(app, *args, opts)}`
+  end
+
+  def open_command(app, *args, **opts)
+    names = dir? ? '' : entries.map(&:to_s).join(' ')
+    options = opts.map do |k, v|
+      case
+      when v == true || v == false then "-#{k}"
+      when k == 'other' || k == :other then v
+      else "-#{k} #{v}"
+      end
+    end.join(' ')
+    "cd #{dirname}; #{app.to_s} #{names} #{options} #{args.join(' ')}"
   end
 end
