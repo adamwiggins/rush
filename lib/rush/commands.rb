@@ -75,10 +75,11 @@ module Rush::Commands
   def open_command(app, *args, **opts)
     names = dir? ? '' : entries.map(&:to_s).join(' ')
     options = opts.map do |k, v|
+      key = k.size == 1 ? "-#{k}" : "--#{k}"
       case
-      when v == true || v == false then "-#{k}"
+      when v == true || v == false then key
       when k == 'other' || k == :other then v
-      else "-#{k} #{v}"
+      else "#{key} #{v}"
       end
     end.join(' ')
     "cd #{dirname}; #{app.to_s} #{names} #{options} #{args.join(' ')}"
