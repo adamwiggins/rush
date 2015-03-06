@@ -64,6 +64,7 @@ module Rush::Commands
   # Open file with any application you like.
   # Usage:
   #   home.locate('timetable').open_with :vim
+  #   home['.vimrc'].vim { other: '+55', x: true, u: 'other_vimrc', cmd: 'ls' }
   def open_with(app, *args, **opts)
     system open_command(app, *args, opts)
   end
@@ -77,7 +78,7 @@ module Rush::Commands
     options = opts.map do |k, v|
       key = k.size == 1 ? "-#{k}" : "--#{k}"
       case
-      when v == true || v == false then key
+      when v == true then key
       when k == 'other' || k == :other then v
       else "#{key} #{v}"
       end
