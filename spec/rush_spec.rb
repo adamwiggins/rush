@@ -10,7 +10,7 @@ describe Rush do
   end
 
   it 'fetches the launch dir (aka current working directory or pwd)' do
-    Dir.stub(:pwd).and_return('/tmp')
+    allow(Dir).to receive(:pwd).and_return('/tmp')
     expect(Rush.launch_dir).to eq(Rush::Box.new['/tmp/'])
   end
 
