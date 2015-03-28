@@ -39,6 +39,12 @@ module Rush::Commands
     end
   end
 
+  # Open file with $EDITOR.
+  #
+  def edit(*args)
+    open_with ENV['EDITOR'], *args
+  end
+
   # Invoke vi on one or more files - only works locally.
   def vi(*args)
     if self.class == Rush::Dir
