@@ -23,7 +23,7 @@ describe Rush::Shell do
  it 'Complete method names' do
    expect(@shell.complete('Rush.meth')).
      to eq(["Rush.method_part", "Rush.method_defined?", "Rush.methods", "Rush.method"])
-   expect(@shell.complete('Rush.methods.inc')).to eq ["Rush.methods.include?"]
+   expect(@shell.complete('Rush.methods.inc')).to include "Rush.methods.include?"
  end
 
  it 'Complete paths' do

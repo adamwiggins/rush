@@ -15,59 +15,62 @@ describe Rush::Process do
 	if !RUBY_PLATFORM.match(/darwin/)   # OS x reports pids weird
 		it "knows all its child processes" do
 			parent = Rush::Process.all.detect { |p| p.pid == Process.pid }
-			parent.children.should == [ @process ]
+			expect(parent.children).to eq [@process]
 		end
 	end
 
 	it "gets the list of all processes" do
 		list = Rush::Process.all
-		list.size.should > 5
-		list.first.should be_kind_of(Rush::Process)
+		expect(list.size).to be > 5
+		expect(list.first).to be_kind_of Rush::Process
 	end
 
 	it "knows the pid" do
-		@process.pid.should == @pid
+		expect(@process.pid).to eq @pid
 	end
 
 	it "knows the uid" do
-		@process.uid.should == ::Process.uid
+		expect(@process.uid).to eq ::Process.uid
 	end
 
 	it "knows the executed binary" do
-		@process.command.should match(/(ruby|rbx)/)
+		expect(@process.command).to match(/(ruby|rbx)/)
 	end
 
 	it "knows the command line" do
-		@process.cmdline.should match(/process_spec.rb/)
+		expect(@process.cmdline).to match(/process_spec.rb/)
 	end
 
 	it "knows the memory used" do
-		@process.mem.should > 0
+		expect(@process.mem).to be > 0
 	end
 
 	it "knows the cpu used" do
-		@process.cpu.should >= 0
+		expect(@process.cpu).to be >= 0
 	end
 
 	it "knows the parent process pid" do
-		@process.parent_pid.should == Process.pid
+		expect(@process.parent_pid).to eq Process.pid
 	end
 
 	it "knows the parent process" do
-		this = Rush::Box.new.processes.select { |p| p.pid == Process.pid }.first
-		@process.parent.should == this
+		this = Rush::Box.new
+      .processes
+      .select { |p| p.pid == Process.pid }
+      .first
+		expect(@process.parent).to eq this
 	end
 
 	it "can kill itself" do
 		process = Rush.bash("sleep 30", :background => true)
-		process.alive?.should be_true
+		expect(process.alive?).to eq true
 		process.kill
 		sleep 0.1
-		process.alive?.should be_false
+		expect(process.alive?).to eq false
 	end
 
 	it "if box and pid are the same, process is equal" do
 		other = Rush::Process.new({ :pid => @process.pid }, @process.box)
-		@process.should == other
+		expect(@process).to eq other
 	end
 end
