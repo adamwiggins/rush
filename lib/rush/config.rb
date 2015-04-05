@@ -6,7 +6,7 @@ class Rush::Config
 
   # By default, reads from the dir ~/.rush, but an optional parameter allows
   # using another location.
-  def initialize(location=nil)
+  def initialize(location = nil)
     @dir = Rush::Dir.new(location || "#{ENV['HOME']}/.rush")
     @dir.create
   end
@@ -67,7 +67,7 @@ class Rush::Config
 
   def passwords
     passwords_file.lines_or_empty.inject({}) do |result, line|
-      user, password = line.split(":", 2)
+      user, password = line.split(':', 2)
       result.merge user => password
     end
   end
@@ -80,7 +80,7 @@ class Rush::Config
   end
 
   def credentials
-    credentials_file.lines.first.split(":", 2)
+    credentials_file.lines.first.split(':', 2)
   end
 
   def save_credentials(user, password)
@@ -96,7 +96,7 @@ class Rush::Config
   end
 
   def ensure_credentials_exist
-    generate_credentials if credentials_file.contents_or_blank == ""
+    generate_credentials if credentials_file.contents_or_blank == ''
   end
 
   def generate_credentials
@@ -118,7 +118,7 @@ class Rush::Config
   end
 
   def secret_characters
-    [ ('a'..'z'), ('1'..'9') ].inject([]) do |chars, range|
+    [('a'..'z'), ('1'..'9')].inject([]) do |chars, range|
       chars += range.to_a
     end
   end
@@ -138,7 +138,7 @@ class Rush::Config
   end
 
   def save_tunnels(hash)
-    string = ""
+    string = ''
     hash.each do |host, port|
       string += "#{host}:#{port}\n"
     end

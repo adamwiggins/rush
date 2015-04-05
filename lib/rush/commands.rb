@@ -7,6 +7,7 @@
 #   box['/etc/hosts'].search /localhost/       # single file
 #   box['/etc/'].search /localhost/            # entire directory
 #   box['/etc/**/*.conf'].search /localhost/   # arbitrary list
+#
 module Rush::Commands
   # The entries command must return an array of Rush::Entry items.  This
   # varies by class that it is mixed in to.
