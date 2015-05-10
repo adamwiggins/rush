@@ -56,7 +56,7 @@ module Rush
     }
 
     def complete_constant(input)
-      Object.constants.map(&:to_s).select { |x| x.start_with? input }
+      Object.constants.map(&:to_s).select { |x| x.start_with? input } .sort
     end
 
     def complete_object_constant(input)

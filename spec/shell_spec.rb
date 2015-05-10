@@ -21,8 +21,9 @@ describe Rush::Shell do
  end
 
  it 'Complete method names' do
+   # rbx has additional Rush.method_table, Rush.method_table=
    expect(@shell.complete('Rush.meth')).
-     to eq(["Rush.method_part", "Rush.method_defined?", "Rush.methods", "Rush.method"])
+     to include("Rush.method_part", "Rush.method_defined?", "Rush.methods", "Rush.method")
    expect(@shell.complete('Rush.methods.inc')).to include "Rush.methods.include?"
  end
 
