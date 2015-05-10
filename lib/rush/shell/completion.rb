@@ -89,9 +89,7 @@ module Rush
     end
 
     def executables
-      ENV['PATH'].split(':')
-        .map { |x| Rush::Dir.new(x).entries.map(&:name) }
-        .flatten
+      Rush::Path.executables
     end
 
     def complete_path(input)
