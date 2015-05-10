@@ -157,7 +157,7 @@ class Rush::Connection::Local
       windows_processes
     else
       os_x_processes
-    end
+    end.uniq
   end
 
   # Process list on Linux using /proc.

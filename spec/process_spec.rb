@@ -1,22 +1,36 @@
 require_relative 'base'
 
 describe Rush::Process do
+  let!(:pid_file) { "/tmp/rush_rspec_#{Process.pid}" }
+
   before do
-    @pid = fork do
+    @parent_pid = fork do
+      # OSX includes checking `ps` process into current Process#children
+      # as such isolate parent from the main thread
+      # but the instance_valriabes are unavailable since #fork - use fs
+      @pid = fork do
+        sleep 999
+      end
+      ::File.write(pid_file, @pid)
       sleep 999
     end
+
+    # wait parent to tell child's pid
+    sleep 0.3
+
+    @pid = ::File.read(pid_file).to_i
     @process = Rush::Process.all.detect { |p| p.pid == @pid }
   end
 
   after do
+    ::File.unlink(pid_file) if ::File.exists?(pid_file)
     system "kill -9 #{@pid}"
+    system "kill -9 #{@parent_pid}"
   end
 
-  unless RUBY_PLATFORM.match(/darwin/)   # OS x reports pids weird
-    it 'knows all its child processes' do
-      parent = Rush::Process.all.detect { |p| p.pid == Process.pid }
-      expect(parent.children).to eq [@process]
-    end
+  it 'knows all its child processes' do
+    parent = Rush::Process.all.detect { |p| p.pid == @parent_pid }
+    expect(parent.children).to eq [@process]
   end
 
   it 'gets the list of all processes' do
@@ -50,12 +64,12 @@ describe Rush::Process do
   end
 
   it 'knows the parent process pid' do
-    expect(@process.parent_pid).to eq Process.pid
+    expect(@process.parent_pid).to eq @parent_pid
   end
 
   it 'knows the parent process' do
     this = Rush::Box.new.processes
-      .select { |p| p.pid == Process.pid }
+      .select { |p| p.pid == @parent_pid }
       .first
     expect(@process.parent).to eq this
   end
