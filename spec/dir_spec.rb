@@ -130,12 +130,12 @@ describe Rush::Dir do
 		expect(@dir.nonhidden_dirs).to eq @dir.make_entries(%(show/))
 	end
 
-	if !RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
-		it "knows its size in bytes, which includes its contents recursively" do
-			@dir.create_file('a').write('1234')
-			expect(@dir.size).to eq(4096 + 4)
-		end
-	end
+  it "knows its size in bytes, which includes its contents recursively" do
+    @dir.create_file('a').write('1234')
+    # on OSX fs stat's size is 102, even though blksize=4096
+    # on Linux size is 4096
+    expect(@dir.size).to eq(::File.stat(@dir.path).size + 4)
+  end
 
 	it "can destroy itself when empty" do
 		@dir.destroy

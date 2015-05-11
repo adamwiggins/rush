@@ -72,15 +72,16 @@ module Rush::Commands
   # Usage:
   #   home.locate('timetable').open_with :vim
   #   home['.vimrc'].vim { other: '+55', x: true, u: 'other_vimrc', cmd: 'ls' }
-  def open_with(app, *args, **opts)
-    system open_command(app, *args, opts)
+  def open_with(app, *args)
+    system open_command(app, *args)
   end
 
-  def output_of(app, *args, **opts)
-    `#{open_command(app, *args, opts)}`
+  def output_of(app, *args)
+    `#{open_command(app, *args)}`
   end
 
-  def open_command(app, *args, **opts)
+  def open_command(app, *args)
+    opts = args.last.is_a?(Hash) ? args.pop : {}
     names = dir? ? '' : entries.map(&:to_s).join(' ')
     options = opts.map do |k, v|
       key = k.size == 1 ? "-#{k}" : "--#{k}"

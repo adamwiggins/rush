@@ -22,9 +22,7 @@ class Rush::Entry
   end
 
   def executables
-    ENV['PATH'].split(':')
-      .map { |x| Rush::Dir.new(x).entries.map(&:name) }
-      .flatten
+    Rush::Path.executables
   end
 
   # The factory checks to see if the full path has a trailing slash for

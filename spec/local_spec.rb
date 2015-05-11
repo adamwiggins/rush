@@ -260,11 +260,9 @@ describe Rush::Connection::Local do
     @con.set_access('/some/path', access)
   end
 
-  unless RUBY_PLATFORM.match(/darwin/)   # doesn't work on OS X 'cause du switches are different
-    it "size gives size of a directory and all its contents recursively" do
-      system "mkdir -p #{@sandbox_dir}/a/b/; echo 1234 > #{@sandbox_dir}/a/b/c"
-      expect(@con.size(@sandbox_dir)).to eq (4096*3 + 5)
-    end
+  it "size gives size of a directory and all its contents recursively" do
+    system "mkdir -p #{@sandbox_dir}/a/b/; echo 1234 > #{@sandbox_dir}/a/b/c"
+    expect(@con.size(@sandbox_dir)).to eq (::File.stat(@sandbox_dir).size*3 + 5)
   end
 
   it "parses ps output on os x" do
