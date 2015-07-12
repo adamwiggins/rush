@@ -73,7 +73,7 @@ module Rush::Commands
   #   home.locate('timetable').open_with :vim
   #   home['.vimrc'].vim { other: '+55', x: true, u: 'other_vimrc', cmd: 'ls' }
   def open_with(app, *args)
-    system open_command(app, *args)
+    system(*open_command(app, *args))
   end
 
   def output_of(app, *args)
@@ -82,8 +82,9 @@ module Rush::Commands
 
   def open_command(app, *args)
     opts = args.last.is_a?(Hash) ? args.pop : {}
+    env = opts[:env]
     names = dir? ? '' : entries.map(&:to_s).join(' ')
-    options = opts.map do |k, v|
+    options = opts.reject { |k, _| k == :env }.map do |k, v|
       key = k.size == 1 ? "-#{k}" : "--#{k}"
       case
       when v == true then key
@@ -91,6 +92,10 @@ module Rush::Commands
       else "#{key} #{v}"
       end
     end.join(' ')
-    "cd #{dirname}; #{app.to_s} #{names} #{options} #{args.join(' ')}"
+    cmd = "cd #{dirname}; #{app} #{names} #{options} #{args.join(' ')}"
+    if vars = opts[:env]
+      env = vars.inject({}) { |r, (k, v)| r.merge(k.to_s.upcase => v.to_s) }
+    end
+    vars ? [env, cmd] : cmd
   end
 end
