@@ -72,6 +72,7 @@ module Rush::Commands
   # Usage:
   #   home.locate('timetable').open_with :vim
   #   home['.vimrc'].vim { other: '+55', x: true, u: 'other_vimrc', cmd: 'ls' }
+  #   home['my_app'].rails :c, env: { rails_env: 'test' } # environment variables
   def open_with(app, *args)
     system(*open_command(app, *args))
   end
