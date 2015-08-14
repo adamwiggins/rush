@@ -137,16 +137,9 @@ class Rush::Dir < Rush::Entry
 	end
 
 	# Text output of dir listing, equivalent to the regular unix shell's ls command.
-	def ls
-		out = [ "#{self}" ]
-		nonhidden_dirs.each do |dir|
-			out << "  #{dir.name}/"
-		end
-		nonhidden_files.each do |file|
-			out << "  #{file.name}"
-		end
-		out.join("\n")
-	end
+  def ls(*args)
+    output_of 'ls', *args
+  end
 
 	# Run rake within this dir.
 	def rake(*args)
