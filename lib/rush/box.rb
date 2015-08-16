@@ -121,4 +121,10 @@ class Rush::Box
   def ==(other)          # :nodoc:
     host == other.host
   end
+
+  # Print last backtrace
+  def wtf
+    t = $last_backtrace
+    t.lines.count > 5 ? t.less : puts(t)
+  end
 end

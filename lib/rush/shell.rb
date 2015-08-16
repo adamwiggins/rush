@@ -25,6 +25,7 @@ module Rush
       load_custom_commands
       set_readline
       @multiline_cmd = '' # Multiline commands should be stored somewhere
+      $last_backtrace = '' # Backtrace should too.
     end
 
     def set_readline
@@ -75,7 +76,9 @@ module Rush
       @multiline_cmd = ''
     rescue ::Exception => e
       puts "Exception #{e.class} -> #{e.message}"
-      e.backtrace.each { |t| puts "\t#{::File.expand_path(t)}" }
+      $last_backtrace = e.backtrace
+        .map { |t| "\t#{::File.expand_path(t)}" }
+        .join("\n")
       @multiline_cmd = ''
     end
 
