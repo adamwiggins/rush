@@ -100,6 +100,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rake", [">= 0.9.0"])
   s.add_development_dependency("jeweler", [">= 1.8.3"])
   s.add_development_dependency("rspec", ["~> 1.2.0"])
+  s.add_development_dependency("pry")
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
