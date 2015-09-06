@@ -2,13 +2,14 @@ PATH
   remote: .
   specs:
     rush (0.6.8)
+      encase
       session
 
 GEM
   remote: http://rubygems.org/
   specs:
     coderay (1.1.0)
-    fattr (2.2.0)
+    encase (0.1.2)
     git (1.2.5)
     jeweler (1.8.3)
       bundler (~> 1.0)
@@ -25,8 +26,7 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     rspec (1.2.9)
-    session (3.1.0)
-      fattr
+    session (3.2.0)
     slop (3.6.0)
 
 PLATFORMS

@@ -109,5 +109,6 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<session>, [">= 0"])
   end
+  s.add_dependency "encase", ["~> 0.1.2"]
 end
 
