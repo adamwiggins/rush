@@ -22,7 +22,7 @@ describe Rush::Dir do
   it "can create itself, returning itself" do
     system "rm -rf #{@sandbox_dir}"
     @dir.create.should == @dir
-    File.directory?(@dir.full_path).should be_true
+    File.directory?(@dir.full_path).should eq(true)
   end
 
   it "can create a new file" do
