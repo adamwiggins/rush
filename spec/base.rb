@@ -1,24 +1,34 @@
 require 'rubygems'
-require 'spec'
+require 'rspec'
+
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+
+  config.mock_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+end
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 require 'rush'
 
 def mock_config(&block)
-	mock_config_start
-	block.call(config)
-	mock_config_end
+  mock_config_start
+  block.call(config)
+  mock_config_end
 end
 
 def mock_config_sandbox_dir
-	"/tmp/fake_config.#{Process.pid}"
+  "/tmp/fake_config.#{Process.pid}"
 end
 
 def mock_config_start
-	mock_config_cleanup
-	Rush::Config.new(mock_config_sandbox_dir)
+  mock_config_cleanup
+  Rush::Config.new(mock_config_sandbox_dir)
 end
 
 def mock_config_cleanup
-	FileUtils.rm_rf(mock_config_sandbox_dir)
+  FileUtils.rm_rf(mock_config_sandbox_dir)
 end

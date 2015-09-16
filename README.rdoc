@@ -39,6 +39,8 @@ In rush:
 
 Run the "rush" binary to enter the interactive shell.
 
+Upon shell invocation, code will be run from ~/.rush/env.rb, which thus can be thought of as a "rushrc".
+
 == Remote access and clustering
 
 rush can control any number of remote machines from a single location. Copy files or directories between servers as seamlessly as if it was all local.
