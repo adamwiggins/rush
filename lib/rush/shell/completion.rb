@@ -50,7 +50,7 @@ module Rush
         method: :complete_method
       },
       path: {
-        regexp: /^(\w|_|.|:)+[\[\/][\'\"].+$/,
+        regexp: /^(\w|_|.|:)+[\[\/][\'\"].*$/,
         method: :complete_path
       }
     }
