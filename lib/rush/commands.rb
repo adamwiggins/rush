@@ -56,11 +56,6 @@ module Rush::Commands
   end
   alias_method :vim, :vi
 
-  # Invoke TextMate on one or more files - only works locally.
-  def mate(*args)
-    open_with('mate', *args)
-  end
-
   # Open file with xdg-open.
   # Usage:
   #   home.locate('mai_failz').open
