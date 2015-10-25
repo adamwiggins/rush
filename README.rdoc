@@ -2,7 +2,9 @@
 
 rush is a unix integration library and an interactive shell which uses pure Ruby syntax.  Walk directory trees; create, copy, search, and destroy files; find and kill processes - everything you'd normally do with shell commands, now in the strict and elegant world of Ruby.
 
-[![Build Status](https://drone.io/github.com/s-mage/rush/status.png)](https://drone.io/github.com/s-mage/rush/latest)
+[![Build Status]()](https://drone.io/github.com/s-mage/rush/latest)
+{<img src="https://drone.io/github.com/s-mage/rush/status.png" alt="Build Status" />}[https://drone.io/github.com/s-mage/rush]
+
 
 == Install
 
