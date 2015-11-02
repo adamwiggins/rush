@@ -1,3 +1,5 @@
+require_relative 'path'
+
 class String
 	include Rush::HeadTail
 
@@ -12,5 +14,18 @@ class String
 
   def locate
     Rush::Dir.new(ENV['HOME']).locate self
+  end
+
+  def open_with(meth, *args, &block)
+    if executables.include? meth.to_s
+      system [meth.to_s, *args, self].join(' ')
+    else
+      raise 'No such executable. Maybe something wrong with PATH?'
+    end
+  end
+  alias_method :e, :open_with
+
+  def executables
+    Rush::Path.executables
   end
 end
