@@ -1,5 +1,3 @@
-require_relative 'path'
-
 class String
 	include Rush::HeadTail
 
@@ -24,6 +22,10 @@ class String
     end
   end
   alias_method :e, :open_with
+
+  def |(meth, *args, &block)
+    Open3.capture2(meth, stdin_data: self).first
+  end
 
   def executables
     Rush::Path.executables
