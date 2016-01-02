@@ -69,7 +69,7 @@ module Rush::Commands
   def open_command(app, *args)
     opts = args.last.is_a?(Hash) ? args.pop : {}
     env = opts[:env]
-    names = dir? ? '' : entries.map(&:to_s).join(' ')
+    names = dir? ? '' : entries.map { |x| Rush.quote x.to_s }.join(' ')
     options = opts.reject { |k, _| k == :env }.map do |k, v|
       key = k.size == 1 ? "-#{k}" : "--#{k}"
       case
@@ -78,7 +78,8 @@ module Rush::Commands
       else "#{key} #{v}"
       end
     end.join(' ')
-    cmd = "cd #{dirname}; #{app} #{names} #{options} #{args.join(' ')}"
+    dir = Rush.quote dirname.to_s
+    cmd = "cd #{dir}; #{app} #{names} #{options} #{args.join(' ')}"
     if vars = opts[:env]
       env = vars.inject({}) { |r, (k, v)| r.merge(k.to_s.upcase => v.to_s) }
     end

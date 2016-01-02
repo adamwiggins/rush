@@ -39,7 +39,7 @@ class Rush::Entry
 
   def to_s      # :nodoc:
     if box.host == 'localhost'
-      "#{full_path}"
+      full_path
     else
       inspect
     end
@@ -59,7 +59,7 @@ class Rush::Entry
   end
 
   def full_path
-    "#{@path}/#{@name}"
+    "#{path}/#{name}"
   end
 
   def quoted_path
