@@ -23,7 +23,7 @@ class Rush::Dir < Rush::Entry
 
 	# Entries contained within this dir - not recursive.
 	def contents
-		find_by_glob('*')
+		find_by_glob('*') + find_by_glob('.*')
 	end
 
 	# Files contained in this dir only.

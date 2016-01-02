@@ -50,13 +50,13 @@ module Rush
         method: :complete_method
       },
       path: {
-        regexp: /^(\w|_|.|:)+[\[\/][\'\"].*$/,
+        regexp: /^(\w|_|.|:| )+[\[\/][\'\"].*$/,
         method: :complete_path
       }
     }
 
     def complete_constant(input)
-      Object.constants.map(&:to_s).select { |x| x.start_with? input } .sort
+      Object.constants.map(&:to_s).select { |x| x.start_with? input }.sort
     end
 
     def complete_object_constant(input)
@@ -64,7 +64,7 @@ module Rush
       eval(receiver, pure_binding).constants
         .map(&:to_s)
         .select { |x| x.start_with? const_part }
-        .map { |x| receiver + delimiter + x }
+        .map    { |x| receiver + delimiter + x }
     end
 
     def complete_global_method(input)
