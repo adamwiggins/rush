@@ -49,7 +49,7 @@ class Rush::Dir < Rush::Entry
 	alias_method :/, :[]
 
   def locate(path)
-    located = bash("locate #{path}").split("\n").
+    located = bash("locate -i #{path}").split("\n").
       map { |x| x.dir? ? Rush::Dir.new(x) : Rush::File.new(x) }
     located.size == 1 ? located.first : located
   end
