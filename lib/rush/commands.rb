@@ -1,5 +1,6 @@
 # The commands module contains operations against Rush::File entries, and is
-# mixed in to Rush::Entry and Array.  This means you can run these commands against a single
+# mixed in to Rush::Entry and Array.
+# This means you can run these commands against a single
 # file, a dir full of files, or an arbitrary list of files.
 #
 # Examples:
@@ -12,7 +13,7 @@ module Rush::Commands
   # The entries command must return an array of Rush::Entry items.  This
   # varies by class that it is mixed in to.
   def entries
-    raise "must define me in class mixed in to for command use"
+    fail 'must define me in class mixed in to for command use'
   end
 
   # Search file contents for a regular expression.  A Rush::SearchResults
@@ -57,7 +58,7 @@ module Rush::Commands
   # Usage:
   #   home.locate('timetable').open_with :vim
   #   home['.vimrc'].vim { other: '+55', x: true, u: 'other_vimrc', cmd: 'ls' }
-  #   home['my_app'].rails :c, env: { rails_env: 'test' } # environment variables
+  #   home['my_app'].rails :c, env: { rails_env: 'test' } # environment vars
   def open_with(app, *args)
     system(*open_command(app, *args))
   end
@@ -66,18 +67,22 @@ module Rush::Commands
     `#{open_command(app, *args)}`
   end
 
+  def opt_to_s(k, v)
+    key = k.size == 1 ? "-#{k}" : "--#{k}"
+    case
+    when v == true then key
+    when k == 'other' || k == :other then v
+    else "#{key} #{v}"
+    end
+  end
+
   def open_command(app, *args)
     opts = args.last.is_a?(Hash) ? args.pop : {}
-    env = opts[:env]
     names = dir? ? '' : entries.map { |x| Rush.quote x.to_s }.join(' ')
-    options = opts.reject { |k, _| k == :env }.map do |k, v|
-      key = k.size == 1 ? "-#{k}" : "--#{k}"
-      case
-      when v == true then key
-      when k == 'other' || k == :other then v
-      else "#{key} #{v}"
-      end
-    end.join(' ')
+    options = opts
+      .reject { |k, _| k == :env }
+      .map    { |k, v| opt_to_s(k, v) }
+      .join(' ')
     dir = Rush.quote dirname.to_s
     cmd = "cd #{dir}; #{app} #{names} #{options} #{args.join(' ')}"
     if vars = opts[:env]
