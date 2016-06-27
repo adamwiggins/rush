@@ -76,6 +76,27 @@ class Rush::Connection::Local
     true
   end
 
+  # Create a hard link to another file
+  def ln(src, dst, options = {})
+    raise(Rush::DoesNotExist, src) unless File.exists?(src)
+    raise(Rush::DoesNotExist, File.dirname(dst)) unless File.exists?(File.dirname(dst))
+    FileUtils.ln(src, dst, options)
+    true
+  end
+
+  # Create a symbolic link to another file
+  def ln_s(src, dst, options = {})
+    raise(Rush::DoesNotExist, src) unless File.exists?(src)
+    raise(Rush::DoesNotExist, File.dirname(dst)) unless File.exists?(File.dirname(dst))
+    FileUtils.ln_s(src, dst, options)
+    true
+  end
+
+  # Is this path a symlink?
+  def symlink?(path)
+    File.symlink? path
+  end
+
   # Create an in-memory archive (tgz) of a file or dir, which can be
   # transmitted to another server for a copy or move.  Note that archive
   # operations have the dir name implicit in the archive.
@@ -354,6 +375,8 @@ class Rush::Connection::Local
       when 'create_dir'     then create_dir(params[:full_path])
       when 'rename'         then rename(params[:path], params[:name], params[:new_name])
       when 'copy'           then copy(params[:src], params[:dst])
+      when 'ln'             then ln(params[:src], params[:dst], params[:options])
+      when 'ln_s'           then ln_s(params[:src], params[:dst], params[:options])
       when 'read_archive'   then read_archive(params[:full_path])
       when 'write_archive'  then write_archive(params[:payload], params[:dir])
       when 'index'          then index(params[:base_path], params[:glob]).join("\n") + "\n"

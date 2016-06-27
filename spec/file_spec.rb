@@ -31,6 +31,18 @@ describe Rush::File do
     expect(File.exist?("#{@sandbox_dir}/create_me")).to eq true
   end
 
+  it 'can hardlink itself' do
+    newdir = "#{@sandbox_dir}newdir"
+    system "mkdir -p #{newdir}"
+
+    dst  = newdir + "/link"
+    link = @file.link(dst)
+
+    expect(File.exist?(dst)).to eq true
+
+    expect(link.full_path).to eq dst
+  end
+
   it 'knows its size in bytes' do
     expect(@file.size).to eq @contents.length
   end

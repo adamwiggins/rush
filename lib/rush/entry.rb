@@ -132,6 +132,17 @@ class Rush::Entry
     mimic(moved)
   end
 
+  # Symlink the file (see File.ln for options)
+  def slink(dst, options = {})
+    connection.ln_s(full_path, dst, options)
+    self.class.new(dst, box)
+  end
+
+  # Return true if the entry is a symlink.
+  def symlink?
+    connection.symlink? full_path
+  end
+
   def mimic(from)      # :nodoc:
     @box = from.box
     @path = from.path

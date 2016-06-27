@@ -99,6 +99,35 @@ describe Rush::Entry do
       expect(@copied_dir.full_path).to eq "#{@sandbox_dir}newdir/#{@entry.name}"
   end
 
+  it 'can symlink itself as file' do
+    newdir = "#{@sandbox_dir}newdir"
+    system "mkdir -p #{newdir}"
+
+    dst  = newdir + "/link"
+    link = @entry.slink(dst)
+
+    expect(File.exist?(dst)).to eq true
+    expect(File.symlink?(dst)).to eq true
+    expect(link.symlink?).to eq true
+
+    expect(link.full_path).to eq dst
+  end
+
+  it 'can symlink itself as directory' do
+    newdir = "#{@sandbox_dir}newdir"
+    system "mkdir -p #{newdir}"
+    dir = Rush::Dir.new( newdir + "/direct/")
+    dir.create
+
+    dst  = newdir + "/linked"
+    link = dir.slink(dst)
+
+    expect(Dir.exist?(dst)).to eq true
+    expect(File.symlink?(dst)).to eq true
+
+    expect(link.full_path).to eq dst + '/'
+  end
+
   it 'considers dotfiles to be hidden' do
     expect(Rush::Entry.new("#{@sandbox_dir}/show")).to_not be_hidden
     expect(Rush::Entry.new("#{@sandbox_dir}/.dont_show")).to be_hidden

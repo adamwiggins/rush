@@ -16,6 +16,12 @@ class Rush::File < Rush::Entry
   end
   alias_method :touch, :create
 
+  # Hardlink the file (see File.ln for options)
+  def link(dst, options = {})
+    connection.ln(full_path, dst, options)
+    self.class.new(dst, box)
+  end
+
   # Size in bytes on disk.
   def size
     stat[:size]
