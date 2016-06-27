@@ -133,7 +133,7 @@ class Rush::Entry
   end
 
   # Symlink the file (see File.ln for options)
-  def slink(dst, options = {})
+  def symlink(dst, options = {})
     connection.ln_s(full_path, dst, options)
     self.class.new(dst, box)
   end

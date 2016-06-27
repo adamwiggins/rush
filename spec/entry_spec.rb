@@ -104,7 +104,7 @@ describe Rush::Entry do
     system "mkdir -p #{newdir}"
 
     dst  = newdir + "/link"
-    link = @entry.slink(dst)
+    link = @entry.symlink(dst)
 
     expect(File.exist?(dst)).to eq true
     expect(File.symlink?(dst)).to eq true
@@ -120,7 +120,7 @@ describe Rush::Entry do
     dir.create
 
     dst  = newdir + "/linked"
-    link = dir.slink(dst)
+    link = dir.symlink(dst)
 
     expect(Dir.exist?(dst)).to eq true
     expect(File.symlink?(dst)).to eq true
