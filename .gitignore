@@ -1,6 +1,6 @@
 rdoc
 pkg
-.rbenv-version
+.ruby-version
 *.swp
 *.gem
 doc/
