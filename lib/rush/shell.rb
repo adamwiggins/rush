@@ -24,7 +24,7 @@ module Rush
       $last_res = nil
       load_custom_commands
       set_readline
-      @multiline_cmd = '' # Multiline commands should be stored somewhere
+      @multiline_cmd  = '' # Multiline commands should be stored somewhere
       $last_backtrace = '' # Backtrace should too.
     end
 
@@ -41,9 +41,7 @@ module Rush
     def load_custom_commands
       eval config.load_env, @pure_binding
       commands = config.load_commands
-      Rush::Dir.class_eval commands
-      Rush::File.class_eval commands
-      Array.class_eval     commands
+      [Rush::Dir, Rush::File, Array].each { |x| x.class_eval commands }
     end
 
     # Run the interactive shell using coolline.

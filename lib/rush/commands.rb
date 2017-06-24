@@ -51,7 +51,8 @@ module Rush::Commands
   # Usage:
   #   home.locate('mai_failz').open
   def open(*args)
-    open_with('xdg-open', *args)
+    cmd = RUBY_PLATFORM.match(/darwin/) ? 'open' : 'xdg-open'
+    open_with(cmd, *args)
   end
 
   # Open file with any application you like.

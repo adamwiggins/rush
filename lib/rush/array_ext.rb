@@ -9,11 +9,8 @@
 class Array
 	include Rush::Commands
 
-	def entries
-		self
-	end
+	def entries; self; end
 
 	include Rush::FindBy
-
 	include Rush::HeadTail
 end
