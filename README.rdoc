@@ -2,6 +2,44 @@
 
 rush is a unix integration library and an interactive shell which uses pure Ruby syntax.  Walk directory trees; create, copy, search, and destroy files; find and kill processes - everything you'd normally do with shell commands, now in the strict and elegant world of Ruby.
 
+{<img src="https://drone.io/github.com/s-mage/rush/status.png" alt="Build Status" />}[https://drone.io/github.com/s-mage/rush]
+
+
+== Install
+
+Install v.0.6.8 from rubygems.org ~ no longer maintained
+
+  sudo gem install rush
+
+Install last stable version (yes, it named rush2 and I know that it's ugly, but still):
+
+  sudo gem install rush2
+
+
+Or for the bleeding edge:
+
+  git clone git://github.com/s-mage/rush.git
+  cd rush
+  gem build *.gemspec
+  sudo gem install *.gem
+
+
+If you want the development version, you will need the development headers for ruby (eg. ruby-dev in most package managers) and change that last command to:
+
+  git clone git://github.com/s-mage/rush.git
+  cd rush
+  bundle install     # to get the dependencies
+  rake spec          # to run the tests
+  rake rdoc          # to generate a local copy of the docs from your sourcetree (optional)
+
+  sudo rake install  # install your default gem location
+
+
+To uninstall
+
+  sudo gem uninstall rush
+
+
 == Usage
 
 Count the number of classes in your project using bash:
@@ -73,15 +111,19 @@ For more details on syntax and commands, see:
 
 == Meta
 
+What follows is the meta from the original project, which is no longer maintained.
+The mailinglist is still functional and the new website for this fork is:
+https://github.com/s-mage/rush
+
 Created by Adam Wiggins
 
 Patches contributed by Chihiro Ito, Gabriel Ware, Michael Schutte, Ricardo Chimal Jr., and Nicholas Schlueter, Pedro Belo, and Martin Kuehl
 
 Logo by James Lindenbaum
 
-Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
+Now maintained by Sergey Smagin. Ask me if something is unclear: smaginsergey1310@gmail.com
 
-http://rush.heroku.com
+Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 http://groups.google.com/group/ruby-shell
 
